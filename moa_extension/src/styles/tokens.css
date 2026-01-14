@@ -1,0 +1,17 @@
+:root {
+  /* Notice */
+  --color-text-primary: #212121;
+  --color-background-notice: #DDEBFF;
+
+  --color-text-strong: #111111;
+  --color-text-normal: #333333;
+  --color-text-link: #000000;
+
+  /* Font size */
+  --font-size-title: 16px;
+  --font-size-body: 14px;
+
+  /* Line height */
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+}

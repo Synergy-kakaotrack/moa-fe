@@ -1,0 +1,29 @@
+.project-setting {
+  padding: 16px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input,
+textarea,
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.preview-box {
+  min-height: 120px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f7f7f7;
+}

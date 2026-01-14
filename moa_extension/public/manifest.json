@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "MOA",
+  "version": "0.1.0",
+
+  "permissions": ["sidePanel", "storage"],
+
+  "host_permissions":[
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*"
+      ],
+      "js": ["contentScript.js"]
+    }
+  ],
+
+  "side_panel": {
+    "default_path": "index.html"
+  },
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "action": {
+    "default_title": "MOA"
+  },
+  "icons":{
+    "16":"icons/logo.png"
+  }
+}

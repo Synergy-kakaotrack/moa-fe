@@ -1,0 +1,37 @@
+.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+
+  background-color: #fff;
+  border-top: 1px solid #fff;
+  z-index: 1000;
+}
+
+.bottom-button {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 6;
+  font-size: 14px;
+}
+
+.bottom-clear {
+  border: 1px #111;
+  background-color: #fff;
+  
+}
+
+.bottom-submit {
+  border: 1px #111;
+  background-color: #fff;
+  font-weight: 600;
+}
+
+.bottom-submit:disabled {
+  opacity: 0.5;
+}
