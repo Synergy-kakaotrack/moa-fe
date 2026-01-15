@@ -1,12 +1,5 @@
 import ScrapCard from "../components/UI/ScrapCard/ScrapCard";
-
-export interface Scrap {
-  id: number;
-  title: string;
-  content: string;
-  source: string; // ChatGPT | Claude | Gemini
-  createdAt: number;
-}
+import type { Scrap } from "../types/scrap";
 
 interface ScrapListProps {
   scraps: Scrap[];
@@ -27,10 +20,11 @@ export default function ScrapList({ scraps, setScraps }: ScrapListProps) {
           스크랩된 내용이 없습니다
         </div>
       ) : (
-        scraps.map((scrap) => (
+        scraps.map((scrap, index) => (
           <ScrapCard
             key={scrap.id}
             scrap={scrap}
+            index={index + 1}
             onDelete={handleDelete}
           />
         ))

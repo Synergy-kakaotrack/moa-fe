@@ -1,0 +1,29 @@
+.scrap-preview {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.scrap-source {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.scrap-text {
+  font-size: 14px;
+  line-height: 1.5;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.scrap-done {
+  margin-top: 6px;
+  font-size: 12px;
+  color: green;
+}

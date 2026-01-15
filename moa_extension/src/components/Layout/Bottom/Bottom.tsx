@@ -5,7 +5,7 @@ export type Step =
   | "EMPTY"
   | "SCRAP_LIST"
   | "PROJECT_SETTING"
-  | "SAVE_DONE";
+  | "SAVE";
 
 //버튼 설정 타입(label(문구), 클릭했을 때 액션, 비활성화 여부, 왼/오 버튼 구분)
 interface ButtonConfig {
@@ -80,7 +80,7 @@ function getButtonsByStep(
         },
       ];
 
-    case "SAVE_DONE":
+    case "SAVE":
       return [
         {
           label: "돌아가기",
