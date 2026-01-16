@@ -1,3 +1,5 @@
+export type ScrapStatus = "DRAFT" | "FINAL";
+
 export interface Scrap {
     id: number;
     texts: string[];
@@ -6,5 +8,10 @@ export interface Scrap {
         url?: string;
     };
     createdAt: number;
+
+    status: ScrapStatus;
+
+    rawHtml?: string;
+    finalizedAt?: number;
     
 }

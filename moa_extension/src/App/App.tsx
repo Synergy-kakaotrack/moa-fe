@@ -15,6 +15,10 @@ import Save from "../Pages/Save";
 import NoticeScrapCount from "../components/UI/Notice/NoticeScrapCount";
 import GuideText from "../components/UI/Notice/GuideText";
 
+import { saveDraft } from "../utils/scrapStorage";
+import { saveFinalScraps } from "../utils/scrapStorage";
+
+import { detectAISource } from "../utils/detectAISource";
 
 //환경 플래그 (웹에서 f12로 스타일을 수정하기 위한)
 const isExtension =
@@ -101,8 +105,8 @@ export default function App() {
               source: item.source ?? "Unknown",
               url: item.url
             },
-
             createdAt: item.createdAt ?? Date.now(),
+            status: "DRAFT"
           }));
 
           setScraps(normalized);
@@ -116,33 +120,33 @@ export default function App() {
       if (!isScrapUpdatedMessage(message)) return;
 
       setScraps((prev) => {
-
         // 묶음이 아직 없으면 새로 생성
         if (currentScrapId === null) {
           const id = Date.now();
           setCurrentScrapId(id);
 
-          return [
-            ...prev,
-            {
-              id,
-              texts: [message.payload.text],
-              meta: {
-                source: message.payload.source ?? "Unknown",
-                url: message.payload.url,
-              },
-              createdAt: Date.now(),
+          const newScrap: Scrap = {
+            id,
+            texts: [message.payload.text],
+            meta: {
+              source: detectAISource(message.payload.url),
+              url: message.payload.url,
             },
-          ];
+            createdAt: Date.now(),
+            status: "DRAFT",
+          };
+
+          return [...prev, newScrap];
         }
 
-        //이미 묶음이 있으면 texts에 추가
+        // 이미 묶음이 있으면 texts에 추가
         return prev.map((scrap) =>
           scrap.id === currentScrapId
             ? { ...scrap, texts: [...scrap.texts, message.payload.text] }
             : scrap
         );
-      })
+      });
+
         setStep("SCRAP_LIST");
       }
 
@@ -151,25 +155,17 @@ export default function App() {
   } , []);
 
   const handleFinalSave = () => {
+    const finalizedScraps: Scrap[] = scraps.map((scrap) => ({
+      ...scrap,
+      status: "FINAL",
+      finalizedAt: Date.now(),
+    }));
 
+    saveFinalScraps(finalizedScraps);
     setCurrentScrapId(null)
-
-    // TODO: chrome.storage / localStorage 저장
-    console.log("저장됨:", {
-      title,
-      memo,
-      projectName,
-      workStep,
-      scraps,
-    });
 
     // 저장 후 초기화
     setScraps([]);
-    setTitle("제목을 입력해주세요");
-    setMemo("이 스크랩에 대해 설명을 추가해 보세요");
-    setProjectName("Capstone Design");
-    setWorkStep("기획");
-
     setStep("EMPTY");
   };
 
@@ -244,6 +240,10 @@ export default function App() {
     if (step === "SCRAP_LIST") {
       setIsProcessingScrap(true);
 
+      scraps.forEach(scrap => {
+        saveDraft(scrap);
+      });
+
       setTimeout(() => {
         setIsProcessingScrap(false);
         setStep("PROJECT_SETTING");
@@ -253,7 +253,6 @@ export default function App() {
     }
     if (step === "PROJECT_SETTING") {
       setStep("SAVE");
-      return;
     }
   }; //다음
 
@@ -273,6 +272,7 @@ export default function App() {
   //스크랩 모두 지우기 버튼
   const handleClearScrap = () => {
     setScraps([]);
+    setCurrentScrapId(null)
     setStep(isExtension ? "EMPTY" : "SCRAP_LIST");
   };
 

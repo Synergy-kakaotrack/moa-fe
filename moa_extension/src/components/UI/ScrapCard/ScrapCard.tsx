@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { Scrap } from "../../../types/scrap";
 
+
 interface ScrapCardProps {
   scrap: Scrap;
   index: number;
