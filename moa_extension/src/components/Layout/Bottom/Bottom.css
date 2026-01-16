@@ -1,5 +1,4 @@
 .bottom {
-  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
@@ -16,22 +15,41 @@
 .bottom-button {
   flex: 1;
   padding: 12px 0;
-  border-radius: 6;
-  font-size: 14px;
+  border-radius: 6px;
+  border: 0;
 }
 
+/* 버튼 역할만 유지 */
 .bottom-clear {
-  border: 1px #111;
+  border: 1px solid #111;
   background-color: #fff;
-  
+}
+
+.bottom-clear:hover {
+  background-color: #EFF0A4; /* 조금 더 진한 회색 */
+  color: #000;
+  border: 0;
 }
 
 .bottom-submit {
-  border: 1px #111;
-  background-color: #fff;
-  font-weight: 600;
+  color: rgb(0, 0, 0);
+  background-color: #EFF0A4;
 }
 
-.bottom-submit:disabled {
+.bottom-submit.disabled {
+  background-color: #D1D1D1; /* 회색 */
+  color: #ffffff;
+  cursor: not-allowed;
+  
+}
+
+.bottom-submit.loading {
+  background-color: #D1D291; /* 연한 초록 */
+  color: white;
+  cursor: wait;
+}
+
+.buttom-clear.disabled {
   opacity: 0.5;
+  cursor: not-allowed;
 }

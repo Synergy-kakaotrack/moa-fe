@@ -1,0 +1,48 @@
+/* tokens.css */
+:root {
+  /* =========================
+     Font Family
+  ========================= */
+  --font-family-pretendard: 'Pretendard';
+
+  /* =========================
+     Font Sizes
+     (from fontSize)
+  ========================= */
+  --font-size-0: 10px;
+  --font-size-1: 12px;
+  --font-size-2: 14px;
+
+  /* =========================
+     Font Weights
+     (Pretendard 기준 일반 매핑)
+  ========================= */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* =========================
+     Line Heights
+     (from lineHeights)
+  ========================= */
+  --line-height-0: 16px;
+  --line-height-1: 14px;
+  --line-height-2: 12px;
+  --line-height-auto: normal;
+
+  /* =========================
+     Letter Spacing
+  ========================= */
+  --letter-spacing-0: 0%;
+
+  /* =========================
+     Paragraph
+  ========================= */
+  --paragraph-spacing-0: 0;
+  --paragraph-indent-0: 0px;
+
+
+  /*Font Color*/
+  --font-color-0: #000;
+}

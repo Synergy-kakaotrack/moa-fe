@@ -4,6 +4,8 @@
   padding: 12px;
   margin-bottom: 8px;
   background: #fff;
+  height: auto;
+  overflow: visible;
 }
 
 .scrap-source {
@@ -15,11 +17,10 @@
 .scrap-text {
   font-size: 14px;
   line-height: 1.5;
+  white-space: pre-wrap;
 
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  transition: max-height 0.25s ease;
+  padding-bottom: 20px;
 }
 
 .scrap-done {

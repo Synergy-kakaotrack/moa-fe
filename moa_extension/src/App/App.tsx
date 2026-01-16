@@ -16,9 +16,6 @@ import NoticeScrapCount from "../components/UI/Notice/NoticeScrapCount";
 import GuideText from "../components/UI/Notice/GuideText";
 
 
-
-
-
 //환경 플래그 (웹에서 f12로 스타일을 수정하기 위한)
 const isExtension =
   typeof chrome !== "undefined" &&
@@ -81,6 +78,11 @@ export default function App() {
   //ScrapId
   const [currentScrapId, setCurrentScrapId] = useState<number | null>(null);
 
+  //제목 입력 안 하면 다음으로 안 넘어가게
+  const canGoNext = title.trim() !== "";
+
+  //3초간 버튼 비활성화 
+  const [isProcessingScrap, setIsProcessingScrap] = useState(false);
 
   useEffect(() => {
 
@@ -240,7 +242,13 @@ export default function App() {
   //Bottom 버튼 Action
   const goNext = () => {
     if (step === "SCRAP_LIST") {
-      setStep("PROJECT_SETTING");
+      setIsProcessingScrap(true);
+
+      setTimeout(() => {
+        setIsProcessingScrap(false);
+        setStep("PROJECT_SETTING");
+      }, 3000)
+
       return;
     }
     if (step === "PROJECT_SETTING") {
@@ -270,17 +278,21 @@ export default function App() {
 
 
   return (
-    <div>
-      {/* Top */}
-      <Top />
+    <div className="app-container">
+      <div className="app-top">
+        {/* Top */}
+        <Top />
+      </div>
+      
+      <div className="app-main">
+        {/*Notice*/}
+        {renderNotice()}
 
-      {/*Notice*/}
-      {renderNotice()}
-
-      {/* 중앙 */}
-      <main className="app-main">
-        {renderContent()}
-      </main>
+        {/* 중앙 */}
+        <main>
+          {renderContent()}
+        </main>
+      </div>
 
       {/* Bottom */}
       <Bottom
@@ -289,6 +301,11 @@ export default function App() {
         onAction={step==="SAVE" ? handleFinalSave : goNext}
         onClear={handleClearScrap}
         onBack={goBack}
+        disabledAction={
+          step === "PROJECT_SETTING"
+            ? !canGoNext
+            : isProcessingScrap
+        }
       />
     </div>
   );

@@ -1,7 +1,8 @@
-import Bottom from "../../components/Layout/Bottom/Bottom";
+import "./ProjectSetting.css"
 import ScrapPreview from "../../components/ScrapPreview/ScrapPreview";
 import type { Scrap } from "../../types/scrap";
 
+import { useState } from "react";
 
 
 interface ProjectSettingProps {
@@ -27,28 +28,26 @@ export default function ProjectSetting({
     setProjectName,
     setWorkStep,
     setTitle,
-    setMemo,
-    onBack,
-    onNext
+    setMemo
 }: ProjectSettingProps){
-    
-    const handleBack = () => {
-    // 여기서 데이터 정리, validation 가능
-    onBack();
-  };
 
-  const handleNext = () => {
-    // 제목 입력 체크, 데이터 저장 등
-    onNext();
-  };
+  //제목 입력 확인
+  const [titleTouched, setTitleTouched] = useState(false);
+  const isTitleError = titleTouched && title.trim() === "";
+
+  //프로젝트 생성
+  const [isCreatingProject, setIsCreatingProject] = useState(false);
+  const [newProjectName, setNewProjectName] = useState("");
+  const [newProjectDesc, setNewProjectDesc] = useState("");
 
   return (
     <div className="project-setting">
+      {!isCreatingProject && (
         <div className="project">
           <div>
             <label className="label">프로젝트</label>
           </div>
-          
+
           <div>
             <select
               value={projectName}
@@ -61,10 +60,59 @@ export default function ProjectSetting({
           </div>
 
           <div>
-          <button className="add-project">+ 프로젝트 추가</button>
+            <button
+              className="add-project"
+              onClick={() => setIsCreatingProject(true)}
+            >
+              + 프로젝트 추가
+            </button>
+          </div>
+        </div>
+      )}
+      {isCreatingProject && (
+        <div className="create-project-box">
+          <div>
+            <label className="label">생성할 프로젝트명</label>
+            <input
+              type="text"
+              placeholder="프로젝트명을 입력하세요"
+              value={newProjectName}
+              onChange={(e) => setNewProjectName(e.target.value)}
+            />
           </div>
 
+          <div>
+            <label className="label">프로젝트 설명</label>
+            <input
+              type="text"
+              placeholder="프로젝트 설명을 입력하세요"
+              value={newProjectDesc}
+              onChange={(e) => setNewProjectDesc(e.target.value)}
+            />
+          </div>
+
+          <div className="create-project-actions">
+            <button
+              onClick={() => setIsCreatingProject(false)}
+            >
+              취소
+            </button>
+
+            <button
+              className="primary"
+              onClick={() => {
+                setProjectName(newProjectName); // 새 프로젝트 선택
+                setIsCreatingProject(false);   //다시 토글 화면으로
+                setNewProjectName("");
+                setNewProjectDesc("");
+              }}
+            >
+              프로젝트 생성
+            </button>
+          </div>
         </div>
+      )}
+
 
         <div className="step">
           <div>
@@ -94,7 +142,12 @@ export default function ProjectSetting({
               placeholder="제목을 입력해주세요"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              onBlur={() => setTitleTouched(true)}
+              className={isTitleError ? "error" : ""}
             />
+            {isTitleError && (
+              <p className="error-text">※ 제목은 필수입니다.</p>
+            )}
           </div>
 
         </div>
@@ -118,11 +171,6 @@ export default function ProjectSetting({
               <ScrapPreview scraps={scraps}/>
           </div>
         </div>
-
-      <Bottom 
-        step="PROJECT_SETTING"
-        onBack={handleBack}
-        onAction={handleNext}/>
     </div>
   );
 }

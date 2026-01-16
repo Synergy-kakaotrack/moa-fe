@@ -1,11 +1,16 @@
 /*@import "/moa_extension/src/styles/tokens.css";*/
 
-html, body, #root {
+html, body {
   margin: 0;
-  height: 100%;
   padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
+#root {
+  height: 100vh;
+  overflow: hidden;
+}
 .center {
   min-height: 200px;
   display: flex;
@@ -18,17 +23,20 @@ html, body, #root {
   font-size: 14px;
 }
 .app-container {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 .app-main {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 96px;
+  height: 100%;
 }
 .empty-wrapper {
   position: relative;
-  height: 100%;
 }
 
 .guide-overlay {
@@ -42,4 +50,14 @@ html, body, #root {
 .empty {
   position: relative;
   z-index: 1;
+}
+
+.app-top {
+  flex-shrink: 0;
+  height: 48px; /* Top 실제 높이 */
+}
+
+.app-bottom {
+  flex-shrink: 0;
+  height: 72px; /* Bottom 실제 높이 */
 }

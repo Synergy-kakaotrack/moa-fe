@@ -33,14 +33,13 @@
   border-radius: 50%;
   background-color: #111;
   color: #fff;
-
-  font-size: 13px;
-  font-weight: 700;
 }
 
 /* 설명 텍스트 */
 .guide-text {
-  font-size: 14px;
   line-height: 1.5;
-  color: #111;
+}
+
+.index-text {
+  text-align: center;
 }

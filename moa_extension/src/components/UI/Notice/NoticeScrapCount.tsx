@@ -5,7 +5,7 @@ interface ScrapCountProps {
 export default function NoticeScrapCount({ count }: ScrapCountProps) {
   return (
     <div>
-      <span>스크랩 ({count})</span>
+      <span className="text-status-md">스크랩 ({count})</span>
     </div>
   );
 }

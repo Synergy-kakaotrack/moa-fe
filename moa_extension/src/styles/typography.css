@@ -1,0 +1,113 @@
+/* typography.css */
+
+/* =========================
+   Status
+   text.status.md
+========================= */
+.text-status-md {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-0);
+  letter-spacing: var(--letter-spacing-0);
+}
+
+/* =========================
+   Guide
+   text.guide.sm
+========================= */
+.text-guide-sm {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-1);
+  color: var(--font-color-0);
+}
+
+/* =========================
+   Badge
+   text.badge.xs
+========================= */
+.text-badge-xs {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-2);
+}
+
+/* =========================
+   List
+   text.list.active
+========================= */
+.text-list-active {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-0);
+}
+
+/* =========================
+   List
+   text.list.md
+========================= */
+.text-list-md {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-0);
+}
+
+/* =========================
+   Placeholder
+   text.placeholder.sm
+========================= */
+.text-placeholder-sm {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-1);
+}
+
+/* =========================
+   Action
+   text.action.xs
+========================= */
+.text-action-xs {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-2);
+}
+
+/* =========================
+   Body
+   text.body.sm
+========================= */
+.text-body-sm {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-1);
+}
+
+/* =========================
+   Button
+   text.button.sm
+========================= */
+.text-button-sm {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-auto);
+}
+
+/* =========================
+   Label
+   text.label.md
+========================= */
+.text-label-md {
+  font-family: var(--font-family-pretendard);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-auto);
+}

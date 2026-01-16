@@ -7,14 +7,14 @@ const SERVICES = [
 
 export default function ScrapGuide() {
   return (
-    <div>
+    <div className="text-guide-sm">
       {SERVICES.map((service, index) => (
           <span key={service.name}>
             <a
               href={service.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="notice-link"
+              className="notice-link text-action-xs"
             >
               {service.name}
             </a>
