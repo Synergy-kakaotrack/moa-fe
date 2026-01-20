@@ -1,0 +1,9 @@
+.main {
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+/* 사이드바 접힘 */
+.main.collapsed {
+  margin-left: 64px;
+}

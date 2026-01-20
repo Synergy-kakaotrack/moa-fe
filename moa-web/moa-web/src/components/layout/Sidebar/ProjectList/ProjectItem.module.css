@@ -1,0 +1,32 @@
+.project {
+  display: flex;
+  flex-direction: column;
+}
+
+.projectButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Hover */
+.projectButton:hover {
+  background-color: var(--color-bg-hover);
+}
+
+/* Active (isOpen === true) */
+.active {
+  background-color: var(--color-bg-active);
+  font-weight: 600;
+}
+
+.stageList {
+  margin-top: 4px;
+  padding-left: 12px;
+}
