@@ -2,6 +2,8 @@ import "./ProjectSetting.css"
 import ScrapPreview from "../../components/ScrapPreview/ScrapPreview";
 import type { Scrap } from "../../types/scrap.domain";
 
+import { createProject } from "../../api/projectApi";
+
 import { useState } from "react";
 
 
@@ -39,6 +41,19 @@ export default function ProjectSetting({
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
+
+  const handleCreateProject = async () => {
+    // 1. 입력값 그대로 백엔드로 전달
+    await createProject({
+      name: newProjectName,
+      description: newProjectDesc,
+    });
+
+    // 2. UI는 닫기만 함 (그 외 아무 것도 안 함)
+    setIsCreatingProject(false);
+    setNewProjectName("");
+    setNewProjectDesc("");
+  };
 
   return (
     <div className="project-setting">
@@ -105,10 +120,7 @@ export default function ProjectSetting({
             <button
               className="primary"
               onClick={() => {
-                setProjectName(newProjectName); // 새 프로젝트 선택
-                setIsCreatingProject(false);   //다시 토글 화면으로
-                setNewProjectName("");
-                setNewProjectDesc("");
+                handleCreateProject();
               }}
             >
               프로젝트 생성
