@@ -1,0 +1,163 @@
+/* Project List Container */
+.projectList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Individual Project */
+.project {
+  margin-bottom: 2px;
+}
+
+/* Project Header (clickable row) */
+.projectHeader {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  gap: 6px;
+}
+
+.projectHeader:hover {
+  background: var(--color-bg-subtle);
+}
+
+.projectHeader.active {
+  background: var(--color-accent-primary);
+}
+
+/* Toggle Arrow */
+.toggleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.toggleButton.expanded {
+  transform: rotate(90deg);
+}
+
+/* Project Icon (folder) */
+.projectIcon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+/* Project Title */
+.projectTitle {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.projectHeader.active .projectTitle {
+  font-weight: 500;
+}
+
+/* More Button (three dots) */
+.moreButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease;
+}
+
+.projectHeader:hover .moreButton,
+.projectHeader.active .moreButton {
+  display: flex;
+}
+
+.moreButton:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Stage List (children) */
+.stageList {
+  margin-top: 2px;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* Stage Item */
+.stageItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.stageItem:hover {
+  background: var(--color-bg-subtle);
+}
+
+.stageItem.active {
+  background: var(--color-bg-subtle);
+}
+
+/* Stage Icon */
+.stageIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+/* Stage Name */
+.stageName {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.stageItem:hover .stageName {
+  color: var(--color-text-primary);
+}
+
+/* Project Header Row (for backward compatibility) */
+.projectHeaderRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
