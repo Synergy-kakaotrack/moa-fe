@@ -13,8 +13,10 @@ export default function GuideBox() {
     <div className="guide-box">
       {GUIDE_ITEMS.map((text, index) => (
         <div key={index} className="guide-item">
-          <div className="guide-number">{index + 1}</div>
-          <div className="guide-text">{text}</div>
+          <div className="index-text">
+            <div className="guide-number text-badge-xs">{index + 1}</div>
+            <div className="guide-text text-guide-sm">{text}</div>
+          </div>
         </div>
       ))}
     </div>

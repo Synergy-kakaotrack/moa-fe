@@ -1,34 +1,60 @@
+let dragSessionId = null;
 let lastText = "";
 
+const safeSendMessage = (message) => {
+  try {
+    if (chrome?.runtime?.id && chrome.runtime.sendMessage) {
+      chrome.runtime.sendMessage(message);
+    }
+  } catch {
+    console.warn("Extension context invalidated, skip sendMessage");
+  }
+};
+
+document.addEventListener("mousedown", () => {
+  dragSessionId = Date.now();
+  lastText = "";
+});
+
 document.addEventListener("mouseup", () => {
-  console.log("✅ MOA contentScript loaded");
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return;
 
   const text = selection.toString().trim();
-
-  // 공백 / 너무 짧은 텍스트 무시
   if (!text || text.length < 3) return;
-
-  // 같은 텍스트 중복 방지
   if (text === lastText) return;
+
   lastText = text;
 
-  chrome.runtime.sendMessage({
+  safeSendMessage({
     type: "SCRAP_TEXT",
     payload: {
       text,
       url: location.href,
       source: detectAISource(),
       createdAt: Date.now(),
+      dragSessionId,
     },
   });
 });
 
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    lastText = "";
+  }
+});
+
 function detectAISource() {
   const host = location.hostname;
-  if (host.includes("openai.com")) return "ChatGPT";
+  if (host.includes("chatgpt.com")) return "ChatGPT";
   if (host.includes("claude.ai")) return "Claude";
   if (host.includes("google.com")) return "Gemini";
   return "Unknown";
 }
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    lastText = "";
+    dragSessionId = null;
+  }
+});
