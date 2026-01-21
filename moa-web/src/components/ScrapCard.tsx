@@ -1,5 +1,4 @@
-import { Scrap } from '@/api/types/scrap';
-
+import { Scrap } from '../../src/api/types/scrap';
 interface Props {
   scrap: Scrap;
 }
