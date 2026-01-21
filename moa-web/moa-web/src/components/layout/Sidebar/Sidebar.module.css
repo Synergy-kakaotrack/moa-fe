@@ -59,7 +59,7 @@
 /* collapsed일 때만 아래로 이동 */
 .collapseBtnCollapsed {
   position: absolute;
-  top: 64px;                    /* 로고 아래 위치 */
+  top: 64px;                    
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;

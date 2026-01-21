@@ -1,10 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import styles from './ProjectItem.module.css';
 import { stages } from '@/data/stages';
 import StageItem from './StageItem';
+import { IconFolder, IconCaret } from '@/components/icons';
 
 interface Project {
   id: string;
@@ -17,39 +18,56 @@ interface Props {
   onProjectClick: (id: string) => void;
 }
 
+
 export default function ProjectItem({
   project,
   isOpen,
   onProjectClick,
 }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const handleClick = () => {
+    onProjectClick(project.id);
+    router.push(`/project/${project.id}`);
+  };
 
   return (
     <div className={styles.project}>
-      {/* 프로젝트 버튼 */}
       <button
         className={clsx(
-          styles.projectButton,
+          styles.projectHeader,
           isOpen && styles.active
         )}
-        onClick={() => {
-          onProjectClick(project.id);
-          router.push(`/project/${project.id}`);
-        }}
+        onClick={handleClick}
       >
-        {project.name}
+        <IconCaret
+          className={clsx(
+            styles.caret,
+            isOpen && styles.caretOpen
+          )}
+        />
+        <IconFolder className={styles.folder} />
+        <span className={styles.projectTitle}>
+          {project.name}
+        </span>
       </button>
 
-      {/* stage 리스트 */}
       {isOpen && (
         <ul className={styles.stageList}>
-          {stages.map((stage) => (
-            <StageItem
-              key={stage.key}
-              stage={stage}
-              projectId={project.id}
-            />
-          ))}
+          {stages.map((stage) => {
+            const isActive =
+              pathname === `/project/${project.id}/${stage.key}`;
+
+            return (
+              <StageItem
+                key={stage.key}
+                stage={stage}
+                projectId={project.id}
+                isActive={isActive}
+              />
+            );
+          })}
         </ul>
       )}
     </div>

@@ -1,49 +1,64 @@
-// components/sidebar/NavAiButton.tsx
 'use client';
+
+import clsx from 'clsx';
+import styles from './NavAiButton.module.css';
+
+import {
+  IconChatGPT,
+  IconClaude,
+  IconGemini,
+  IconExternalLink,
+} from '@/components/icons';
 
 type Provider = 'chatgpt' | 'claude' | 'gemini';
 
-const META: Record<
-  Provider,
-  { label: string; icon: string; url: string }
-> = {
+const AGENT_META = {
   chatgpt: {
     label: 'ChatGPT',
-    icon: '🤖',
+    Icon: IconChatGPT,
     url: 'https://chat.openai.com',
   },
   claude: {
     label: 'Claude',
-    icon: '🧠',
+    Icon: IconClaude,
     url: 'https://claude.ai',
   },
   gemini: {
     label: 'Gemini',
-    icon: '✨',
+    Icon: IconGemini,
     url: 'https://gemini.google.com',
   },
-};
+} satisfies Record<
+  Provider,
+  { label: string; Icon: React.FC<{ className?: string }>; url: string }
+>;
+
+interface NavAiButtonProps {
+  provider: Provider;
+  collapsed?: boolean;
+}
 
 export default function NavAiButton({
   provider,
-  collapsed,
-}: {
-  provider: Provider;
-  collapsed: boolean;
-}) {
-  const { label, icon, url } = META[provider];
+  collapsed = false,
+}: NavAiButtonProps) {
+  const { label, Icon, url } = AGENT_META[provider];
 
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 rounded-md px-3 py-2 hover:bg-gray-100"
-      title={collapsed ? label : undefined}
-      aria-label={label}
+      className={clsx(styles.button, collapsed && styles.collapsed)}
     >
-      <span className="text-lg">{icon}</span>
-      {!collapsed && <span>{label}</span>}
+      <span className={styles.left}>
+        <Icon className={styles.icon} />
+        {!collapsed && <span className={styles.label}>{label}</span>}
+      </span>
+
+      {!collapsed && (
+        <IconExternalLink className={styles.linkIcon} />
+      )}
     </a>
   );
 }
