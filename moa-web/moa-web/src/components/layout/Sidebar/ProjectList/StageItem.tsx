@@ -1,38 +1,38 @@
 'use client';
 
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import styles from './StageItem.module.css';
-
-interface Stage {
-  key: string;
-  name: string;
-}
+import { STAGE_ICON_MAP } from '@/components/icons/stage/iconStageMap';
+import type { Stage } from '@/data/stages';
 
 interface Props {
   stage: Stage;
   projectId: string;
+  isActive?: boolean;
 }
 
-export default function StageItem({ stage, projectId }: Props) {
+export default function StageItem({
+  stage,
+  projectId,
+  isActive = false,
+}: Props) {
   const router = useRouter();
-  const pathname = usePathname();
+  const Icon = STAGE_ICON_MAP[stage.key];
 
-  const isActive = pathname.endsWith(stage.key);
+  const handleClick = () => {
+    router.push(
+      `/project/${projectId}/${stage.key}`
+    );
+  };
 
   return (
-    <li>
-      <button
-        className={clsx(
-          styles.stageButton,
-          isActive && styles.active
-        )}
-        onClick={() =>
-          router.push(`/project/${projectId}/${stage.key}`)
-        }
-      >
-        {stage.name}
-      </button>
-    </li>
+<button
+  className={clsx(styles.stageButton, isActive && styles.active)}
+  onClick={handleClick}
+>
+  <Icon className={styles.icon} />
+  <span className={styles.label}>{stage.name}</span>
+</button>
   );
 }
