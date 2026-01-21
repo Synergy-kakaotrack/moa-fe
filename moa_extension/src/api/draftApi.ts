@@ -1,5 +1,6 @@
 
 import { apiClient } from "./apiClient";
+import type { CreateDraftResponse } from "../types/draft";
 import type {
   ScrapSummary,
   ScrapDetail,
@@ -8,6 +9,35 @@ import type {
   UpdateScrapRequest,
   UpdateScrapResponse,
 } from "../types/scrap";
+import type {
+  CommitDraftRequest, CommitDraftResponse
+} from "../types/draft";
+
+interface CreateDraftRequest {
+  contentPlain: string;
+  aiSource: string;
+  aiSourceUrl: string;
+}
+
+export function createDraft(body: CreateDraftRequest) {
+  return apiClient<CreateDraftResponse>("/drafts", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export function commitDraft(
+  draftId: number,
+  body: CommitDraftRequest
+) {
+  return apiClient<CommitDraftResponse>(
+    `/drafts/${draftId}/commit`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+    }
+  );
+}
 
 /* =========================
    Scraps

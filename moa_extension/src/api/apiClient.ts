@@ -1,11 +1,11 @@
 
-const API_BASE = "http://localhost:8000/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function apiClient<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
+  const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
@@ -14,10 +14,11 @@ export async function apiClient<T>(
     },
   });
 
+  if (res.status === 204) {
+    return null as T;
+  }
+
   if (!res.ok) {
-    if (res.status === 204) {
-      return null as T;
-    }
     const error = await res.json().catch(() => ({}));
     throw error;
   }
