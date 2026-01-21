@@ -1,20 +1,29 @@
 'use client';
 
-import { useState } from 'react';
-import { projects } from '@/data/projects';
+import { useEffect, useState } from 'react';
 import ProjectItem from './ProjectItem';
 import styles from './ProjectList.module.css';
 
+import { getProjects } from '@/api/projects';
+import { Project } from '@/api/types/project';
+
 export default function ProjectList() {
-  const [openProjectId, setOpenProjectId] = useState<string | null>(null);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [openProjectId, setOpenProjectId] = useState<number | null>(null);
+
+  useEffect(() => {
+    getProjects().then((res) => {
+      setProjects(res.items);
+    });
+  }, []);
 
   return (
     <div className={styles.projectList}>
       {projects.map((project) => (
         <ProjectItem
-          key={project.id}
+          key={project.projectId}
           project={project}
-          isOpen={openProjectId === project.id}
+          isOpen={openProjectId === project.projectId}
           onProjectClick={(id) =>
             setOpenProjectId(id === openProjectId ? null : id)
           }
