@@ -1,50 +1,105 @@
+/* link */
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* base card */
 .card {
   padding: 16px;
   border-radius: 12px;
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
 
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
+
+/* ===== variants ===== */
+
+/* Kanban 카드 */
+.kanban {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.kanban:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Sidebar 카드 */
+.sidebar {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: white;
+}
+
+.sidebar:hover {
+  background-color: var(--color-bg-subtle);
+}
+
+/* active (우측 사이드바 선택 상태) */
+.active {
+  background-color: var(--color-bg-notice);
+}
+
+/* ===== contents ===== */
 
 /* title */
 .title {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
   font-weight: 600;
+  line-height: 1.4;
+
+  /* sidebar에서 한 줄 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* preview */
-.memo {
-  font-size: var(--font-size-md);
+/* footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* agent */
+.agent {
+  font-size: 12px;
   color: var(--color-text-secondary);
-
-  overflow: hidden;
-
-  /* 표준 (미지원 브라우저도 있음) */
-  line-clamp: 3;
-
-  /* WebKit 대응 (실제 동작 핵심) */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
 }
 
 /* date */
 .date {
   font-size: 12px;
   color: #999;
-  margin-top: auto;
 }
 
+/* ===== memo 공통 ===== */
+.memo {
+  color: var(--color-text-secondary);
+  overflow: hidden;
 
-/* ScrapCard.module.css */
-.link {
-  text-decoration: none;
-  color: inherit;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
-.card {
-  cursor: pointer;
+/* kanban memo */
+.kanbanMemo {
+  font-size: var(--font-size-sm);
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+}
+
+/* sidebar memo */
+.sidebarMemo {
+  font-size: 12px;
+  line-height: 1.45;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
 }

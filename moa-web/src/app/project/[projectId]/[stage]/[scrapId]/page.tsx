@@ -8,6 +8,7 @@ import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
 
 import type { ScrapDetail } from '@/domain/scrap';
 
+
 /* ================= Page ================= */
 
 export default async function ScrapDetailPage({

@@ -1,30 +1,48 @@
+import Link from 'next/link';
+import clsx from 'clsx';
+
 import { Scrap } from '@/domain/scrap';
 import styles from './ScrapCard.module.css';
-import Link from 'next/link';
 
 interface Props {
   scrap: Scrap;
+  variant?: 'kanban' | 'sidebar';
+  isActive?: boolean;
 }
 
-export default function ScrapCard({ scrap }: Props) {
+export default function ScrapCard({
+  scrap,
+  variant = 'kanban',
+  isActive = false,
+}: Props) {
   return (
-    <Link 
-    href={`/project/${scrap.projectId}/${scrap.stageKey}/${scrap.scrapId}`}
-    className={styles.cardLink}
+    <Link
+      href={`/project/${scrap.projectId}/${scrap.stageKey}/${scrap.scrapId}`}
+      className={styles.link}
     >
-      <article className={styles.card}>
-
+      <article
+        className={clsx(
+          styles.card,
+          styles[variant],
+          isActive && styles.active
+        )}
+      >
         <h3 className={styles.title}>{scrap.subtitle}</h3>
 
+        {/* kanban + sidebar 모두 memo 미리보기 */}
         {scrap.memo && (
-          <p className={styles.memo}>{scrap.memo}</p>
+          <p
+            className={clsx(
+              styles.memo,
+              styles[`${variant}Memo`]
+            )}
+          >
+            {scrap.memo}
+          </p>
         )}
 
         <div className={styles.footer}>
-          <span className={styles.agent}>
-            {scrap.agent}
-          </span>
-          <time>
+          <time className={styles.date}>
             {new Date(scrap.capturedAt).toLocaleDateString()}
           </time>
         </div>

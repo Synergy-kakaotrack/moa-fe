@@ -1,9 +1,14 @@
 import React from 'react';
-import Link from 'next/link';
 
 import { mockScraps } from '@/mocks/scrapDetail';
+import { mockProjects } from '@/mocks/projects';
+
 import { mapScrapListItemFromMock } from '@/api/mappers/mapScrapListItemFromMock';
+import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
+
 import { StageKey } from '@/domain/stage';
+import ScrapCard from '@/components/ScrapCard/ScrapCard';
+
 
 interface StageLayoutProps {
   children: React.ReactNode;
@@ -20,6 +25,7 @@ export default async function StageLayout({
 }: StageLayoutProps) {
   const { projectId, stage, scrapId } = await params;
 
+  /* ================= 스크랩 리스트 ================= */
   const scraps = mockScraps
     .map(mapScrapListItemFromMock)
     .filter(
@@ -33,9 +39,20 @@ export default async function StageLayout({
         new Date(a.capturedAt).getTime()
     );
 
+  /* ================= 표시용 컨텍스트 ================= */
+  const project = mockProjects
+    .map(mapProjectFromMock)
+    .find((p) => p.projectId === Number(projectId));
+
+  const projectName = project?.name ?? '프로젝트';
+
+  //
+  const stageName =
+    scraps[0]?.stageName ?? '단계';
+
   return (
     <div style={{ display: 'flex', height: '100%' }}>
-      {/* 메인 */}
+      {/* 메인 영역 */}
       <main style={{ flex: 1, padding: 24 }}>
         {children}
       </main>
@@ -46,45 +63,48 @@ export default async function StageLayout({
           width: 320,
           borderLeft: '1px solid #e5e5e5',
           padding: 16,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+          backgroundColor: '#ddebff',
         }}
       >
-        <h3 style={{ marginBottom: 12 }}>Scrap List</h3>
+        {/* 컨텍스트 헤더 */}
+        <h3
+          style={{
+            fontSize: 14,
+            fontWeight: 600,
+            color: '#333',
+          }}
+        >
+          {projectName} / {stageName}
+        </h3>
 
+        {/* 스크랩 리스트 */}
         {scraps.length === 0 ? (
           <p style={{ fontSize: 13, color: '#999' }}>
             스크랩이 없습니다.
           </p>
         ) : (
-          <ul
+          <div
             style={{
-              listStyle: 'none',
-              padding: 0,
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: 6,
+              overflowY: 'auto',
             }}
           >
             {scraps.map((scrap) => (
-              <li key={scrap.scrapId}>
-                <Link
-                  href={`/project/${projectId}/${stage}/${scrap.scrapId}`}
-                  style={{
-                    textDecoration: 'none',
-                    color:
-                      scrap.scrapId === Number(scrapId)
-                        ? '#3582f0'
-                        : '#333',
-                    fontWeight:
-                      scrap.scrapId === Number(scrapId)
-                        ? 600
-                        : 400,
-                  }}
-                >
-                  {scrap.subtitle}
-                </Link>
-              </li>
+              <ScrapCard
+                key={scrap.scrapId}
+                scrap={scrap}
+                variant="sidebar"
+                isActive={
+                  scrap.scrapId === Number(scrapId)
+                }
+              />
             ))}
-          </ul>
+          </div>
         )}
       </aside>
     </div>
