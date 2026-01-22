@@ -1,48 +1,16 @@
 /*@import "/moa_extension/src/styles/tokens.css";*/
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+  height: 100vh;
+  overflow: hidden;
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-
 .center {
   min-height: 200px;
   display: flex;
@@ -53,4 +21,43 @@
 .empty-text {
   color: var(--color-text-muted);
   font-size: 14px;
+}
+.app-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 96px;
+  height: 100%;
+}
+.empty-wrapper {
+  position: relative;
+}
+
+.guide-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.empty {
+  position: relative;
+  z-index: 1;
+}
+
+.app-top {
+  flex-shrink: 0;
+  height: 48px; /* Top 실제 높이 */
+}
+
+.app-bottom {
+  flex-shrink: 0;
+  height: 72px; /* Bottom 실제 높이 */
 }
