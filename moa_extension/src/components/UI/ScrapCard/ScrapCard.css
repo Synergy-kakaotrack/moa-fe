@@ -2,23 +2,32 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12px;
-  margin-bottom: 10px;
-  background: white;
+  background: #fff;
+  overflow: visible;
 }
 
 .scrap-header {
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
-.scrap-content {
-  margin: 8px 0;
-  font-size: 13px;
-  white-space: pre-wrap;
+.scrap-text {
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap; /* 줄바꿈 유지 */
+  overflow: hidden;
 }
 
 .scrap-footer {
+  margin-top: 6px;
+}
+
+.scrap-toggle {
+  background: none;
+  border: none;
+  padding: 0;
   font-size: 12px;
-  color: #888;
+  cursor: pointer;
 }
