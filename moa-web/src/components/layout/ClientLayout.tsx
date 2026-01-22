@@ -1,16 +1,20 @@
 'use client';
 
+import { ReactNode } from 'react';
+import { SidebarProvider } from '@/contexts/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
 
 export default function ClientLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <Sidebar />
-      <main style={{ flex: 1 }}>{children}</main>
-    </div>
+    <SidebarProvider>
+      <div style={{ display: 'flex', height: '100vh' }}>
+        <Sidebar />
+        <main style={{ flex: 1 }}>{children}</main>
+      </div>
+    </SidebarProvider>
   );
 }
