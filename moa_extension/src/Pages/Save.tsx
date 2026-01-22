@@ -2,8 +2,6 @@
 import ScrapPreview from "../../src/components/ScrapPreview/ScrapPreview";
 import type { Scrap } from "../types/scrap.domain";
 
-
-
 interface SaveProps {
   scraps: Scrap[];
   title: string;

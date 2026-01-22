@@ -26,17 +26,17 @@ export interface CreateDraftRequest {
 export interface CreateDraftResponse {
   draftId: number;
   recommendation: DraftRecommendation;
-  recMethod: "LLM";
+  recMethod: "LLM" | "RULE";
 }
 
 export interface CommitDraftRequest {
   projectId: number;
-  stage: Stage;
+  stage: string;
   subtitle: string;
   memo?: string;
   rawHtml: string;
 
-  aiSource: AISource;
+  aiSource: string;
   aiSourceUrl: string;
 
   userRecProject: boolean;

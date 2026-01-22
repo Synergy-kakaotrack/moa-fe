@@ -1,7 +1,7 @@
 import "./ProjectSetting.css"
 import ScrapPreview from "../../components/ScrapPreview/ScrapPreview";
 import type { Scrap } from "../../types/scrap.domain";
-
+import type { Project } from "../../types/project";
 import { createProject } from "../../api/projectApi";
 
 import { useState } from "react";
@@ -9,28 +9,47 @@ import { useState } from "react";
 
 interface ProjectSettingProps {
   scraps: Scrap[];
-  projectName: string;
+  projects: Project[];
+  fetchProjects: () => Promise<void>;
+
+  selectedProjectId: number | null;
+  setSelectedProjectId: (id:number | null) => void;
+  recProjectId: number | null;
+
   workStep: string;
-  setProjectName: (value: string) => void;
   setWorkStep: (value: string) => void;
+  recStage: string | null;
+
   title: string;
-  memo: string;
   setTitle: (value: string) => void;
+  recTitle: string | null;
+
+  memo: string;
   setMemo: (value: string) => void;
+
+  setProjectName: (value: string) => void;
+
   onBack: () => void;
   onNext: () => void;
+  
 }
 
 export default function ProjectSetting({
     scraps,
-    projectName,
+    projects,
     workStep,
+    selectedProjectId,
+    setSelectedProjectId,
+    recProjectId,
+    recStage,
     title,
     memo,
     setProjectName,
     setWorkStep,
     setTitle,
-    setMemo
+    recTitle,
+    setMemo,
+    fetchProjects,
 }: ProjectSettingProps){
 
   //제목 입력 확인
@@ -43,16 +62,24 @@ export default function ProjectSetting({
   const [newProjectDesc, setNewProjectDesc] = useState("");
 
   const handleCreateProject = async () => {
-    // 1. 입력값 그대로 백엔드로 전달
-    await createProject({
-      name: newProjectName,
-      description: newProjectDesc,
-    });
+    try{
+      // 1. 입력값 그대로 백엔드로 전달
+      await createProject({
+        name: newProjectName,
+        description: newProjectDesc,
+      });
 
-    // 2. UI는 닫기만 함 (그 외 아무 것도 안 함)
-    setIsCreatingProject(false);
-    setNewProjectName("");
-    setNewProjectDesc("");
+      // 2. UI는 닫기만 함 (그 외 아무 것도 안 함)
+      await fetchProjects(); //목록 다시 조회 
+
+      setIsCreatingProject(false);
+      setNewProjectName("");
+      setNewProjectDesc("");
+    }catch(e){
+      console.error("프로젝트 생성 에러:", e);
+      alert("프로젝트 생성 실패");
+    }
+    
   };
 
   return (
@@ -60,17 +87,36 @@ export default function ProjectSetting({
       {!isCreatingProject && (
         <div className="project">
           <div>
-            <label className="label">프로젝트</label>
+            <label className="label">프로젝트
+              {selectedProjectId === recProjectId && (
+                <span className="ai-badge">AI 추천</span>
+              )}
+            </label>
           </div>
 
           <div>
             <select
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
+              value={selectedProjectId ?? ""}
+              onChange={(e) => {
+                const id = Number(e.target.value);
+                if(!id) return;
+
+                const project = projects.find(p => p.projectId === id);
+                if (!project) return;
+
+                setSelectedProjectId(id);
+                setProjectName(project.name);
+              }}
             >
-              <option value="Capstone Design">Capstone Design</option>
-              <option value="Side Project">Side Project</option>
-              <option value="Personal Study">Personal Study</option>
+              <option value="" disabled>
+                프로젝트 선택
+              </option>
+
+              {projects.map((project) => (
+                <option key={project.projectId} value={project.projectId}>
+                  {project.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -132,7 +178,12 @@ export default function ProjectSetting({
 
         <div className="step">
           <div>
-            <label className="label">작업 단계</label>
+            <label className="label">작업 단계
+              {workStep === recStage && (
+              <span className="ai-badge">AI 추천</span>
+            )}
+            </label>
+
           </div>
           <div>
             <select
@@ -140,8 +191,11 @@ export default function ProjectSetting({
               onChange={(e) => setWorkStep(e.target.value)}
             >
               <option value="기획">기획</option>
+              <option value="조사&분석">조사&분석</option>
               <option value="설계">설계</option>
               <option value="구현">구현</option>
+              <option value="테스트">테스트</option>
+              <option value="기타">기타</option>
             </select>
           </div>
 
@@ -149,7 +203,11 @@ export default function ProjectSetting({
 
         <div className="title">
           <div>
-            <label className="label">제목 (필수)</label>
+            <label className="label">제목 (필수)
+              {title === recTitle && (
+                <span className="ai-badge">AI 추천</span>
+              )}
+            </label>
           </div>
 
           <div>

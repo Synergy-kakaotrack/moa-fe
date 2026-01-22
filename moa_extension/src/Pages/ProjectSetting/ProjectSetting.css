@@ -37,3 +37,15 @@ input.error {
   font-size: 12px;
   color: #FF7878;
 }
+
+.ai-badge {
+  display: inline-flex;
+  padding: 4px 7px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 25px;
+  background: #EFF0A4;
+}
