@@ -3,30 +3,71 @@
   flex-direction: column;
 }
 
-.projectButton {
+.projectHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
 
   padding: 8px 12px;
-  border-radius: 12px;
-
+  border-radius: 999px;
+  border: none;
+  outline: none;
   background: transparent;
   cursor: pointer;
+
+  color: var(--color-text-primary);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Hover */
-.projectButton:hover {
-  background-color: var(--color-bg-hover);
+.projectHeader:hover {
+  background-color: var(--color-border-muted);
 }
 
-/* Active (isOpen === true) */
-.active {
-  background-color: var(--color-bg-active);
-  font-weight: 600;
+.projectHeader.active {
+  background-color: var(--color-bg-notice);
+  color: var(--color-action-primary);
 }
 
+.projectHeader.active:hover {
+  background-color: var(--color-border-subtle);
+}
+
+/* caret */
+.caret {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.caretOpen {
+  transform: rotate(90deg);
+}
+
+/* folder */
+.folder {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+/* title */
+.projectTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* stages */
 .stageList {
   margin-top: 4px;
-  padding-left: 12px;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }

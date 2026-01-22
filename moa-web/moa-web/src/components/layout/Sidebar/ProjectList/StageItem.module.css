@@ -1,21 +1,44 @@
 .stageButton {
-  width: 100%;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-  padding: 6px 10px;
-  border-radius: 8px;
-
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none;
+  outline: none;
   background: transparent;
   cursor: pointer;
+
+  color: var(--color-text-primary);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* hover */
 .stageButton:hover {
-  background-color: var(--color-bg-hover);
+  background-color: var(--color-border-muted);
 }
 
-/* active */
 .active {
-  background-color: var(--color-bg-active);
-  font-weight: 600;
+  background-color: var(--color-bg-notice);
+  color: var(--color-action-primary);
+}
+
+.active:hover {
+  background-color: var(--color-border-subtle);
+}
+
+/* icon */
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+/* label */
+.label {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
 }

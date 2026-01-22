@@ -18,3 +18,8 @@ export { default as IconPlanning } from './stage/IconPlanning'; //설계
 export { default as IconResearch } from './stage/IconResearch'; //조사
 export { default as IconTesting } from './stage/IconTesting'; //테스트
 export { default as IconOthers } from './stage/IconOthers'; //기타
+
+
+export { default as IconCaret } from './IconCaret'; // 캐럿 아이콘
+export { default as IconExternalLink } from './IconExternalLink'; // 외부 링크 아이콘
+export { default as IconFolder } from './IconFolder'; // 폴더 아이콘

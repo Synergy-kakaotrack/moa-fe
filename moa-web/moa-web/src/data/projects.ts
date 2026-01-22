@@ -18,8 +18,8 @@ export const projects: Project[] = [
     id: '3',
     name: '캡스톤 디자인(1)',
   },
-    {
-    id: '4 ',
+      {
+    id: '4',
     name: '캡스톤 디자인(2)',
   },
 ];
