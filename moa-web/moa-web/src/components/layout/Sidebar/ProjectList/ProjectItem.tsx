@@ -3,21 +3,17 @@
 import { useRouter, usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import styles from './ProjectItem.module.css';
-import { stages } from '@/data/stages';
+
+import { stages } from '@/constants/stages';
 import StageItem from './StageItem';
 import { IconFolder, IconCaret } from '@/components/icons';
-
-interface Project {
-  id: string;
-  name: string;
-}
+import { Project } from '@/api/types/project';
 
 interface Props {
   project: Project;
   isOpen: boolean;
-  onProjectClick: (id: string) => void;
+  onProjectClick: (id: number) => void;
 }
-
 
 export default function ProjectItem({
   project,
@@ -28,8 +24,8 @@ export default function ProjectItem({
   const pathname = usePathname();
 
   const handleClick = () => {
-    onProjectClick(project.id);
-    router.push(`/project/${project.id}`);
+    onProjectClick(project.projectId);
+    router.push(`/project/${project.projectId}`);
   };
 
   return (
@@ -57,13 +53,13 @@ export default function ProjectItem({
         <ul className={styles.stageList}>
           {stages.map((stage) => {
             const isActive =
-              pathname === `/project/${project.id}/${stage.key}`;
+              pathname === `/project/${project.projectId}/${stage.key}`;
 
             return (
               <StageItem
                 key={stage.key}
                 stage={stage}
-                projectId={project.id}
+                projectId={project.projectId}
                 isActive={isActive}
               />
             );

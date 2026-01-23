@@ -4,11 +4,10 @@ import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import styles from './StageItem.module.css';
 import { STAGE_ICON_MAP } from '@/components/icons/stage/iconStageMap';
-import type { Stage } from '@/data/stages';
-
+import { Stage } from '@/constants/stages';
 interface Props {
   stage: Stage;
-  projectId: string;
+  projectId: number;
   isActive?: boolean;
 }
 
