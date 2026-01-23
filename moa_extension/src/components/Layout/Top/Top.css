@@ -14,6 +14,13 @@
   background-color: white;
 }
 
+.top-logp {
+  width: 29px;
+  height: 30px;
+  flex-shrink: 0;
+  aspect-ratio: 29/30;
+}
+
 .top-title {
   margin: 0;
   font-size: 18px;
