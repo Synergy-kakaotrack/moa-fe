@@ -8,6 +8,6 @@
 export interface RecentProject {
   projectId: number;
   name: string;
-  lastStage: string;
+  description: string;
   lastCapturedAt: Date;
 }

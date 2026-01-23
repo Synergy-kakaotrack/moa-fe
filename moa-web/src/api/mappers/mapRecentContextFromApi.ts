@@ -10,7 +10,7 @@ export function mapRecentContextItem(item: RecentContextItem): RecentProject {
   return {
     projectId: item.projectId,
     name: item.projectName,
-    lastStage: item.lastStage,
+    description: item.description,
     lastCapturedAt: new Date(item.lastCapturedAt),
   };
 }
