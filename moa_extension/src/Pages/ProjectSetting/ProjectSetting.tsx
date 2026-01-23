@@ -63,6 +63,9 @@ export default function ProjectSetting({
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
 
+  //소제목 글자수 제한 
+  const MAX_TITLE_LENGTH = 25;
+
   const handleCreateProject = async () => {
     try{
       // 1. 입력값 그대로 백엔드로 전달
@@ -217,13 +220,24 @@ export default function ProjectSetting({
               type="text"
               placeholder="제목을 입력해주세요"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                const value=e.target.value;
+
+                // 글자 수 제한
+                if (value.length <= MAX_TITLE_LENGTH) {
+                  setTitle(value);
+                }
+              }}
               onBlur={() => setTitleTouched(true)}
               className={isTitleError ? "error" : ""}
             />
             {isTitleError && (
               <p className="error-text">※ 제목은 필수입니다.</p>
             )}
+            {/*글자수 표시 n/25 */}
+            <p className="length-text">
+              {title.length} / {MAX_TITLE_LENGTH}
+            </p>
           </div>
 
         </div>
