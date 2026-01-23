@@ -27,6 +27,7 @@ interface RawScrapPayload {
   text: string;
   url?: string;
   createdAt?: number;
+  dragSessionId?: number;
 }
 
 type Step = "EMPTY" | "SCRAP_LIST" | "PROJECT_SETTING" | "SAVE";
@@ -81,6 +82,8 @@ export default function App() {
   const [recStage, setRecStage] = useState<string | null>(null);
   const [recTitle, setRecTitle] = useState<string | null>(null);
 
+  const [highlightScrapId, setHighlightScrapId] = useState<number|null>(null);
+
   // 핵심: 현재 드래그 세션 id
   const currentScrapIdRef = useRef<number | null>(null);
 
@@ -130,9 +133,13 @@ export default function App() {
         },
         createdAt: item.createdAt ?? Date.now(),
         status: "DRAFT",
+        dragSessionId: item.dragSessionId ?? index+1,
       }));
 
-      setScraps(normalized);
+      setScraps(prev => {
+        if (prev.length > 0) return prev;
+        return normalized;
+      });
       setStep(prev =>
         prev === "PROJECT_SETTING" || prev === "SAVE"
           ? prev
@@ -148,19 +155,50 @@ export default function App() {
     const listener = (message: unknown) => {
       if (!isScrapUpdatedMessage(message)) return;
 
-      const { text, url } = message.payload;
+      const { text, url, createdAt, dragSessionId } = message.payload;
       const source = detectAISource(url);
 
-      setScraps(prev => [
-        ...prev,
-        {
-          id: Date.now(),
-          texts: [text],
-          meta: { source, url },
-          createdAt: Date.now(),
-          status: "DRAFT",
-        },
-      ]);
+      setScraps(prev => {
+        const normalizedNew = text.trim();
+
+        let duplicatedScrapId: number | null = null;
+
+        const isDuplicate = prev.some(s =>
+          s.texts.some(existing => {
+            const normalizedExisting = existing.trim();
+
+            const isIncluded = normalizedExisting.includes(normalizedNew);
+            if (isIncluded) {
+              duplicatedScrapId = s.id; // ⭐ 여기서 기억
+            }
+            return isIncluded;
+          })
+        )
+
+        if (isDuplicate) {
+          if (duplicatedScrapId !== null) {
+            setHighlightScrapId(duplicatedScrapId);
+
+            // 1.5초 후 강조 해제
+            setTimeout(() => {
+              setHighlightScrapId(null);
+            }, 1500);
+          }
+          return prev;
+        }
+
+        return [
+          ...prev,
+          {
+            id: Date.now(),
+            texts: [text],
+            meta: { source, url },
+            createdAt: createdAt ?? Date.now(),
+            status: "DRAFT",
+            dragSessionId: dragSessionId ?? Date.now(),
+          },
+        ];
+      });
 
       setStep("SCRAP_LIST");
     };
@@ -337,7 +375,11 @@ export default function App() {
         return <Empty />;
 
       case "SCRAP_LIST":
-        return <ScrapList scraps={scraps} setScraps={setScraps} />;
+        return <ScrapList 
+                  scraps={scraps} 
+                  setScraps={setScraps}
+                  highlightScrapId={highlightScrapId}
+                  />;
 
       case "PROJECT_SETTING":
         return (

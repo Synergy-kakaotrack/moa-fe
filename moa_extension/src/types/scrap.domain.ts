@@ -16,4 +16,6 @@ export interface Scrap {
 
   rawHtml?: string;
   finalizedAt?: number;
+
+  dragSessionId: number;
 }

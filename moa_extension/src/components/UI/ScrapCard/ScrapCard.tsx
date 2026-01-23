@@ -1,16 +1,17 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { Scrap } from "../../../types/scrap.domain";
-
+import "./ScrapCard.css"
 
 interface ScrapCardProps {
   scrap: Scrap;
   index: number;
   onDelete: (id: number) => void;
+  highlighted: boolean;
 }
 
 const COLLAPSED_HEIGHT = 102;
 
-export default function ScrapCard({ scrap, index, onDelete }: ScrapCardProps) {
+export default function ScrapCard({ scrap, index, onDelete, highlighted }: ScrapCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
 
@@ -37,7 +38,7 @@ export default function ScrapCard({ scrap, index, onDelete }: ScrapCardProps) {
   }, [scrap.texts]);
 
   return (
-    <div className="scrap-card">
+    <div className={`scrap-card ${highlighted ? "highlighted" : ""}`}>
       {/* 헤더 */}
       <div className="scrap-header">
         <span>{index}</span>

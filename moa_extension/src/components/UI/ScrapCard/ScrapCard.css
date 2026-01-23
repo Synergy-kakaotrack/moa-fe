@@ -1,9 +1,16 @@
 .scrap-card {
-  border: 1px solid #ddd;
+  border: 1px solid #343434;
   border-radius: 8px;
   padding: 12px;
   background: #fff;
   overflow: visible;
+  margin-bottom: 7px;
+}
+
+.scrap-card.highlighted {
+  color: #FFF;
+  background-color: #B5CCEE;
+  border: 1px solid #FFF
 }
 
 .scrap-header {
