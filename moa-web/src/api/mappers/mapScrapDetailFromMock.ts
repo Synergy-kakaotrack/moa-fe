@@ -15,11 +15,11 @@ export function mapScrapDetailFromMock(
     subtitle: mock.subtitle,
     memo: mock.memo,
 
-    agent: mock.aiSource.toLowerCase(),
+    agent: mock.aiSource,
     capturedAt: mock.capturedAt,
 
     contentType:
-      'rawHtmlToMarkdown' in mock ? 'markdown' : 'html',
+      'rawHtmlToMarkdown' in mock ? 'MARKDOWN' : 'RAW_HTML',
 
     content:
       'rawHtmlToMarkdown' in mock

@@ -11,6 +11,15 @@ interface Props {
   isActive?: boolean;
 }
 
+const stageClassMap: Record<string, string> = {
+  PLAN: styles.plan,
+  RESEARCH: styles.research,
+  DESIGN: styles.design,
+  IMPLEMENT: styles.implement,
+  TEST: styles.test,
+  ETC: styles.etc,
+};
+
 export default function StageItem({
   stage,
   projectId,
@@ -26,12 +35,16 @@ export default function StageItem({
   };
 
   return (
-<button
-  className={clsx(styles.stageButton, isActive && styles.active)}
-  onClick={handleClick}
->
-  <Icon className={styles.icon} />
-  <span className={styles.label}>{stage.name}</span>
-</button>
+    <button
+      className={clsx(
+        styles.stageButton,
+        stageClassMap[stage.key],
+        isActive && styles.active
+      )}
+      onClick={handleClick}
+    >
+      <Icon className={styles.icon} />
+      <span className={styles.label}>{stage.name}</span>
+    </button>
   );
 }

@@ -1,27 +1,21 @@
 /* globals.css */
 @import '../styles/tokens.css';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-
-
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-
-  
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--color-text-primary);
+  background: var(--color-bg-main);
   font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
     'Apple SD Gothic Neo', 'Noto Sans KR', Arial,
     sans-serif;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-lg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

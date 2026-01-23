@@ -98,14 +98,17 @@ export const mockScraps: ScrapDetailMock[] = [
     capturedAt: '2026-01-12T13:10:00Z',
   },
       {
-    scrapId: 506,
+    scrapId: 507,
     projectId: 1,
     stage: '조사&분석',
     subtitle: '떙떙떙떙 초안',
     memo: '메모 예시를 이렇게 길게 써보면 어떤일이 벌어질까요? 떙떙떙떙 떙떙떙떙 떙떙떙떙 떙떙떙떙 떙떙떙떙 떙떙떙떙 떙떙떙떙 떙떙떙떙',
 
-    rawHtml: '<p><strong>변환 실패</strong></p>',
-
+    rawHtmlToMarkdown: `
+    ## API 설계 초안
+    - GET /api/projects
+    - POST /api/projects
+    `,
     aiSource: 'Claude',
     aiSourceUrl: 'https://claude.ai',
     capturedAt: '2026-01-12T13:10:00Z',

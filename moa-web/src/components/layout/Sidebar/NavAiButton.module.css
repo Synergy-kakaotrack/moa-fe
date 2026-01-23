@@ -4,13 +4,13 @@
   justify-content: space-between;
 
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1.5px solid;
 
   color: var(--color-text-secondary);
   text-decoration: none;
 
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .button:hover {

@@ -9,8 +9,8 @@
 
 /* 타이틀 */
 .title {
-  font-size: 24px;
-  font-weight: 500;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
   letter-spacing: -0.02em;
 }
 
@@ -24,10 +24,10 @@
   align-items: center;
   gap: 10px;
 
-  border: 2px solid #bfbfbf;
-  border-radius: 999px;
+  border: 2px solid var(--color-border-muted);
+  border-radius: var(--radius-full);
   padding: 0 18px;
-  background: #fff;
+  background: var(--color-bg-card);
 }
 
 .searchIcon {
@@ -40,11 +40,11 @@
   height: 100%;
   border: none;
   outline: none;
-  font-size: 14px;
+  font-size: var(--font-size-md);
 }
 
 .searchInput::placeholder {
-  color: #9e9e9e;
+  color: var(--color-text-secondary);
 }
 
 /* 카드 그리드 */
@@ -58,48 +58,49 @@
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
+  gap: var(--card-gap);
 }
 
 /* 프로젝트 카드 */
 .card {
-  border: 1px solid #dcdcdc;
+  border: 1px solid var(--color-border-muted);
   border-radius: 18px;
-  padding: 20px;
-  background: #fff;
+  padding: var(--card-padding-lg);
+  background: var(--color-bg-card);
 
   cursor: pointer;
-  transition: border-color 0.15s ease;
+  transition: border-color var(--transition-fast);
   min-height: 150px;
 }
 
 .card:hover {
-  border-color: #86aefc; /* 시안처럼 살짝 블루 톤 */
+  border-color: var(--color-border-subtle);
 }
 
 .cardTitleRow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-1);
   margin-bottom: 10px;
 }
 
 .folderIcon {
-  font-size: 16px;
+  font-size: var(--font-size-lg);
 }
 
 .cardTitle {
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-md);
 }
 
 .cardDesc {
-  font-size: 12.5px;
+  font-size: var(--font-size-sm);
   line-height: 1.45;
-  color: #6b6b6b;
+  color: var(--color-text-secondary);
 
   /* 3줄까지만 보이게 */
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -108,15 +109,15 @@
 }
 
 .cardDate {
-  font-size: 12px;
-  color: #b0b0b0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
 }
 
 /* 추가 카드 */
 .addCard {
   border: none;
   border-radius: 18px;
-  background: #f3f3f3;
+  background: var(--color-bg-subtle);
   min-height: 150px;
 
   display: flex;
@@ -126,18 +127,18 @@
   gap: 10px;
 
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background var(--transition-fast);
 }
 
 .addCard:hover {
-  background: #ececec;
+  background: var(--color-border-muted);
 }
 
 .addCircle {
   width: 40px;
   height: 40px;
-  border-radius: 999px;
-  border: 1px solid #cfcfcf;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-muted);
 
   display: flex;
   align-items: center;
@@ -145,10 +146,10 @@
 
   font-size: 22px;
   line-height: 1;
-  background: #fff;
+  background: var(--color-bg-card);
 }
 
 .addText {
-  font-size: 13px;
-  color: #666;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
 }

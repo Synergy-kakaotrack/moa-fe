@@ -14,7 +14,7 @@ export interface Scrap {
   capturedAt: string;
 }
 
-export type ScrapContentType = 'markdown' | 'html';
+export type ScrapContentType = 'MARKDOWN' | 'RAW_HTML';
 
 export interface ScrapDetail extends Scrap {
   contentType: ScrapContentType;

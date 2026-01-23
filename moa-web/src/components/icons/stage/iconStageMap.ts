@@ -1,4 +1,4 @@
-import type { StageKey } from '@/data/stages';
+import type { StageKey } from '@/domain/stage';
 import {
   IconPlanning,
   IconResearch,
