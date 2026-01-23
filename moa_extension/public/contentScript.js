@@ -1,5 +1,7 @@
 let dragSessionId = null;
-let lastText = "";
+let lastText = ""; //같은 텍스트 중복 방지
+
+let hasSavedInThisDrag = false; //같은 드래그 동작 중 중복 방지 
 
 const safeSendMessage = (message) => {
   try {
@@ -11,16 +13,22 @@ const safeSendMessage = (message) => {
   }
 };
 
+//드래그 시작 
 document.addEventListener("mousedown", () => {
   dragSessionId = Date.now();
   lastText = "";
+  hasSavedInThisDrag = false;
 });
-
+//스크랩 저장 
 document.addEventListener("mouseup", () => {
+  if(hasSavedInThisDrag) return; 
+
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return;
 
-  const text = selection.toString().trim();
+  const safeTrim = (v) => (typeof v === "string" ? v.trim() : "");
+  const text = safeTrim(selection?.toString());
+  
   if (!text || text.length < 3) return;
   if (text === lastText) return;
 
@@ -36,6 +44,8 @@ document.addEventListener("mouseup", () => {
       dragSessionId,
     },
   });
+  
+  selection.removeAllRanges();
 });
 
 document.addEventListener("visibilitychange", () => {

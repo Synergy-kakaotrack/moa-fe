@@ -84,7 +84,9 @@ export default function App() {
   // 핵심: 현재 드래그 세션 id
   const currentScrapIdRef = useRef<number | null>(null);
 
-  const canGoNext = (title ?? "").trim() !== "";
+  const safeTrim = (v: unknown): string =>
+    typeof v === "string" ? v.trim() : "";
+  const canGoNext = safeTrim(title) !== "";
   const [isProcessingScrap, setIsProcessingScrap] = useState(false);
 
   const fetchProjects = async () => {
