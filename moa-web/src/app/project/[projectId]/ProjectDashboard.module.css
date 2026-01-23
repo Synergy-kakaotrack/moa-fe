@@ -1,5 +1,5 @@
 /* =========================
-   Page
+  Page
 ========================= */
 .page {
   height: 100%;
@@ -8,7 +8,7 @@
 }
 
 /* =========================
-   Header
+  Header
 ========================= */
 .header {
   display: flex;
@@ -21,6 +21,12 @@
   font-size: 22px;
   font-weight: 700;
 }
+.projectDescription {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
 
 .headerNav {
   display: flex;
@@ -36,26 +42,34 @@
   cursor: pointer;
 }
 
+.headerDivider {
+  display: inline-flex;
+  align-items: center;
+  color: #aaa;
+  font-size: 14px;
+  margin: 0 2px;
+}
+
 /* =========================
-   Board Wrapper
+  Board Wrapper
 ========================= */
 
 /* 사이드바 열림 기본 상태 */
 .boardWrapper {
   position: relative;
   width: 100%;
-  max-width: 1320px;   /* ← 열림 상태에서 칸반 넓게 */
+  max-width: 1320px; /* 열림 상태 */
   margin: 0 auto;
   height: calc(100vh - 140px);
 }
 
 /* 사이드바 접힘 상태 */
 .collapsed {
-  max-width: 1080px;   /* ← 접힘 상태에서 센터 고정 */
+  max-width: 1080px; /* 접힘 상태 */
 }
 
 /* =========================
-   Kanban Board
+  Kanban Board
 ========================= */
 .board {
   display: grid;
@@ -65,7 +79,7 @@
 }
 
 /* =========================
-   Column
+  Column
 ========================= */
 .column {
   background: #eef3ff;
@@ -83,7 +97,7 @@
 }
 
 /* =========================
-   Card List (scroll)
+  Card List (scroll)
 ========================= */
 .cardList {
   flex: 1;
@@ -94,7 +108,7 @@
 }
 
 /* =========================
-   Card
+  Card
 ========================= */
 .card {
   background: #ffffff;
@@ -130,7 +144,7 @@
 }
 
 /* =========================
-   Board Arrows (접힘 상태)
+  Board Arrows (접힘 상태)
 ========================= */
 .arrow {
   position: absolute;
@@ -152,4 +166,12 @@
 
 .next {
   right: -56px;
+}
+
+/* =========================
+  Visibility helpers
+========================= */
+.hidden {
+  opacity: 0;
+  pointer-events: none;
 }

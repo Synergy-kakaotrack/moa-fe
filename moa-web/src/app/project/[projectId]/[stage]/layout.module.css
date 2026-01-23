@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  height: 100%;
+}
+
+/* ===== Main ===== */
+
+.main {
+  flex: 1;
+  padding: 24px;
+}
+
+/* ===== Sidebar ===== */
+
+.sidebar {
+  width: 320px;
+  border-left: 1px solid #e5e5e5;
+  padding: 16px;
+}
+
+.sidebarTitle {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty {
+  font-size: 13px;
+  color: #999;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.activeItem {
+  text-decoration: none;
+  color: #3582f0;
+  font-weight: 600;
+}

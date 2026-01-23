@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import ProjectList from './ProjectList/ProjectList';
 import NavAiButton from '@/components/layout/Sidebar/NavAiButton';
 import Link from 'next/link';
@@ -8,10 +7,10 @@ import styles from './Sidebar.module.css';
 import Image from 'next/image';
 
 import IconChevron from '@/components/icons/IconChevron';
-
+import { useSidebarState } from '@/contexts/SidebarContext';
 
 export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+  const { collapsed, toggle } = useSidebarState(); // Context 사용
 
   return (
     <aside
@@ -19,35 +18,34 @@ export default function Sidebar() {
         collapsed ? styles.sidebarCollapsed : ''
       }`}
     >
-      {/* 상단: 로고만 */}
-<div className={styles.header}>
-  <Link href="/" className={styles.logo}>
-    <Image
-      src="/logo/moa-logo.svg"
-      alt="MOA"
-      width={32}
-      height={32}
-      priority
-    />
-  </Link>
+      {/* 상단 */}
+      <div className={styles.header}>
+        <Link href="/" className={styles.logo}>
+          <Image
+            src="/logo/moa-logo.svg"
+            alt="MOA"
+            width={32}
+            height={32}
+            priority
+          />
+        </Link>
 
-  <button
-    className={`${styles.collapseBtn} ${
-      collapsed ? styles.collapseBtnCollapsed : ''
-    }`}
-    onClick={() => setCollapsed((v) => !v)}
-    aria-label="사이드바 접기"
-    aria-expanded={!collapsed}
-  >
-    <IconChevron
-    size={32}
-    className={`${styles.chevron} ${
-      collapsed ? styles.chevronCollapsed : ''
-      }`}
-    />
-  </button>
-</div>
-
+        <button
+          className={`${styles.collapseBtn} ${
+            collapsed ? styles.collapseBtnCollapsed : ''
+          }`}
+          onClick={toggle}
+          aria-label="사이드바 접기"
+          aria-expanded={!collapsed}
+        >
+          <IconChevron
+            size={32}
+            className={`${styles.chevron} ${
+              collapsed ? styles.chevronCollapsed : ''
+            }`}
+          />
+        </button>
+      </div>
 
       {/* 프로필 */}
       <div className={styles.profileSection}>

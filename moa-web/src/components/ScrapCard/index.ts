@@ -1,0 +1,1 @@
+import ScrapCard from '@/components/ScrapCard/ScrapCard';

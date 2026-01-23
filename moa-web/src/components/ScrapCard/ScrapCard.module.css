@@ -1,0 +1,50 @@
+.card {
+  padding: 16px;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* title */
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+/* preview */
+.memo {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+
+  overflow: hidden;
+
+  /* 표준 (미지원 브라우저도 있음) */
+  line-clamp: 3;
+
+  /* WebKit 대응 (실제 동작 핵심) */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+/* date */
+.date {
+  font-size: 12px;
+  color: #999;
+  margin-top: auto;
+}
+
+
+/* ScrapCard.module.css */
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  cursor: pointer;
+}

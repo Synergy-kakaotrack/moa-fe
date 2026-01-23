@@ -4,50 +4,52 @@ import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'next/navigation';
 import clsx from 'clsx';
 
-import { Scrap } from '@/api/types/scrap';
+import { useSidebarState } from '@/contexts/SidebarContext';
+import { Scrap } from '@/domain/scrap';
 import { stages } from '@/constants/stages';
 
 import { mockProjects } from '@/mocks/projects';
-import { mockScraps } from '@/mocks/scraps';
+import { mockScraps } from '@/mocks/scrapDetail';
 
+import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
+import { mapScrapListItemFromMock } from '@/api/mappers/mapScrapListItemFromMock';
+
+import ScrapCard from '@/components/ScrapCard/ScrapCard';
 import styles from './ProjectDashboard.module.css';
 
-/**
- * ⚠️ 임시
- * 실제로는 Sidebar Context / Zustand 등에서 연결
- */
-const useSidebarState = () => {
-  return {
-    collapsed: false, // true = 사이드바 접힘
-  };
-};
+import Link from 'next/link';
 
 const PAGE_SIZE = 3;
-
 
 export default function ProjectDashboardPage() {
   const { projectId } = useParams<{ projectId: string }>();
   const { collapsed } = useSidebarState();
+
   const [scraps, setScraps] = useState<Scrap[]>([]);
   const [pageIndex, setPageIndex] = useState(0);
 
-  /* ===== 프로젝트 정보 (목업) ===== */
+  /* ===== Project ===== */
   const project = useMemo(() => {
-    return mockProjects.find(
-      (p) => p.projectId === Number(projectId)
-    );
+    return mockProjects
+      .map(mapProjectFromMock)
+      .find((p) => p.projectId === Number(projectId));
   }, [projectId]);
 
-  /* ===== 스크랩 로딩 (목업) ===== */
+  /* ===== Scrap list ===== */
   useEffect(() => {
-    setScraps(
-      mockScraps.filter(
-        (scrap) => scrap.projectId === Number(projectId)
-      )
-    );
+    const mapped = mockScraps
+      .filter((s) => s.projectId === Number(projectId))
+      .map(mapScrapListItemFromMock)
+      .sort(
+        (a, b) =>
+          new Date(b.capturedAt).getTime() -
+          new Date(a.capturedAt).getTime()
+      );
+
+    setScraps(mapped);
   }, [projectId]);
 
-  /* ===== stage를 3개씩 묶은 페이지 ===== */
+  /* ===== Stage paging ===== */
   const stagePages = useMemo(() => {
     const pages = [];
     for (let i = 0; i < stages.length; i += PAGE_SIZE) {
@@ -64,12 +66,10 @@ export default function ProjectDashboardPage() {
 
   return (
     <main className={styles.page}>
-      {/* ===== Header ===== */}
+      {/* ================= Header ================= */}
       <header className={styles.header}>
         <div>
-          <h1 className={styles.projectTitle}>
-            {project?.name}
-          </h1>
+          <h1 className={styles.projectTitle}>{project?.name}</h1>
           {project?.description && (
             <p className={styles.projectDescription}>
               {project.description}
@@ -77,44 +77,54 @@ export default function ProjectDashboardPage() {
           )}
         </div>
 
-        {/* 사이드바 열림 상태 → 헤더 우측 화살표 */}
-        {!collapsed && (
-          <div className={styles.headerNav}>
-            {showPrev && (
-              <button onClick={() => setPageIndex((p) => p - 1)}>
-                ←
-              </button>
-            )}
-            {showNext && (
-              <button onClick={() => setPageIndex((p) => p + 1)}>
-                →
-              </button>
-            )}
-          </div>
-        )}
+        {/* 헤더 화살표: 항상 렌더링 + CSS로 숨김 */}
+        <div
+          className={clsx(
+            styles.headerNav,
+            collapsed && styles.hidden
+          )}
+        >
+          <button
+            disabled={!showPrev}
+            onClick={() => setPageIndex((p) => p - 1)}
+          >
+            ←
+          </button>
+
+          <span className={styles.headerDivider}>|</span>
+
+          <button
+            disabled={!showNext}
+            onClick={() => setPageIndex((p) => p + 1)}
+          >
+            →
+          </button>
+        </div>
       </header>
 
-      {/* ===== Kanban Board ===== */}
+      {/* ================= Kanban Board ================= */}
       <section
         className={clsx(
           styles.boardWrapper,
           collapsed && styles.collapsed
         )}
       >
-        {/* 사이드바 접힘 상태 → 보드 기준 화살표 */}
-        {collapsed && showPrev && (
-          <button
-            className={clsx(styles.arrow, styles.prev)}
-            onClick={() => setPageIndex((p) => p - 1)}
-          >
-            ←
-          </button>
-        )}
+        {/* ⬅ 보드 이전 화살표 (DOM 유지) */}
+        <button
+          className={clsx(
+            styles.arrow,
+            styles.prev,
+            (!collapsed || !showPrev) && styles.hidden
+          )}
+          onClick={() => setPageIndex((p) => p - 1)}
+        >
+          ←
+        </button>
 
         <div className={styles.board}>
           {currentStages.map((stage) => {
             const stageScraps = scraps.filter(
-              (scrap) => scrap.stage === stage.name
+              (scrap) => scrap.stageKey === stage.key
             );
 
             return (
@@ -125,32 +135,10 @@ export default function ProjectDashboardPage() {
 
                 <div className={styles.cardList}>
                   {stageScraps.map((scrap) => (
-                    <article
+                    <ScrapCard
                       key={scrap.scrapId}
-                      className={styles.card}
-                    >
-                      <h3 className={styles.cardTitle}>
-                        {scrap.subtitle}
-                      </h3>
-
-                      {scrap.memo && (
-                        <p className={styles.cardContent}>
-                          {scrap.memo}
-                        </p>
-                      )}
-
-                      <div className={styles.cardFooter}>
-                        <span className={styles.agent}>
-                          {scrap.agent ?? 'chatgpt'}
-                        </span>
-                        <time>
-                          {new Date(scrap.capturedAt)
-                            .toISOString()
-                            .slice(0, 10)
-                            .replace(/-/g, '/')}
-                        </time>
-                      </div>
-                    </article>
+                      scrap={scrap}
+                    />
                   ))}
                 </div>
               </div>
@@ -158,14 +146,17 @@ export default function ProjectDashboardPage() {
           })}
         </div>
 
-        {collapsed && showNext && (
-          <button
-            className={clsx(styles.arrow, styles.next)}
-            onClick={() => setPageIndex((p) => p + 1)}
-          >
-            →
-          </button>
-        )}
+        {/* ➡ 보드 다음 화살표 (DOM 유지) */}
+        <button
+          className={clsx(
+            styles.arrow,
+            styles.next,
+            (!collapsed || !showNext) && styles.hidden
+          )}
+          onClick={() => setPageIndex((p) => p + 1)}
+        >
+          →
+        </button>
       </section>
     </main>
   );
