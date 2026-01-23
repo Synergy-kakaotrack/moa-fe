@@ -1,0 +1,122 @@
+.body {
+  line-height: 1.7;
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+}
+
+/* Headings */
+.body h1 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin: 24px 0 12px;
+}
+
+.body h2 {
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  margin: 20px 0 10px;
+}
+
+.body h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin: 16px 0 8px;
+}
+
+/* Paragraph */
+.body p {
+  margin: 12px 0;
+}
+
+/* Lists */
+.body ul,
+.body ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.body li {
+  margin: 6px 0;
+}
+
+/* Links */
+.body a {
+  color: var(--color-action-primary);
+  text-decoration: underline;
+}
+
+.body a:hover {
+  opacity: 0.8;
+}
+
+/* Code */
+.body code {
+  background: var(--color-bg-subtle);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: var(--font-size-sm);
+  font-family: 'Menlo', 'Monaco', monospace;
+}
+
+.body pre {
+  background: var(--color-bg-subtle);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.body pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Blockquote */
+.body blockquote {
+  border-left: 3px solid var(--color-border-muted);
+  padding-left: var(--spacing-2);
+  margin: 16px 0;
+  color: var(--color-text-secondary);
+}
+
+/* Table */
+.body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+
+.body th,
+.body td {
+  border: 1px solid var(--color-border-muted);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.body th {
+  background: var(--color-bg-subtle);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Image */
+.body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+/* Horizontal Rule */
+.body hr {
+  border: none;
+  border-top: 1px solid var(--color-border-muted);
+  margin: 24px 0;
+}
+
+/* Strong & Emphasis */
+.body strong {
+  font-weight: var(--font-weight-semibold);
+}
+
+.body em {
+  font-style: italic;
+}

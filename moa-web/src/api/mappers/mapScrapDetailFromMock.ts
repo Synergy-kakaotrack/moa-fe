@@ -19,7 +19,7 @@ export function mapScrapDetailFromMock(
     capturedAt: mock.capturedAt,
 
     contentType:
-      'rawHtmlToMarkdown' in mock ? 'markdown' : 'html',
+      'rawHtmlToMarkdown' in mock ? 'MARKDOWN' : 'RAW_HTML',
 
     content:
       'rawHtmlToMarkdown' in mock

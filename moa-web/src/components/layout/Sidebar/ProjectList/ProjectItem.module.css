@@ -6,17 +6,17 @@
 .projectHeader {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-1);
 
-  padding: 8px 12px;
-  border-radius: 999px;
+  padding: var(--spacing-1) 12px;
+  border-radius: var(--radius-full);
   border: none;
   outline: none;
   background: transparent;
   cursor: pointer;
 
   color: var(--color-text-primary);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 .projectHeader:hover {
@@ -38,7 +38,7 @@
   height: 14px;
   flex-shrink: 0;
   color: inherit;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-normal);
 }
 
 .caretOpen {
@@ -56,7 +56,7 @@
 /* title */
 .projectTitle {
   font-size: var(--font-size-lg);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
@@ -66,7 +66,7 @@
 /* stages */
 .stageList {
   margin-top: 4px;
-  padding-left: 24px;
+  padding-left: var(--spacing-3);
   display: flex;
   flex-direction: column;
   gap: 2px;

@@ -7,34 +7,34 @@
 
 /* base card */
 .card {
-  padding: 16px;
-  border-radius: 12px;
-  background: white;
+  padding: var(--card-padding);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
   cursor: pointer;
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-1);
 
-  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 /* ===== variants ===== */
 
 /* Kanban 카드 */
 .kanban {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-card);
 }
 
 .kanban:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-card-hover);
 }
 
 /* Sidebar 카드 */
 .sidebar {
   padding: 10px 12px;
-  border-radius: 8px;
-  background: white;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
 }
 
 .sidebar:hover {
@@ -51,8 +51,8 @@
 /* title */
 .title {
   font-size: var(--font-size-md);
-  font-weight: 600;
-  line-height: 1.4;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-lg);
 
   /* sidebar에서 한 줄 */
   overflow: hidden;
@@ -70,14 +70,14 @@
 
 /* agent */
 .agent {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
 
 /* date */
 .date {
-  font-size: 12px;
-  color: #999;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
 }
 
 /* ===== memo 공통 ===== */
@@ -98,7 +98,7 @@
 
 /* sidebar memo */
 .sidebarMemo {
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   line-height: 1.45;
   line-clamp: 3;
   -webkit-line-clamp: 3;

@@ -1,17 +1,33 @@
 // src/api/scraps.ts
 
-import type { ScrapListResponse } from './types/ScrapDto';
-import { mockScraps } from '@/mocks/scrapDetail';
+import { RecentContextResponse } from '@/api/types/recentContext';
+import { RecentProject } from '@/domain/recentContext';
+import { mapRecentContextFromApi } from '@/api/mappers/mapRecentContextFromApi';
+import { mockRecentContext } from '@/mocks/recentContext';
+
+const USE_MOCK = true; // TODO: 환경변수로 전환
 
 /**
- * 스크랩 목록 조회 (API 레이어)
- * - mock / 실제 API 공통 인터페이스
- * - DTO 그대로 반환
- * - Domain 변환은 여기서 하지 않음
+ * 최근 저장 컨텍스트 조회
+ * GET /api/scraps/recent-context
  */
-export async function getScraps(): Promise<ScrapListResponse> {
-  return {
-    items: mockScraps,
-    // nextCursor: undefined, // 필요해지면 추가
-  };
+export async function getRecentContext(): Promise<RecentProject[]> {
+  if (USE_MOCK) {
+    // Mock 데이터 반환 (개발용)
+    return mapRecentContextFromApi(mockRecentContext as RecentContextResponse);
+  }
+
+  // 실제 API 호출
+  const response = await fetch('/api/scraps/recent-context', {
+    headers: {
+      'X-User-Id': '1', // TODO: 인증 구현 후 동적으로 변경
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch recent context: ${response.status}`);
+  }
+
+  const data: RecentContextResponse = await response.json();
+  return mapRecentContextFromApi(data);
 }
