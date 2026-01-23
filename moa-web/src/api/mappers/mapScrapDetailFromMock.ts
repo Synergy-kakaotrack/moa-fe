@@ -15,7 +15,7 @@ export function mapScrapDetailFromMock(
     subtitle: mock.subtitle,
     memo: mock.memo,
 
-    agent: mock.aiSource.toLowerCase(),
+    agent: mock.aiSource,
     capturedAt: mock.capturedAt,
 
     contentType:
