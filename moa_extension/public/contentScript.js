@@ -1,5 +1,5 @@
 let dragSessionId = null;
-let lastText = "";
+let savedTextsInThisDrag = new Set(); //같은 드래그 동작 중 중복 방지 
 
 const safeSendMessage = (message) => {
   try {
@@ -11,20 +11,22 @@ const safeSendMessage = (message) => {
   }
 };
 
+//드래그 시작 
 document.addEventListener("mousedown", () => {
   dragSessionId = Date.now();
-  lastText = "";
+  savedTextsInThisDrag.clear();
 });
-
+//스크랩 저장 
 document.addEventListener("mouseup", () => {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return;
 
   const text = selection.toString().trim();
   if (!text || text.length < 3) return;
-  if (text === lastText) return;
 
-  lastText = text;
+  if (savedTextsInThisDrag.has(text)) return; //같은 드래그 내 중복 방지
+
+  savedTextsInThisDrag.add(text);
 
   safeSendMessage({
     type: "SCRAP_TEXT",
@@ -36,12 +38,8 @@ document.addEventListener("mouseup", () => {
       dragSessionId,
     },
   });
-});
 
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") {
-    lastText = "";
-  }
+  selection.removeAllRanges();
 });
 
 function detectAISource() {
@@ -54,7 +52,7 @@ function detectAISource() {
 
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") {
-    lastText = "";
     dragSessionId = null;
+    savedTextsInThisDrag.clear();
   }
 });

@@ -54,7 +54,9 @@ export default function ProjectSetting({
 
   //제목 입력 확인
   const [titleTouched, setTitleTouched] = useState(false);
-  const isTitleError = titleTouched && title.trim() === "";
+  const safeTrim = (v: unknown): string =>
+    typeof v === "string" ? v.trim() : "";
+  const isTitleError = titleTouched && safeTrim(title) === "";
 
   //프로젝트 생성
   const [isCreatingProject, setIsCreatingProject] = useState(false);

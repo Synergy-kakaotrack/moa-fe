@@ -5,9 +5,10 @@ import type { Scrap } from "../types/scrap.domain";
 interface ScrapListProps {
   scraps: Scrap[];
   setScraps: React.Dispatch<React.SetStateAction<Scrap[]>>;
+  highlightScrapId: number | null;
 }
 
-export default function ScrapList({ scraps, setScraps }: ScrapListProps) {
+export default function ScrapList({ scraps, setScraps, highlightScrapId }: ScrapListProps) {
   // 스크랩 삭제
   const handleDelete = (id: number) => {
     setScraps((prev) => prev.filter((scrap) => scrap.id !== id));
@@ -29,6 +30,7 @@ export default function ScrapList({ scraps, setScraps }: ScrapListProps) {
             scrap={scrap}
             index={index + 1}
             onDelete={handleDelete}
+            highlighted={scrap.id === highlightScrapId}
           />
         ))
       )}

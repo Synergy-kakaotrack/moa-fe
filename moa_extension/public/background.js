@@ -7,6 +7,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "SCRAP_TEXT") {
     const scrap = message.payload;
 
+    const exists = scraps.some(
+      (s) =>
+        s.text === scrap.text &&
+        s.dragSessionId === scrap.dragSessionId
+    );
+
+    if (exists) return;
     scraps.push(scrap);
     console.log("saved scrap:", scrap);
 
