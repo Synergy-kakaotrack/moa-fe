@@ -82,6 +82,9 @@ export default function App() {
   const [recStage, setRecStage] = useState<string | null>(null);
   const [recTitle, setRecTitle] = useState<string | null>(null);
 
+  const transitionLockRef = useRef(false);
+  const [isScrapLoading, setIsScrapLoading] = useState(false);
+
   const [highlightScrapId, setHighlightScrapId] = useState<number|null>(null);
 
   // 핵심: 현재 드래그 세션 id
@@ -90,7 +93,6 @@ export default function App() {
   const safeTrim = (v: unknown): string =>
     typeof v === "string" ? v.trim() : "";
   const canGoNext = safeTrim(title) !== "";
-  const [isProcessingScrap, setIsProcessingScrap] = useState(false);
 
   const fetchProjects = async () => {
     const res = await getProjects();
@@ -245,12 +247,10 @@ export default function App() {
       alert("Draft가 없습니다.");
       return;
     }
-
     if(!selectedProjectId){
       alert("프로젝트를 선택해주세요");
       return;
     }
-
     const rawHtml = scraps
       .map(s => s.texts.join("<br/>"))
       .join("<hr/>");
@@ -269,13 +269,14 @@ export default function App() {
       userRecStage: workStep===recStage,
       userRecSubtitle: title===recTitle,
     });
+    transitionLockRef.current = false;
+    setIsScrapLoading(false);
 
     // 저장 성공 후 초기화
     setDraftId(null);
     setRecProjectId(null);
     setRecStage(null);
     setRecTitle(null);
-
     setScraps([]);
     setStep("EMPTY");
   };
@@ -314,20 +315,27 @@ export default function App() {
     setStep("EMPTY");
   };
 
-  const goNext = () => {
-    if (step === "SCRAP_LIST") {
-      setIsProcessingScrap(true);
+  const handleScrapCompleteClick = () => {
+    if (transitionLockRef.current) return;
 
-      setTimeout(() => {
-        setIsProcessingScrap(false);
-        currentScrapIdRef.current = null;
-        handleScrapDone(); //draft 생성 + LLM 추천
-      }, 3000);
-      return;
+    //UI부터 즉시 바꿈
+    setIsScrapLoading(true);
+
+    //즉시 잠금 (동기)
+    transitionLockRef.current = true;
+
+    //다음 tick에서 실제 로직 실행
+    requestAnimationFrame(() => {
+      goNextInternal();
+    });
+  };
+
+  const goNextInternal = () => {
+    if (step === "SCRAP_LIST") {
+      handleScrapDone(); // API + step 변경
     }
 
     if (step === "PROJECT_SETTING") {
-      currentScrapIdRef.current = null;
       setStep("SAVE");
     }
   };
@@ -340,6 +348,8 @@ export default function App() {
   };
 
   const goBack = () => {
+    transitionLockRef.current = false;
+    setIsScrapLoading(false);
     if (step === "PROJECT_SETTING") {
       resetProjectInput();
       currentScrapIdRef.current = null;
@@ -354,6 +364,8 @@ export default function App() {
   };
 
   const handleClearScrap = () => {
+    if (transitionLockRef.current) return;
+
     clearScraps();
     clearUIDraft();
     currentScrapIdRef.current = null;
@@ -361,10 +373,7 @@ export default function App() {
     setStep("EMPTY");
   };
 
-  /* ======================
-     render
-  ====================== */
-
+  //render 
   const displayProjectName =
     projects.find(p => p.projectId === selectedProjectId)?.name
     ?? projectName;
@@ -446,11 +455,15 @@ export default function App() {
       <Bottom
         step={step}
         scrapCount={scrapCount}
-        onAction={step === "SAVE" ? handleCommitDraft : goNext}
+        onAction={
+          step === "SAVE"
+            ? handleCommitDraft
+            : handleScrapCompleteClick
+        }
         onClear={handleClearScrap}
         onBack={goBack}
         disabledAction={
-          step === "PROJECT_SETTING" ? !canGoNext : isProcessingScrap
+          isScrapLoading || (step === "PROJECT_SETTING" && !canGoNext)
         }
       />
     </div>
