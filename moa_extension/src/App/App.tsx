@@ -312,7 +312,10 @@ export default function App() {
     setWorkStep(res.recommendation.stage); //작업 단계 추천값
     setTitle(res.recommendation.subtitle ?? ""); //소제목 추천값
 
+    setIsScrapLoading(false);
+    transitionLockRef.current = false;
     setStep("PROJECT_SETTING");
+    
   };
 
 
@@ -470,7 +473,11 @@ export default function App() {
         onClear={handleClearScrap}
         onBack={goBack}
         disabledAction={
-          isScrapLoading || (step === "PROJECT_SETTING" && !canGoNext)
+          step === "SCRAP_LIST"
+          ? isScrapLoading
+          : step === "PROJECT_SETTING"
+            ? !canGoNext
+            : false
         }
       />
     </div>
