@@ -1,3 +1,4 @@
+import "./Notice.css";
 const SERVICES = [
   { name: "ChatGPT", url: "https://chat.openai.com" },
   { name: "Claude", url: "https://claude.ai" },
@@ -7,7 +8,7 @@ const SERVICES = [
 
 export default function ScrapGuide() {
   return (
-    <div className="text-guide-sm">
+    <div className="notice-description">
       {SERVICES.map((service, index) => (
           <span key={service.name}>
             <a

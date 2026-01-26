@@ -35,5 +35,11 @@
   },
   "icons":{
     "16":"icons/logo.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
