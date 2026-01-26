@@ -1,13 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { mockScraps } from '@/mocks/scrapDetail';
-import { mockProjects } from '@/mocks/projects';
-
-import { mapScrapListItemFromMock } from '@/api/mappers/mapScrapListItemFromMock';
-import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
+import { getScraps } from '@/api/scraps';
+import { projectsApi } from '@/api/projects';
 
 import { StageKey } from '@/domain/stage';
+import type { Scrap } from '@/domain/scrap';
+import type { Project } from '@/domain/project';
 import { stages } from '@/constants/stages';
 import ScrapCard from '@/components/ScrapCard/ScrapCard';
 
@@ -36,28 +35,35 @@ export default async function StageLayout({
   params,
 }: StageLayoutProps) {
   const { projectId, stage, scrapId } = await params;
+  const numericProjectId = Number(projectId);
+  const stageName = stages.find((s) => s.key === stage)?.name ?? stage;
 
   /* ================= 스크랩 리스트 ================= */
-  const scraps = mockScraps
-    .map(mapScrapListItemFromMock)
-    .filter(
-      (scrap) =>
-        scrap.projectId === Number(projectId) &&
-        scrap.stageKey === stage
-    )
-    .sort(
+  let scraps: Scrap[] = [];
+  try {
+    const res = await getScraps({
+      projectId: numericProjectId,
+      stage: stageName,
+    });
+    scraps = res.items.sort(
       (a, b) =>
         new Date(b.capturedAt).getTime() -
         new Date(a.capturedAt).getTime()
     );
+  } catch {
+    scraps = [];
+  }
 
   /* ================= 표시용 컨텍스트 ================= */
-  const project = mockProjects
-    .map(mapProjectFromMock)
-    .find((p) => p.projectId === Number(projectId));
+  let project: Project | null = null;
+  try {
+    const res = await projectsApi.getProjects();
+    project = res.items.find((p) => p.projectId === numericProjectId) ?? null;
+  } catch {
+    project = null;
+  }
 
   const projectName = project?.name ?? '프로젝트';
-  const stageName = stages.find((s) => s.key === stage)?.name ?? '단계';
 
   return (
     <div className={styles.container}>

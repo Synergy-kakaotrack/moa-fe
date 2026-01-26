@@ -7,7 +7,7 @@ import styles from './ProjectItem.module.css';
 import { stages } from '@/constants/stages';
 import StageItem from './StageItem';
 import { IconFolder, IconCaret } from '@/components/icons';
-import { Project } from '@/api/types/project';
+import type { Project } from '@/domain/project';
 
 interface Props {
   project: Project;
