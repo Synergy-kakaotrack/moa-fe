@@ -11,14 +11,14 @@ const GUIDE_ITEMS = [
 export default function GuideBox() {
   return (
     <div className="guide-box">
-      {GUIDE_ITEMS.map((text, index) => (
-        <div key={index} className="guide-item">
-          <div className="index-text">
+      <div className="guide-numberstexts">
+        {GUIDE_ITEMS.map((text, index) => (
+          <div key={index} className="guide-item">
             <div className="guide-number text-badge-xs">{index + 1}</div>
             <div className="guide-text text-guide-sm">{text}</div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
