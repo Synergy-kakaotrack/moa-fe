@@ -157,8 +157,12 @@ export default function App() {
     const listener = (message: unknown) => {
       if (!isScrapUpdatedMessage(message)) return;
 
+      if(step === "PROJECT_SETTING") return;
+
       const { text, url, createdAt, dragSessionId } = message.payload;
       const source = detectAISource(url);
+
+      let added = false;
 
       setScraps(prev => {
         const normalizedNew = text.trim();
@@ -171,7 +175,7 @@ export default function App() {
 
             const isIncluded = normalizedExisting.includes(normalizedNew);
             if (isIncluded) {
-              duplicatedScrapId = s.id; // ⭐ 여기서 기억
+              duplicatedScrapId = s.id;
             }
             return isIncluded;
           })
@@ -189,6 +193,8 @@ export default function App() {
           return prev;
         }
 
+        added = true;
+
         return [
           ...prev,
           {
@@ -201,13 +207,14 @@ export default function App() {
           },
         ];
       });
-
-      setStep("SCRAP_LIST");
+      setStep(prev =>
+        added && prev === "EMPTY" ? "SCRAP_LIST" : prev
+      );
     };
 
     chrome.runtime.onMessage.addListener(listener);
     return () => chrome.runtime.onMessage.removeListener(listener);
-  }, []);
+  }, [step]);
 
   /* ======================
      드래그 종료 → 세션 종료
