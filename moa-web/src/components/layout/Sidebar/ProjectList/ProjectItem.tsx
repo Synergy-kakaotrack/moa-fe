@@ -53,7 +53,7 @@ export default function ProjectItem({
         <ul className={styles.stageList}>
           {stages.map((stage) => {
             const isActive =
-              pathname === `/project/${project.projectId}/${stage.key}`;
+              pathname.startsWith(`/project/${project.projectId}/${stage.key}`);
 
             return (
               <StageItem

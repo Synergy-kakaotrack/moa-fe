@@ -22,4 +22,5 @@ export { default as IconOthers } from './stage/IconOthers'; //기타
 
 export { default as IconCaret } from './IconCaret'; // 캐럿 아이콘
 export { default as IconExternalLink } from './IconExternalLink'; // 외부 링크 아이콘
+export { default as IconLink } from './IconLink'; // 링크 아이콘
 export { default as IconFolder } from './IconFolder'; // 폴더 아이콘

@@ -9,7 +9,7 @@ import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
 
 import { StageKey } from '@/domain/stage';
 import { stages } from '@/constants/stages';
-import ScrapCard from '@/components/ScrapCard/ScrapCard';
+import ScrapCardList from '@/components/ScrapCard/ScrapCardList';
 
 import styles from './layout.module.css';
 
@@ -27,7 +27,6 @@ interface StageLayoutProps {
   params: Promise<{
     projectId: string;
     stage: StageKey;
-    scrapId?: string;
   }>;
 }
 
@@ -35,7 +34,7 @@ export default async function StageLayout({
   children,
   params,
 }: StageLayoutProps) {
-  const { projectId, stage, scrapId } = await params;
+  const { projectId, stage } = await params;
 
   /* ================= 스크랩 리스트 ================= */
   const scraps = mockScraps
@@ -78,14 +77,7 @@ export default async function StageLayout({
           <p className={styles.empty}>스크랩이 없습니다.</p>
         ) : (
           <div className={styles.scrapList}>
-            {scraps.map((scrap) => (
-              <ScrapCard
-                key={scrap.scrapId}
-                scrap={scrap}
-                variant="sidebar"
-                isActive={scrap.scrapId === Number(scrapId)}
-              />
-            ))}
+            <ScrapCardList scraps={scraps} />
           </div>
         )}
       </aside>

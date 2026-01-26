@@ -18,8 +18,18 @@ import ScrapCard from '@/components/ScrapCard/ScrapCard';
 import styles from './ProjectDashboard.module.css';
 
 import Link from 'next/link';
+import { StageKey } from '@/domain/stage';
 
 const PAGE_SIZE = 3;
+
+const stageClassMap: Record<StageKey, string> = {
+  PLAN: styles.plan,
+  RESEARCH: styles.research,
+  DESIGN: styles.design,
+  IMPLEMENT: styles.implement,
+  TEST: styles.test,
+  ETC: styles.etc,
+};
 
 export default function ProjectDashboardPage() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -128,10 +138,16 @@ export default function ProjectDashboardPage() {
             );
 
             return (
-              <div key={stage.key} className={styles.column}>
-                <div className={styles.columnHeader}>
+              <div
+                key={stage.key}
+                className={clsx(styles.column, stageClassMap[stage.key])}
+              >
+                <Link
+                  href={`/project/${projectId}/${stage.key}`}
+                  className={styles.columnHeader}
+                >
                   {stage.name}
-                </div>
+                </Link>
 
                 <div className={styles.cardList}>
                   {stageScraps.map((scrap) => (
