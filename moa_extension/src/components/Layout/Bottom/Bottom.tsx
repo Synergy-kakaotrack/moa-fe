@@ -65,12 +65,13 @@ function getButtonsByStep(
         {
           label: "모두 지우기",
           onClick: handlers?.onClear ?? (() => {}),
+          disabled: handlers?.disabledAction,
           variant: "secondary",
         },
         {
           label: `스크랩 완료 (${scrapCount})`,
           onClick: handlers?.onAction ?? (() => {}),
-          disabled: !isActive,
+          disabled: !isActive || handlers?.disabledAction,
           variant: "primary",
           loading: isLoading,
         },
@@ -139,6 +140,12 @@ export default function Bottom({
             ${button.disabled ? "disabled" : ""}
             ${button.loading ? "loading" : ""}
           `}
+          onMouseDown={(e) => {
+            if(button.disabled) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
           onClick={button.onClick}
         >
           {button.label}

@@ -19,6 +19,13 @@
   border: 0;
 }
 
+.bottom-button.disabled,
+.bottom-button.loading,
+.bottom-button:disabled {
+  background-color: #D1D291;
+  cursor: not-allowed;
+}
+
 /* 버튼 역할만 유지 */
 .bottom-clear {
   border: 1px solid #111;
