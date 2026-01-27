@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import styles from './StageItem.module.css';
 import { STAGE_ICON_MAP } from '@/components/icons/stage/iconStageMap';
 import { Stage } from '@/constants/stages';
+import { getScraps } from '@/api/scraps';
 interface Props {
   stage: Stage;
   projectId: number;
@@ -28,10 +29,24 @@ export default function StageItem({
   const router = useRouter();
   const Icon = STAGE_ICON_MAP[stage.key];
 
-  const handleClick = () => {
-    router.push(
-      `/project/${projectId}/${stage.key}`
-    );
+  const handleClick = async () => {
+    try {
+      const res = await getScraps({
+        projectId,
+        stage: stage.name,
+      });
+
+      if (res.items.length > 0) {
+        router.push(
+          `/project/${projectId}/${stage.key}/${res.items[0].scrapId}`
+        );
+        return;
+      }
+    } catch {
+      // NOTE: 조회 실패 시에도 단계 페이지로 이동
+    }
+
+    router.push(`/project/${projectId}/${stage.key}`);
   };
 
   return (

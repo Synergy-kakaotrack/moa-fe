@@ -1,19 +1,17 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import clsx from 'clsx';
 
-import { mockScraps } from '@/mocks/scrapDetail';
-import { mockProjects } from '@/mocks/projects';
-
-import { mapScrapDetailFromMock } from '@/api/mappers/mapScrapDetailFromMock';
-import { mapScrapListItemFromMock } from '@/api/mappers/mapScrapListItemFromMock';
-import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
+import { getScrapDetail, getScraps } from '@/api/scraps';
+import { projectsApi } from '@/api/projects';
 
 import type { ScrapDetail } from '@/domain/scrap';
 import type { StageKey } from '@/domain/stage';
+import type { Project } from '@/domain/project';
+import type { Scrap } from '@/domain/scrap';
+import { stages } from '@/constants/stages';
 
 import ScrapBody from '@/components/scrap/ScrapBody';
 import { IconLink, IconFolder } from '@/components/icons';
@@ -47,47 +45,95 @@ export default function ScrapDetailPage() {
   const { projectId, stage, scrapId } = params;
   const numericScrapId = Number(scrapId);
   const numericProjectId = Number(projectId);
+  const stageName = stages.find((s) => s.key === stage)?.name ?? stage;
+
+  const [scrap, setScrap] = useState<ScrapDetail | null>(null);
+  const [stageScraps, setStageScraps] = useState<Scrap[]>([]);
+  const [project, setProject] = useState<Project | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   /* ===== 현재 스크랩 ===== */
-  const scrap: ScrapDetail | null = useMemo(() => {
-    const mock = mockScraps.find((s) => s.scrapId === numericScrapId);
-    return mock ? mapScrapDetailFromMock(mock) : null;
-  }, [numericScrapId]);
+  useEffect(() => {
+    if (!numericScrapId || !numericProjectId) {
+      setErrorMessage('잘못된 경로입니다.');
+      return;
+    }
+
+    let isMounted = true;
+
+    const load = async () => {
+      try {
+        const detail = await getScrapDetail(numericScrapId);
+        if (isMounted) {
+          setScrap(detail);
+        }
+      } catch {
+        if (isMounted) {
+          setErrorMessage('스크랩을 불러오지 못했습니다.');
+        }
+        return;
+      }
+
+      try {
+        const res = await getScraps({
+          projectId: numericProjectId,
+          stage: stageName,
+        });
+        if (isMounted) {
+          const sorted = res.items.sort(
+            (a, b) =>
+              new Date(b.capturedAt).getTime() -
+              new Date(a.capturedAt).getTime()
+          );
+          setStageScraps(sorted);
+        }
+      } catch {
+        if (isMounted) {
+          setStageScraps([]);
+        }
+      }
+
+      try {
+        const res = await projectsApi.getProjects();
+        if (isMounted) {
+          const found =
+            res.items.find((p) => p.projectId === numericProjectId) ?? null;
+          setProject(found);
+        }
+      } catch {
+        if (isMounted) {
+          setProject(null);
+        }
+      }
+    };
+
+    load();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [numericScrapId, numericProjectId, stage]);
 
   /* ===== 같은 stage의 스크랩 리스트 (정렬) ===== */
-  const stageScraps = useMemo(() => {
-    return mockScraps
-      .map(mapScrapListItemFromMock)
-      .filter(
-        (s) =>
-          s.projectId === numericProjectId && s.stageKey === stage
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.capturedAt).getTime() -
-          new Date(a.capturedAt).getTime()
-      );
-  }, [numericProjectId, stage]);
+  const { prevScrap, nextScrap } = useMemo(() => {
+    const currentIndex = stageScraps.findIndex(
+      (s) => s.scrapId === numericScrapId
+    );
+    return {
+      prevScrap: currentIndex > 0 ? stageScraps[currentIndex - 1] : null,
+      nextScrap:
+        currentIndex >= 0 && currentIndex < stageScraps.length - 1
+          ? stageScraps[currentIndex + 1]
+          : null,
+    };
+  }, [stageScraps, numericScrapId]);
 
-  /* ===== 이전/다음 스크랩 ===== */
-  const currentIndex = stageScraps.findIndex(
-    (s) => s.scrapId === numericScrapId
-  );
-  const prevScrap = currentIndex > 0 ? stageScraps[currentIndex - 1] : null;
-  const nextScrap =
-    currentIndex < stageScraps.length - 1
-      ? stageScraps[currentIndex + 1]
-      : null;
-
-  /* ===== 프로젝트 정보 ===== */
-  const project = useMemo(() => {
-    return mockProjects
-      .map(mapProjectFromMock)
-      .find((p) => p.projectId === numericProjectId);
-  }, [numericProjectId]);
+  if (errorMessage) {
+    return <div>{errorMessage}</div>;
+  }
 
   if (!scrap) {
-    return <div>스크랩을 찾을 수 없습니다.</div>;
+    return <div>Loading...</div>;
   }
 
   /* ===== Icons ===== */

@@ -51,3 +51,19 @@ export interface UpdateProjectRequest {
 export interface UpdateProjectResponse {
   projectId: number;
 }
+
+// src/api/types/project.ts
+
+// NOTE: 백엔드 /api/projects 응답 DTO 타입
+// NOTE: 실제 응답 필드명이 다르면 여기만 수정하면 됩니다.
+export interface ProjectDto {
+  projectId: number;
+  name: string;
+  description?: string | null;
+
+  // NOTE: 프로젝트 목록에서 "마지막 업데이트 시간" 표시를 위해 사용(없으면 optional)
+  updatedAt?: string | null;
+
+  // NOTE: 폴더 색 (요구사항: 기본 하늘색)
+  folderColor?: string | null;
+}

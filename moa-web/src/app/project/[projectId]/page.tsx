@@ -1,78 +1,95 @@
-'use client';
+// src/app/project/[projectId]/page.tsx
+"use client";
 
-import { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'next/navigation';
-import clsx from 'clsx';
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { projectsApi } from "@/api/projects";
+import type { Project } from "@/domain/project";
 
-import { useSidebarState } from '@/contexts/SidebarContext';
-import { Scrap } from '@/domain/scrap';
-import { stages } from '@/constants/stages';
+export default function ProjectPage() {
+  const params = useParams<{ projectId: string }>();
+  // NOTE: URL 파라미터에서 projectId 추출
+  const projectId = Number(params.projectId);
 
-import { mockProjects } from '@/mocks/projects';
-import { mockScraps } from '@/mocks/scrapDetail';
+  // NOTE: 라우팅 이동(삭제 후 목록으로 이동 등)
+  const router = useRouter();
 
-import { mapProjectFromMock } from '@/api/mappers/mapProjectFromMock';
-import { mapScrapListItemFromMock } from '@/api/mappers/mapScrapListItemFromMock';
+  // NOTE: 현재 프로젝트(상세 화면에서 보여줄 대상)
+  const [project, setProject] = useState<Project | null>(null);
 
-import ScrapCard from '@/components/ScrapCard/ScrapCard';
-import styles from './ProjectDashboard.module.css';
+  // NOTE: 에러 메시지 표출용
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-import Link from 'next/link';
-import { StageKey } from '@/domain/stage';
+  // NOTE: 목록을 다시 불러와 현재 projectId에 해당하는 프로젝트를 다시 세팅
+  const refreshProject = async () => {
+    const res = await projectsApi.getProjects(); // NOTE: { items: Project[] } 반환 구조
+    const found = res.items.find((p) => p.projectId === projectId) ?? null;
+    setProject(found);
+  };
 
-const PAGE_SIZE = 3;
-
-const stageClassMap: Record<StageKey, string> = {
-  PLAN: styles.plan,
-  RESEARCH: styles.research,
-  DESIGN: styles.design,
-  IMPLEMENT: styles.implement,
-  TEST: styles.test,
-  ETC: styles.etc,
-};
-
-export default function ProjectDashboardPage() {
-  const { projectId } = useParams<{ projectId: string }>();
-  const { collapsed } = useSidebarState();
-
-  const [scraps, setScraps] = useState<Scrap[]>([]);
-  const [pageIndex, setPageIndex] = useState(0);
-
-  /* ===== Project ===== */
-  const project = useMemo(() => {
-    return mockProjects
-      .map(mapProjectFromMock)
-      .find((p) => p.projectId === Number(projectId));
-  }, [projectId]);
-
-  /* ===== Scrap list ===== */
+  // NOTE: 최초 진입 시 프로젝트 목록을 불러오고 현재 projectId로 찾기
   useEffect(() => {
-    const mapped = mockScraps
-      .filter((s) => s.projectId === Number(projectId))
-      .map(mapScrapListItemFromMock)
-      .sort(
-        (a, b) =>
-          new Date(b.capturedAt).getTime() -
-          new Date(a.capturedAt).getTime()
-      );
+    let isMounted = true;
 
-    setScraps(mapped);
+    projectsApi
+      .getProjects()
+      .then((res) => {
+        if (!isMounted) return;
+
+        const found = res.items.find((p) => p.projectId === projectId) ?? null;
+        setProject(found);
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setErrorMessage("프로젝트 정보를 불러오지 못했습니다.");
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [projectId]);
 
-  /* ===== Stage paging ===== */
-  const stagePages = useMemo(() => {
-    const pages = [];
-    for (let i = 0; i < stages.length; i += PAGE_SIZE) {
-      pages.push(stages.slice(i, i + PAGE_SIZE));
+  // NOTE: 프로젝트 수정(PATCH) - 예시로 이름을 고정 변경
+  const handleUpdateProject = async () => {
+    if (!project) return;
+
+    try {
+      // TODO: 실제 서비스에서는 입력값(인풋/모달)에서 name/description을 받아서 전송
+      await projectsApi.updateProject(project.projectId, {
+        name: "새 프로젝트 이름",
+        // description: "새 설명",
+      });
+
+      // NOTE: 변경 후 최신 데이터로 동기화
+      await refreshProject();
+    } catch {
+      setErrorMessage("프로젝트 수정에 실패했습니다.");
     }
-    return pages;
-  }, []);
+  };
 
-  const pageCount = stagePages.length;
-  const currentStages = stagePages[pageIndex];
+  // NOTE: 프로젝트 삭제(DELETE)
+  const handleDeleteProject = async () => {
+    if (!project) return;
 
-  const showPrev = pageIndex > 0;
-  const showNext = pageIndex < pageCount - 1;
+    try {
+      await projectsApi.deleteProject(project.projectId);
+
+      // TODO: 프로젝트 목록 페이지 경로에 맞게 수정
+      router.push("/project"); // 또는 "/projects"
+    } catch {
+      setErrorMessage("프로젝트 삭제에 실패했습니다.");
+    }
+  };
+
+  // NOTE: 에러 표시
+  if (errorMessage) {
+    return <div>{errorMessage}</div>;
+  }
+
+  // NOTE: 로딩 표시(프로젝트를 아직 못 찾았거나 로딩 중)
+  if (!project) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main className={styles.page}>

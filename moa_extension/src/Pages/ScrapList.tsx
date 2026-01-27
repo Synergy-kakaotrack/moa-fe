@@ -1,12 +1,6 @@
+import Empty from "../components/UI/Empty/Empty";
 import ScrapCard from "../components/UI/ScrapCard/ScrapCard";
-
-export interface Scrap {
-  id: number;
-  title: string;
-  content: string;
-  source: string; // ChatGPT | Claude | Gemini
-  createdAt: number;
-}
+import type { Scrap } from "../types/scrap.domain";
 
 interface ScrapListProps {
   scraps: Scrap[];
@@ -20,17 +14,20 @@ export default function ScrapList({ scraps, setScraps }: ScrapListProps) {
   };
 
   return (
-    <div style={{ padding: "12px" }}>
+    <div 
+      style={{
+        padding: "12px",
+      }}
+    >
       {/* 스크랩 리스트 */}
       {scraps.length === 0 ? (
-        <div style={{ textAlign: "center", color: "#999999", padding: "40px 0" }}>
-          스크랩된 내용이 없습니다
-        </div>
+          <Empty />
       ) : (
-        scraps.map((scrap) => (
+        scraps.map((scrap, index) => (
           <ScrapCard
             key={scrap.id}
             scrap={scrap}
+            index={index + 1}
             onDelete={handleDelete}
           />
         ))

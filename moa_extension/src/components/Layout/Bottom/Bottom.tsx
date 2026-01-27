@@ -5,7 +5,7 @@ export type Step =
   | "EMPTY"
   | "SCRAP_LIST"
   | "PROJECT_SETTING"
-  | "SAVE_DONE";
+  | "SAVE";
 
 //버튼 설정 타입(label(문구), 클릭했을 때 액션, 비활성화 여부, 왼/오 버튼 구분)
 interface ButtonConfig {
@@ -13,6 +13,7 @@ interface ButtonConfig {
   onClick: () => void;
   disabled?: boolean;
   variant: "primary" | "secondary";
+  loading?:boolean;
 }
 
 //Bottom 컴포넌트 Props
@@ -23,6 +24,8 @@ interface BottomProps {
   onAction?: () => void; // 다음 / 저장 / 스크랩 완료
   onClear?: () => void;  // 모두 지우기
   onBack?: () => void;   // 돌아가기
+
+  disabledAction?:boolean;
 }
 
 //step에 따른 버튼 구성 
@@ -33,6 +36,7 @@ function getButtonsByStep(
     onAction?: () => void;
     onClear?: () => void;
     onBack?: () => void;
+    disabledAction?: boolean;
   }
 ): ButtonConfig[] {
   switch (step) {
@@ -52,7 +56,11 @@ function getButtonsByStep(
         },
       ];
 
-    case "SCRAP_LIST":
+    case "SCRAP_LIST":{
+
+      const isActive = (scrapCount ?? 0) > 0;
+      const isLoading = handlers?.disabledAction === true;
+
       return [
         {
           label: "모두 지우기",
@@ -62,10 +70,12 @@ function getButtonsByStep(
         {
           label: `스크랩 완료 (${scrapCount})`,
           onClick: handlers?.onAction ?? (() => {}),
+          disabled: !isActive,
           variant: "primary",
+          loading: isLoading,
         },
       ];
-
+    }
     case "PROJECT_SETTING":
       return [
         {
@@ -76,11 +86,12 @@ function getButtonsByStep(
         {
           label: "다음",
           onClick: handlers?.onAction ?? (() => {}),
+          disabled: handlers?.disabledAction,
           variant: "primary",
         },
       ];
 
-    case "SAVE_DONE":
+    case "SAVE":
       return [
         {
           label: "돌아가기",
@@ -106,11 +117,13 @@ export default function Bottom({
   onAction,
   onClear,
   onBack,
+  disabledAction,
 }: BottomProps) {
   const buttons = getButtonsByStep(step, scrapCount,{
     onAction,
     onClear,
-    onBack
+    onBack,
+    disabledAction,
   }
     
   );
@@ -120,13 +133,13 @@ export default function Bottom({
       {buttons.map((button, index) => (
         <button
           key={index}
-          className={`bottom-button ${
-            button.variant === "primary"
-              ? "bottom-submit"
-              : "bottom-clear"
-          }`}
-          onClick={button.onClick}
           disabled={button.disabled}
+          className={`bottom-button text-button-sm
+            ${ button.variant === "primary" ? "bottom-submit" : "bottom-clear"}
+            ${button.disabled ? "disabled" : ""}
+            ${button.loading ? "loading" : ""}
+          `}
+          onClick={button.onClick}
         >
           {button.label}
         </button>
