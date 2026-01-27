@@ -36,6 +36,13 @@
   align-items: center;
   gap: 10px;
   margin-right: 7px;
+  outline: none;
+  cursor: grab;
+}
+
+.scrap-sort-icon:focus {
+  outline: none;
+  cursor: grabbing;
 }
 
 .scrap-number-bar {
