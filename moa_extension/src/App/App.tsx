@@ -53,31 +53,24 @@ function isScrapUpdatedMessage(
 }
 //App
 export default function App() {
+  const isFinalizingRef = useRef(false);
+
   const [draftId, setDraftId] = useState<number | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
-  const initialUIDraft = getUIDraft();
 
   // scraps
-  const [scraps, setScraps] = useState<Scrap[]>(
-    initialUIDraft?.scraps ?? []
-  );
+  const [scraps, setScraps] = useState<Scrap[]>([]);
   const scrapCount = scraps.length;
 
   // step
-  const [step, setStep] = useState<Step>(
-    initialUIDraft?.step ?? "EMPTY"
-  );
+  const [step, setStep] = useState<Step>("EMPTY");
 
   // project info
-  const [title, setTitle] = useState<string>(initialUIDraft?.title ?? "");
-  const [memo, setMemo] = useState(initialUIDraft?.memo ?? "");
-  const [projectName, setProjectName] = useState(
-    initialUIDraft?.projectName ?? "Capstone Design"
-  );
-  const [workStep, setWorkStep] = useState(
-    initialUIDraft?.workStep ?? "기획"
-  );
+  const [title, setTitle] = useState("");
+  const [memo, setMemo] = useState("");
+  const [projectName, setProjectName] = useState("");
+  const [workStep, setWorkStep] = useState("");
 
   const [recProjectId, setRecProjectId] = useState<number | null>(null);
   const [recStage, setRecStage] = useState<string | null>(null);
@@ -127,7 +120,7 @@ export default function App() {
     // project input
     setTitle("");
     setMemo("");
-    setProjectName("Capstone Design");
+    setProjectName("");
     setWorkStep("기획");
 
     // loading
@@ -138,10 +131,6 @@ export default function App() {
   /* ======================
      초기 scrap 로드
   ====================== */
-
-  useEffect(() => {
-    console.log("🔥 step changed:", step);
-  }, [step]);
 
   useEffect(() => {
     const loadProjects = async () => {
@@ -157,8 +146,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (initialUIDraft) return;
-
     chrome.runtime.sendMessage({ type: "GET_SCRAPS" }, (response) => {
       if (!Array.isArray(response)) return;
 
@@ -269,6 +256,24 @@ export default function App() {
      UI Draft 저장
   ====================== */
   useEffect(() => {
+    const draft = getUIDraft();
+    if (!draft) return;
+
+    // ⭐ 스크랩이 없으면 새 작업 → 복구 안 함
+    if (!draft.scraps || draft.scraps.length === 0) return;
+
+    queueMicrotask(() => {
+      setScraps(draft.scraps);
+      setStep(draft.step);
+      setTitle(draft.title ?? "");
+      setMemo(draft.memo ?? "");
+      setProjectName(draft.projectName ?? "");
+      setWorkStep(draft.workStep ?? "기획");
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isFinalizingRef.current) return;
     if (step !== "PROJECT_SETTING" && step !== "SAVE") return;
 
     saveUIDraft({
@@ -326,9 +331,6 @@ export default function App() {
   };
 
   const handleScrapDone = async () => {
-
-    console.log("🚀 handleScrapDone START");
-
     //세션의 모든 드래그를 하나의 String으로 합침
     const contentPlain = scraps.flatMap(scrap => scrap.texts).join("\n\n");
     //첫번째 스크랩(AI source, url 가져오기 위함)
@@ -349,16 +351,23 @@ export default function App() {
     setWorkStep(res.recommendation.stage); //작업 단계 추천값
     setTitle(res.recommendation.subtitle ?? ""); //소제목 추천값
 
+    setMemo("");
+
     setIsScrapLoading(false);
     transitionLockRef.current = false;
     setStep("PROJECT_SETTING");
     
   };
 
-
   const handleFinalSave = async () => {
+    isFinalizingRef.current = true;
+
+    clearUIDraft();
+
     currentScrapIdRef.current = null;
     setScraps([]);
+    setMemo("");
+    setTitle("");
     setStep("EMPTY");
   };
 
@@ -390,7 +399,7 @@ export default function App() {
   const resetProjectInput = () => {
     setTitle("");
     setMemo("");
-    setProjectName("Capstone Design");
+    setProjectName("");
     setWorkStep("기획");
   };
 
