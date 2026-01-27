@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 import { getScrapDetail, getScraps } from '@/api/scraps';
 import { projectsApi } from '@/api/projects';

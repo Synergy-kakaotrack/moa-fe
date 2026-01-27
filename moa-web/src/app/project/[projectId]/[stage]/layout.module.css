@@ -15,7 +15,7 @@
 /* ===== Sidebar ===== */
 
 .sidebar {
-  width: 320px;
+  width: 270px;
   border-left: 1px solid var(--color-border-subtle);
   padding: var(--spacing-2);
   display: flex;
@@ -67,7 +67,7 @@
 .design {
   background: var(--color-border-subtle);
   --card-hover-bg: rgba(161, 184, 218, 0.7);
-  --card-active-bg: rgba(161, 184, 218, 0.85);
+  --card-active-bg: rgba(213, 230, 255, 0.85);
 }
 .design .sidebarTitle {
   color: rgba(60, 100, 150, 1);
@@ -85,7 +85,7 @@
 .test {
   background: var(--color-accent-primary);
   --card-hover-bg: rgba(219, 220, 134, 1);
-  --card-active-bg: rgba(199, 200, 114, 1);
+  --card-active-bg: rgb(222, 224, 139);
 }
 .test .sidebarTitle {
   color: rgba(120, 122, 60, 1);

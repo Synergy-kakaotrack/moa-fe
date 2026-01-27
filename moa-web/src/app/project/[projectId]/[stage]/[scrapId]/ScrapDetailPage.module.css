@@ -19,7 +19,7 @@
 
 .article {
   flex: 1;
-  max-width: 760px;
+  max-width: 640px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -52,11 +52,11 @@
 }
 
 .navArrowPrev {
-  left: calc(50% - 380px - 56px);
+  left: calc(50% - 320px - 56px);
 }
 
 .navArrowNext {
-  right: calc(50% - 380px - 56px);
+  right: calc(50% - 320px - 56px);
 }
 
 .navArrowHidden {
