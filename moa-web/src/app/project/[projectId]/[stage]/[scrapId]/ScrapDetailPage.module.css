@@ -70,7 +70,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: var(--spacing-2) var(--spacing-3);
+  padding: var(--spacing-2);
   font-size: var(--font-size-md);
   color: var(--color-text-secondary);
   flex-shrink: 0;

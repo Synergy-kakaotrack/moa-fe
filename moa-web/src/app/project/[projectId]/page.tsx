@@ -2,23 +2,23 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import clsx from "clsx";
-import Link from "next/link";
 
 import { projectsApi } from "@/api/projects";
 import { scrapsApi } from "@/api/scraps";
 import type { Project } from "@/domain/project";
 import type { Scrap } from "@/domain/scrap";
 import type { StageKey } from "@/domain/stage";
+import type { StageDigest } from "@/domain/digest";
 
 import { useSidebarState } from "@/contexts/SidebarContext";
 import { stages } from "@/constants/stages";
+import { mockStageDigests } from "@/mocks/stageDigest";
 
-import ScrapCard from "@/components/ScrapCard/ScrapCard";
+import StageDigestCard from "@/components/StageDigestCard";
+import StageScrapSidebar from "@/components/StageScrapSidebar";
 import styles from "./ProjectDashboard.module.css";
-
-const PAGE_SIZE = 3;
 
 const stageClassMap: Record<StageKey, string> = {
   PLAN: styles.plan,
@@ -32,7 +32,6 @@ const stageClassMap: Record<StageKey, string> = {
 export default function ProjectPage() {
   const params = useParams<{ projectId: string }>();
   const projectId = Number(params.projectId);
-  const router = useRouter();
 
   const { collapsed } = useSidebarState();
 
@@ -45,8 +44,13 @@ export default function ProjectPage() {
   // NOTE: 에러 메시지 표출용
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  // NOTE: 칸반 보드 페이지 인덱스
-  const [pageIndex, setPageIndex] = useState(0);
+  // NOTE: 선택된 stage
+  const [selectedStage, setSelectedStage] = useState<StageKey>("PLAN");
+
+  // NOTE: 요약 갱신 중 상태
+  const [refreshingStages, setRefreshingStages] = useState<Set<StageKey>>(
+    new Set()
+  );
 
   // NOTE: 최초 진입 시 프로젝트 정보 불러오기
   useEffect(() => {
@@ -109,53 +113,51 @@ export default function ProjectPage() {
     };
   }, [projectId]);
 
-  // NOTE: 프로젝트 목록 다시 불러오기
-  const refreshProject = async () => {
-    const res = await projectsApi.getProjects();
-    const found = res.items.find((p) => p.projectId === projectId) ?? null;
-    setProject(found);
-  };
+  // NOTE: Mock에서 stage별 digest 가져오기
+  const stageDigests = useMemo(() => {
+    const digests: Record<StageKey, StageDigest> = {} as Record<
+      StageKey,
+      StageDigest
+    >;
 
-  // NOTE: 프로젝트 수정(PATCH)
-  // const handleUpdateProject = async () => {
-  //   if (!project) return;
+    stages.forEach((stage) => {
+      const mock = mockStageDigests[stage.key];
+      if (mock) {
+        digests[stage.key] = {
+          projectId: mock.project.projectId,
+          projectName: mock.project.projectName,
+          stageKey: stage.key,
+          stageName: stage.name,
+          digest: mock.digest,
+          meta: mock.meta,
+        };
+      }
+    });
 
-  //   try {
-  //     await projectsApi.updateProject(project.projectId, {
-  //       name: "새 프로젝트 이름",
-  //     });
-  //     await refreshProject();
-  //   } catch {
-  //     setErrorMessage("프로젝트 수정에 실패했습니다.");
-  //   }
-  // };
-
-  // NOTE: 프로젝트 삭제(DELETE)
-  // const handleDeleteProject = async () => {
-  //   if (!project) return;
-
-  //   try {
-  //     await projectsApi.deleteProject(project.projectId);
-  //     router.push("/project");
-  //   } catch {
-  //     setErrorMessage("프로젝트 삭제에 실패했습니다.");
-  //   }
-  // };
-
-  // NOTE: 스테이지 페이징
-  const stagePages = useMemo(() => {
-    const pages = [];
-    for (let i = 0; i < stages.length; i += PAGE_SIZE) {
-      pages.push(stages.slice(i, i + PAGE_SIZE));
-    }
-    return pages;
+    return digests;
   }, []);
 
-  const pageCount = stagePages.length;
-  const currentStages = stagePages[pageIndex];
+  // NOTE: 현재 선택된 stage의 스크랩 필터링
+  const currentStageScraps = useMemo(() => {
+    return scraps.filter((scrap) => scrap.stageKey === selectedStage);
+  }, [scraps, selectedStage]);
 
-  const showPrev = pageIndex > 0;
-  const showNext = pageIndex < pageCount - 1;
+  // NOTE: 현재 선택된 stage의 digest
+  const currentDigest = stageDigests[selectedStage];
+
+  // NOTE: 요약 갱신 핸들러 (Mock - 실제로는 API 호출)
+  const handleRefresh = (stageKey: StageKey) => {
+    setRefreshingStages((prev) => new Set(prev).add(stageKey));
+
+    // Mock: 2초 후 갱신 완료
+    setTimeout(() => {
+      setRefreshingStages((prev) => {
+        const next = new Set(prev);
+        next.delete(stageKey);
+        return next;
+      });
+    }, 2000);
+  };
 
   // NOTE: 에러 표시
   if (errorMessage) {
@@ -168,7 +170,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <main className={styles.page}>
+    <main className={clsx(styles.page, collapsed && styles.collapsed)}>
       {/* ================= Header ================= */}
       <header className={styles.header}>
         <div>
@@ -177,85 +179,50 @@ export default function ProjectPage() {
             <p className={styles.projectDescription}>{project.description}</p>
           )}
         </div>
-
-        {/* 헤더 화살표: 항상 렌더링 + CSS로 숨김 */}
-        <div
-          className={clsx(styles.headerNav, collapsed && styles.hidden)}
-        >
-          <button
-            disabled={!showPrev}
-            onClick={() => setPageIndex((p) => p - 1)}
-          >
-            ←
-          </button>
-
-          <span className={styles.headerDivider}>|</span>
-
-          <button
-            disabled={!showNext}
-            onClick={() => setPageIndex((p) => p + 1)}
-          >
-            →
-          </button>
-        </div>
       </header>
 
-      {/* ================= Kanban Board ================= */}
-      <section
-        className={clsx(styles.boardWrapper, collapsed && styles.collapsed)}
-      >
-        {/* ⬅ 보드 이전 화살표 (DOM 유지) */}
-        <button
-          className={clsx(
-            styles.arrow,
-            styles.prev,
-            (!collapsed || !showPrev) && styles.hidden
-          )}
-          onClick={() => setPageIndex((p) => p - 1)}
-        >
-          ←
-        </button>
-
-        <div className={styles.board}>
-          {currentStages.map((stage) => {
-            const stageScraps = scraps.filter(
-              (scrap) => scrap.stageKey === stage.key
-            );
-
-            return (
-              <div
+      {/* ================= Content Area ================= */}
+      <div className={styles.contentWrapper}>
+        {/* ================= Main: Stage Tabs + AI Summary ================= */}
+        <section className={styles.mainSection}>
+          {/* Stage Tabs */}
+          <nav className={styles.stageTabs}>
+            {stages.map((stage) => (
+              <button
                 key={stage.key}
-                className={clsx(styles.column, stageClassMap[stage.key])}
+                className={clsx(
+                  styles.stageTab,
+                  stageClassMap[stage.key],
+                  selectedStage === stage.key && styles.active
+                )}
+                onClick={() => setSelectedStage(stage.key)}
               >
-                <Link
-                  href={`/project/${projectId}/${stage.key}`}
-                  className={styles.columnHeader}
-                >
-                  {stage.name}
-                </Link>
+                {stage.name}
+              </button>
+            ))}
+          </nav>
 
-                <div className={styles.cardList}>
-                  {stageScraps.map((scrap) => (
-                    <ScrapCard key={scrap.scrapId} scrap={scrap} />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+          {/* AI Summary Card */}
+          <div className={styles.digestWrapper}>
+            {currentDigest && (
+              <StageDigestCard
+                digest={currentDigest}
+                onRefresh={() => handleRefresh(selectedStage)}
+                isRefreshing={refreshingStages.has(selectedStage)}
+              />
+            )}
+          </div>
+        </section>
 
-        {/* ➡ 보드 다음 화살표 (DOM 유지) */}
-        <button
-          className={clsx(
-            styles.arrow,
-            styles.next,
-            (!collapsed || !showNext) && styles.hidden
-          )}
-          onClick={() => setPageIndex((p) => p + 1)}
-        >
-          →
-        </button>
-      </section>
+        {/* ================= Right Sidebar: Scrap List ================= */}
+        <StageScrapSidebar
+          scraps={currentStageScraps}
+          stageKey={selectedStage}
+          projectId={projectId}
+          projectName={project.name}
+          stageName={stages.find((s) => s.key === selectedStage)?.name ?? ''}
+        />
+      </div>
     </main>
   );
 }
