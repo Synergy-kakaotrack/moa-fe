@@ -263,7 +263,7 @@ textarea{
 .preview-box {
   min-height: 120px;
 
-  width: calc(100% - 24px);
+  width: calc(100% - 48px);
 
   border-radius: 4.985px;
   border: 0.997px solid #D1D1D1;
