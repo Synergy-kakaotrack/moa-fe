@@ -7,7 +7,7 @@ export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 // NOTE: .env.local의 NEXT_PUBLIC_API_BASE_URL을 읽어 baseUrl로 사용
 // NOTE: 직접 호출 기본값(필요시 환경변수로 덮어씀)
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://43.200.5.190";
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
 const userId = process.env.NEXT_PUBLIC_DEV_USER_ID ?? "1";
 
 // NOTE: 토큰을 localStorage에 저장하는 정책이라면 여기서 꺼내서 Authorization 헤더에 붙입니다.
