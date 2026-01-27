@@ -152,7 +152,11 @@ export default function ProjectSetting({
           <div>
             <button
               className="add-project"
-              onClick={() => setIsCreatingProject(true)}
+              onClick={() => {
+                setNewProjectName("");
+                setNewProjectDesc("");
+                setIsCreatingProject(true);
+              }}
             >
               + 프로젝트 추가
             </button>
@@ -187,7 +191,11 @@ export default function ProjectSetting({
 
           <div className="create-project-actions">
             <button
-              onClick={() => setIsCreatingProject(false)}
+              onClick={() => {
+                setNewProjectName("");
+                setNewProjectDesc("");
+                setIsCreatingProject(false);
+              }}
               className="create-project-button"
             >
               취소
