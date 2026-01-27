@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 import { SidebarProvider } from '@/contexts/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
+import styles from './ClientLayout.module.css';
 
 export default function ClientLayout({
   children,
@@ -11,9 +12,9 @@ export default function ClientLayout({
 }) {
   return (
     <SidebarProvider>
-      <div style={{ display: 'flex', height: '100vh' }}>
+      <div className={styles.container}>
         <Sidebar />
-        <main style={{ flex: 1 }}>{children}</main>
+        <main className={styles.main}>{children}</main>
       </div>
     </SidebarProvider>
   );
