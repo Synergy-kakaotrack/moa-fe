@@ -1,22 +1,26 @@
+import Link from 'next/link';
 import styles from './home.module.css';
-import { IconFolder } from '../icons'; 
+import { IconFolder } from '../icons';
 
 type Props = {
+  projectId: string;
   title: string;
   description: string;
   date: string;
 };
 
-export default function ProjectCard({ title, description, date }: Props) {
+export default function ProjectCard({ projectId, title, description, date }: Props) {
   return (
-    <article className={styles.card} role="button" tabIndex={0}>
-      <div className={styles.cardTitleRow}>
-        <IconFolder className={styles.folderIcon} />
-        <span className={styles.cardTitle}>{title}</span>
-      </div>
+    <Link href={`/project/${projectId}`} className={styles.cardLink}>
+      <article className={styles.card}>
+        <div className={styles.cardTitleRow}>
+          <IconFolder className={styles.folderIcon} />
+          <span className={styles.cardTitle}>{title}</span>
+        </div>
 
-      <p className={styles.cardDesc}>{description}</p>
-      <div className={styles.cardDate}>{date}</div>
-    </article>
+        <p className={styles.cardDesc}>{description}</p>
+        <div className={styles.cardDate}>{date}</div>
+      </article>
+    </Link>
   );
 }
