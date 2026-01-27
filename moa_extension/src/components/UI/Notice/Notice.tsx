@@ -5,7 +5,6 @@ import "./Notice.css";
 
 // 스크랩 안내에 사용될 서비스 링크 목록
 
-
 interface NoticeProps {
   children: React.ReactNode;
 }
