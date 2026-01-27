@@ -84,10 +84,6 @@
   margin-bottom: 10px;
 }
 
-.folderIcon {
-  font-size: var(--font-size-lg);
-}
-
 .cardTitle {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-md);
