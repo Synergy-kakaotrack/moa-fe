@@ -1,6 +1,7 @@
 // src/api/projects.ts
 import { request } from "@/api/http";
 import type { Project } from "@/domain/project";
+import { DEFAULT_FOLDER_COLOR } from "@/constants/projects";
 
 // NOTE: 백엔드 응답이 배열일 수도 있고, { items: [...] } 형태일 수도 있어서 둘 다 수용
 type ProjectsApiResponse = ProjectDto[] | { items: ProjectDto[] };
@@ -25,7 +26,7 @@ function mapProjectFromApi(dto: ProjectDto): Project {
 
     // NOTE: Project 도메인에 필수 필드라면 기본값 채움
     // - 만약 현재 도메인(Project)에 folderColor/updatedAt이 없다면 이 두 줄을 제거하세요.
-    folderColor: dto.folderColor ?? "#87CEEB",
+    folderColor: dto.folderColor ?? DEFAULT_FOLDER_COLOR,
     updatedAt: dto.updatedAt ?? dto.projectUpdatedAt ?? new Date().toISOString(),
   } as Project;
 }
