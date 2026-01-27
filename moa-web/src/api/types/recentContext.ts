@@ -8,7 +8,7 @@
 export interface RecentContextItem {
   projectId: number;
   projectName: string;
-  lastStage: string;
+  description: string;
   lastCapturedAt: string; // ISO 8601
 }
 

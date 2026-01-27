@@ -92,14 +92,105 @@ export default function ProjectPage() {
   }
 
   return (
-    <div>
-      {/* NOTE: 기존 UI가 있다면 아래 영역을 너의 기존 JSX로 교체 */}
-      <h1>{project.name}</h1>
-      <p>{project.description}</p>
+    <main className={styles.page}>
+      {/* ================= Header ================= */}
+      <header className={styles.header}>
+        <div>
+          <h1 className={styles.projectTitle}>{project?.name}</h1>
+          {project?.description && (
+            <p className={styles.projectDescription}>
+              {project.description}
+            </p>
+          )}
+        </div>
 
-      {/* NOTE: PATCH/DELETE 테스트용 버튼 */}
-      <button onClick={handleUpdateProject}>프로젝트 수정</button>
-      <button onClick={handleDeleteProject}>프로젝트 삭제</button>
-    </div>
+        {/* 헤더 화살표: 항상 렌더링 + CSS로 숨김 */}
+        <div
+          className={clsx(
+            styles.headerNav,
+            collapsed && styles.hidden
+          )}
+        >
+          <button
+            disabled={!showPrev}
+            onClick={() => setPageIndex((p) => p - 1)}
+          >
+            ←
+          </button>
+
+          <span className={styles.headerDivider}>|</span>
+
+          <button
+            disabled={!showNext}
+            onClick={() => setPageIndex((p) => p + 1)}
+          >
+            →
+          </button>
+        </div>
+      </header>
+
+      {/* ================= Kanban Board ================= */}
+      <section
+        className={clsx(
+          styles.boardWrapper,
+          collapsed && styles.collapsed
+        )}
+      >
+        {/* ⬅ 보드 이전 화살표 (DOM 유지) */}
+        <button
+          className={clsx(
+            styles.arrow,
+            styles.prev,
+            (!collapsed || !showPrev) && styles.hidden
+          )}
+          onClick={() => setPageIndex((p) => p - 1)}
+        >
+          ←
+        </button>
+
+        <div className={styles.board}>
+          {currentStages.map((stage) => {
+            const stageScraps = scraps.filter(
+              (scrap) => scrap.stageKey === stage.key
+            );
+
+            return (
+              <div
+                key={stage.key}
+                className={clsx(styles.column, stageClassMap[stage.key])}
+              >
+                <Link
+                  href={`/project/${projectId}/${stage.key}`}
+                  className={styles.columnHeader}
+                >
+                  {stage.name}
+                </Link>
+
+                <div className={styles.cardList}>
+                  {stageScraps.map((scrap) => (
+                    <ScrapCard
+                      key={scrap.scrapId}
+                      scrap={scrap}
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ➡ 보드 다음 화살표 (DOM 유지) */}
+        <button
+          className={clsx(
+            styles.arrow,
+            styles.next,
+            (!collapsed || !showNext) && styles.hidden
+          )}
+          onClick={() => setPageIndex((p) => p + 1)}
+        >
+          →
+        </button>
+      </section>
+    </main>
   );
 }

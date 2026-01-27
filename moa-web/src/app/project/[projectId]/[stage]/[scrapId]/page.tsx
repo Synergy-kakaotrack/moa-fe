@@ -14,8 +14,7 @@ import type { Scrap } from '@/domain/scrap';
 import { stages } from '@/constants/stages';
 
 import ScrapBody from '@/components/scrap/ScrapBody';
-import { IconExternalLink } from '@/components/icons';
-import { STAGE_ICON_MAP } from '@/components/icons/stage/iconStageMap';
+import { IconLink, IconFolder } from '@/components/icons';
 
 import styles from './ScrapDetailPage.module.css';
 
@@ -138,7 +137,6 @@ export default function ScrapDetailPage() {
   }
 
   /* ===== Icons ===== */
-  const StageIcon = STAGE_ICON_MAP[scrap.stageKey];
   const AgentIcon = AGENT_ICON_MAP[scrap.agent.toLowerCase()];
 
   /* ===== Handlers ===== */
@@ -157,35 +155,40 @@ export default function ScrapDetailPage() {
 
   return (
     <div className={styles.wrapper}>
-      {/* 이전 화살표 */}
-      <button
-        className={clsx(
-          styles.navArrow,
-          styles.navArrowPrev,
-          !prevScrap && styles.navArrowHidden
-        )}
-        onClick={() => prevScrap && handleNavigate(prevScrap.scrapId)}
-        aria-label="이전 스크랩"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M15 18L9 12L15 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+      {/* 컨텍스트 헤더 */}
+      <div className={styles.contextHeader}>
+        <IconFolder className={styles.folderIcon} />
+        <Link href={`/project/${projectId}`} className={styles.projectLink}>
+          {project?.name ?? '프로젝트'}
+        </Link>
+        <span className={styles.separator}>/</span>
+        <span>{scrap.stageName}</span>
+      </div>
 
-      <article className={styles.article}>
-        {/* 컨텍스트 헤더 */}
-        <div className={styles.contextHeader}>
-          {StageIcon && <StageIcon className={styles.stageIcon} />}
-          <span>
-            {project?.name ?? '프로젝트'} / {scrap.stageName}
-          </span>
-        </div>
+      {/* 메인 콘텐츠 영역 */}
+      <div className={styles.mainContent}>
+        {/* 이전 화살표 */}
+        <button
+          className={clsx(
+            styles.navArrow,
+            styles.navArrowPrev,
+            !prevScrap && styles.navArrowHidden
+          )}
+          onClick={() => prevScrap && handleNavigate(prevScrap.scrapId)}
+          aria-label="이전 스크랩"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M15 18L9 12L15 6"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+
+        <article className={styles.article}>
 
         {/* 헤더: 타이틀 + 메타 */}
         <header className={styles.header}>
@@ -198,44 +201,48 @@ export default function ScrapDetailPage() {
               className={styles.linkIcon}
               aria-label="원문 링크"
             >
-              <IconExternalLink size={18} />
+              <IconLink size={18} />
             </a>
           </div>
 
           <div className={styles.meta}>
-            {AgentIcon && <AgentIcon className={styles.agentIcon} />}
-            <span className={styles.agentName}>{scrap.agent}</span>
-            <span>{formattedDate}</span>
+            <div className={styles.agentRow}>
+              {AgentIcon && <AgentIcon className={styles.agentIcon} />}
+              <span className={styles.agentName}>{scrap.agent}</span>
+            </div>
+            <span className={styles.metaDate}>{formattedDate}</span>
           </div>
         </header>
+        <div className={styles.contentCard}>
+          {/* 메모 */}
+          {scrap.memo && <div className={styles.memo}>{scrap.memo}</div>}
 
-        {/* 메모 */}
-        {scrap.memo && <div className={styles.memo}>{scrap.memo}</div>}
-
-        {/* 본문 */}
-        <ScrapBody content={scrap.content} contentType={scrap.contentType} />
+          {/* 본문 */}
+          <ScrapBody content={scrap.content} contentType={scrap.contentType} />
+        </div>
       </article>
 
-      {/* 다음 화살표 */}
-      <button
-        className={clsx(
-          styles.navArrow,
-          styles.navArrowNext,
-          !nextScrap && styles.navArrowHidden
-        )}
-        onClick={() => nextScrap && handleNavigate(nextScrap.scrapId)}
-        aria-label="다음 스크랩"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M9 6L15 12L9 18"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+        {/* 다음 화살표 */}
+        <button
+          className={clsx(
+            styles.navArrow,
+            styles.navArrowNext,
+            !nextScrap && styles.navArrowHidden
+          )}
+          onClick={() => nextScrap && handleNavigate(nextScrap.scrapId)}
+          aria-label="다음 스크랩"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M9 6L15 12L9 18"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

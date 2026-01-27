@@ -7,7 +7,7 @@ export function mapRecentContextFromApi(response: RecentContextResponse): Recent
   return response.items.map((item) => ({
     projectId: item.projectId,
     name: item.projectName,
-    lastStage: item.lastStage,
+    description: item.description,
     lastCapturedAt: new Date(item.lastCapturedAt),
   }));
 }

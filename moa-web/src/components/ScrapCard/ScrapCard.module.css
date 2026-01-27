@@ -16,7 +16,7 @@
   flex-direction: column;
   gap: var(--spacing-1);
 
-  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
 }
 
 /* ===== variants ===== */
@@ -28,22 +28,26 @@
 
 .kanban:hover {
   box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 
 /* Sidebar 카드 */
 .sidebar {
   padding: 10px 12px;
-  border-radius: var(--radius-sm);
   background: var(--color-bg-card);
 }
 
 .sidebar:hover {
-  background-color: var(--color-bg-subtle);
+  background-color: var(--card-hover-bg, var(--color-bg-subtle));
 }
 
 /* active (우측 사이드바 선택 상태) */
 .active {
-  background-color: var(--color-bg-notice);
+  background-color: var(--card-active-bg, var(--color-bg-notice));
+}
+
+.active:hover {
+  background-color: var(--card-active-bg, var(--color-bg-notice));
 }
 
 /* ===== contents ===== */

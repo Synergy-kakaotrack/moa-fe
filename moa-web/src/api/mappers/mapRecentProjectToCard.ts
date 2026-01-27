@@ -17,7 +17,7 @@ export function mapRecentProjectToCard(project: RecentProject): ProjectCardProps
   return {
     id: String(project.projectId),
     title: project.name,
-    description: `마지막 작업: ${project.lastStage}`,
+    description: project.description,
     date: formatDate(project.lastCapturedAt),
   };
 }
