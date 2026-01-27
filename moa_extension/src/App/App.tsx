@@ -21,11 +21,11 @@ import { saveUIDraft, getUIDraft, clearUIDraft } from "../utils/uiDraftStorage";
 
 import { getProjects } from "../api/projectApi";
 import { createDraft, commitDraft } from "../api/draftApi";
-import { textToRawHtml } from "../utils/textToRawHtml";
 
 //Types
 interface RawScrapPayload {
   text: string;
+  rawHtml?: string;
   url?: string;
   createdAt?: number;
   dragSessionId?: number;
@@ -195,7 +195,7 @@ export default function App() {
 
       if(step === "PROJECT_SETTING") return;
 
-      const { text, url, createdAt, dragSessionId } = message.payload;
+      const { text, rawHtml, url, createdAt, dragSessionId } = message.payload;
       const source = detectAISource(url);
 
       let added = false;
@@ -236,6 +236,7 @@ export default function App() {
           {
             id: Date.now(),
             texts: [text],
+            rawHtmls: rawHtml ? [rawHtml] : [],
             meta: { source, url },
             createdAt: createdAt ?? Date.now(),
             status: "DRAFT",
@@ -294,11 +295,9 @@ export default function App() {
       alert("프로젝트를 선택해주세요");
       return;
     }
-    const rawText = scraps
-      .flatMap(scrap => scrap.texts)
-      .join("\n\n");
-      
-    const rawHtml = textToRawHtml(rawText)
+    const rawHtml = scraps
+      .flatMap(scrap => scrap.rawHtmls ?? [])
+      .join("<hr/>");
 
     await commitDraft(draftId, {
       projectId: selectedProjectId,
@@ -416,6 +415,21 @@ export default function App() {
     resetToInitialState();
   };
 
+  const handleDeleteScrap = (scrapId: number) => {
+    setScraps((prev) => {
+      const nextScraps = prev.filter(
+        (scrap) => scrap.id !== scrapId
+      );
+
+      if (nextScraps.length === 0) {
+        setStep("EMPTY");
+      }
+
+      return nextScraps;
+    });
+  };
+
+
   //render 
   const displayProjectName =
     projects.find(p => p.projectId === selectedProjectId)?.name
@@ -431,6 +445,7 @@ export default function App() {
                   scraps={scraps} 
                   setScraps={setScraps}
                   highlightScrapId={highlightScrapId}
+                  onDelete={handleDeleteScrap}
                   />;
 
       case "PROJECT_SETTING":

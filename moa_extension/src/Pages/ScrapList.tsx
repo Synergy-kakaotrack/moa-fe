@@ -18,9 +18,10 @@ interface ScrapListProps {
   scraps: Scrap[];
   setScraps: React.Dispatch<React.SetStateAction<Scrap[]>>;
   highlightScrapId: number | null;
+  onDelete: (scrapId: number) => void;
 }
 
-export default function ScrapList({ scraps, setScraps, highlightScrapId }: ScrapListProps) {
+export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelete }: ScrapListProps) {
 
   // 드래그 끝났을 때 순서 변경
   const handleDragEnd = (event: DragEndEvent) => {
@@ -34,11 +35,6 @@ export default function ScrapList({ scraps, setScraps, highlightScrapId }: Scrap
 
       return arrayMove(prev, oldIndex, newIndex);
     });
-  };
-
-  // 스크랩 삭제
-  const handleDelete = (id: number) => {
-    setScraps((prev) => prev.filter((scrap) => scrap.id !== id));
   };
 
   return (
@@ -68,7 +64,7 @@ export default function ScrapList({ scraps, setScraps, highlightScrapId }: Scrap
                 key={scrap.id}
                 scrap={scrap}
                 index={index + 1}
-                onDelete={handleDelete}
+                onDelete={onDelete}
                 highlighted={scrap.id === highlightScrapId}
               />
             ))}

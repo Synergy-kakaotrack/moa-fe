@@ -18,7 +18,8 @@
         "https://claude.ai/*",
         "https://gemini.google.com/*"
       ],
-      "js": ["contentScript.js"]
+      "js": ["contentScript.js"],
+      "all_frames": true
     }
   ],
 
