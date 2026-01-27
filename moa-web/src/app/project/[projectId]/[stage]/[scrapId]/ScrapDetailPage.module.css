@@ -52,11 +52,11 @@
 }
 
 .navArrowPrev {
-  left: calc(50% - 320px - 56px);
+  left: calc(50% - 320px - 80px);
 }
 
 .navArrowNext {
-  right: calc(50% - 320px - 56px);
+  right: calc(50% - 320px - 80px);
 }
 
 .navArrowHidden {
@@ -103,8 +103,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: var(--spacing-3);
-  margin-bottom: var(--spacing-3);
+  margin-top: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
   flex-shrink: 0;
 }
 
@@ -163,21 +163,12 @@
 
 .memo {
   position: relative;
+  isolation: isolate;
+  --memo-radius: var(--radius-sm);
   padding: var(--spacing-2) var(--spacing-3);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-sm);
+  border-radius: var(--memo-radius);
   font-size: 15px;
   line-height: 1.6;
-  z-index: 0;
-}
-
-.memo::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 2px;
-  border-radius: inherit;
-  border: 2px;
   background: linear-gradient(
     80deg,
     #B5CCEE 0%,
@@ -186,18 +177,15 @@
     #EFF0A4 65%,
     #F89D9C 100%
   );
+}
 
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-
+.memo::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--color-bg-card);
+  border-radius: calc(var(--memo-radius) - 2px);
   z-index: -1;
-
-  mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
 }
 
 /* ===== Body ===== */
@@ -209,24 +197,53 @@
 }
 
 
+.contentScroll {
+  position: relative;
+  flex: 1; /* 남은 영역 차지 */
+  min-height: 0; /* flex child 스크롤을 위해 필요 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  overscroll-behavior: contain; /* 스크롤 튕김 방지 */
+  padding-right: var(--spacing-2); /* 스크롤바 외부 공간 */
+  box-sizing: border-box;
+  scrollbar-color: var(--color-border-muted) transparent;
+}
+
+.contentScroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.contentScroll::-webkit-scrollbar-thumb {
+  background: var(--color-border-muted);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.contentScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .contentCard {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-3);
 
-  flex: 1; /* 남은 영역 차지 */
-  min-height: 0; /* flex child 스크롤을 위해 필요 */
   background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-3);
-
-  overflow-y: auto; /* 스크롤 활성화 */
-  overscroll-behavior: contain; /* 스크롤 튕김 방지 */
+  border-radius: 0;
 }
+
 .scrollBody {
   flex: 1;
-  overflow-y: auto;
+}
 
-  padding-right: var(--spacing-2); /* 스크롤바 여백 */
+/* ===== Error Message ===== */
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
 }

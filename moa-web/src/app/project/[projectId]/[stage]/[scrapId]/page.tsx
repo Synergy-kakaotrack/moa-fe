@@ -33,6 +33,13 @@ AGENT_ICON_MAP['chatgpt'] = IconChatGPT;
 AGENT_ICON_MAP['gpt'] = IconChatGPT;
 AGENT_ICON_MAP['gemini'] = IconGemini;
 
+/* ================= Cache (모듈 레벨) ================= */
+
+// NOTE: 페이지 재마운트 시에도 유지되는 캐시
+const projectCache = new Map<number, Project>();
+const stageScrapsCache = new Map<string, Scrap[]>();
+const scrapCache = new Map<number, ScrapDetail>();
+
 /* ================= Page ================= */
 
 export default function ScrapDetailPage() {
@@ -48,72 +55,110 @@ export default function ScrapDetailPage() {
   const numericProjectId = Number(projectId);
   const stageName = stages.find((s) => s.key === stage)?.name ?? stage;
 
-  const [scrap, setScrap] = useState<ScrapDetail | null>(null);
-  const [stageScraps, setStageScraps] = useState<Scrap[]>([]);
-  const [project, setProject] = useState<Project | null>(null);
+  // NOTE: 캐시에서 초기값 가져오기 (깜빡임 방지)
+  const cachedProject = projectCache.get(numericProjectId);
+  const cacheKey = `${numericProjectId}-${stageName}`;
+  const cachedStageScraps = stageScrapsCache.get(cacheKey);
+  const cachedScrap = scrapCache.get(numericScrapId);
+
+  const [scrap, setScrap] = useState<ScrapDetail | null>(cachedScrap ?? null);
+  const [stageScraps, setStageScraps] = useState<Scrap[]>(cachedStageScraps ?? []);
+  const [project, setProject] = useState<Project | null>(cachedProject ?? null);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  /* ===== 현재 스크랩 ===== */
+  /* ===== 프로젝트 정보 (projectId가 바뀔 때만) ===== */
   useEffect(() => {
-    if (!numericScrapId || !numericProjectId) {
-      setErrorMessage('잘못된 경로입니다.');
+    if (!numericProjectId) return;
+
+    // NOTE: 캐시가 있으면 API 호출 스킵
+    if (projectCache.has(numericProjectId)) {
+      setProject(projectCache.get(numericProjectId)!);
       return;
     }
 
     let isMounted = true;
-
-    const load = async () => {
-      try {
-        const detail = await getScrapDetail(numericScrapId);
-        if (isMounted) {
-          setScrap(detail);
+    projectsApi
+      .getProjects()
+      .then((res) => {
+        if (!isMounted) return;
+        const found =
+          res.items.find((p) => p.projectId === numericProjectId) ?? null;
+        if (found) {
+          projectCache.set(numericProjectId, found);
         }
-      } catch {
-        if (isMounted) {
-          setErrorMessage('스크랩을 불러오지 못했습니다.');
-        }
-        return;
-      }
-
-      try {
-        const res = await getScraps({
-          projectId: numericProjectId,
-          stage: stageName,
-        });
-        if (isMounted) {
-          const sorted = res.items.sort(
-            (a, b) =>
-              new Date(b.capturedAt).getTime() -
-              new Date(a.capturedAt).getTime()
-          );
-          setStageScraps(sorted);
-        }
-      } catch {
-        if (isMounted) {
-          setStageScraps([]);
-        }
-      }
-
-      try {
-        const res = await projectsApi.getProjects();
-        if (isMounted) {
-          const found =
-            res.items.find((p) => p.projectId === numericProjectId) ?? null;
-          setProject(found);
-        }
-      } catch {
-        if (isMounted) {
-          setProject(null);
-        }
-      }
-    };
-
-    load();
+        setProject(found);
+      })
+      .catch(() => {
+        if (isMounted) setProject(null);
+      });
 
     return () => {
       isMounted = false;
     };
-  }, [numericScrapId, numericProjectId, stage]);
+  }, [numericProjectId]);
+
+  /* ===== 스테이지 스크랩 목록 (projectId, stage가 바뀔 때만) ===== */
+  useEffect(() => {
+    if (!numericProjectId || !stageName) return;
+
+    const key = `${numericProjectId}-${stageName}`;
+
+    // NOTE: 캐시가 있으면 API 호출 스킵
+    if (stageScrapsCache.has(key)) {
+      setStageScraps(stageScrapsCache.get(key)!);
+      return;
+    }
+
+    let isMounted = true;
+    getScraps({ projectId: numericProjectId, stage: stageName })
+      .then((res) => {
+        if (!isMounted) return;
+        const sorted = res.items.sort(
+          (a, b) =>
+            new Date(b.capturedAt).getTime() - new Date(a.capturedAt).getTime()
+        );
+        stageScrapsCache.set(key, sorted);
+        setStageScraps(sorted);
+      })
+      .catch(() => {
+        if (isMounted) setStageScraps([]);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [numericProjectId, stageName]);
+
+  /* ===== 스크랩 상세 (scrapId가 바뀔 때만) ===== */
+  useEffect(() => {
+    if (!numericScrapId) {
+      setErrorMessage('잘못된 경로입니다.');
+      return;
+    }
+
+    // NOTE: 캐시가 있으면 바로 표시 (깜빡임 방지)
+    if (scrapCache.has(numericScrapId)) {
+      setScrap(scrapCache.get(numericScrapId)!);
+      setErrorMessage('');
+      return;
+    }
+
+    let isMounted = true;
+    getScrapDetail(numericScrapId)
+      .then((detail) => {
+        if (!isMounted) return;
+        scrapCache.set(numericScrapId, detail);
+        setScrap(detail);
+        setErrorMessage('');
+      })
+      .catch(() => {
+        if (isMounted) setErrorMessage('스크랩을 불러오지 못했습니다.');
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [numericScrapId]);
 
   /* ===== 같은 stage의 스크랩 리스트 (정렬) ===== */
   const { prevScrap, nextScrap } = useMemo(() => {
@@ -129,16 +174,8 @@ export default function ScrapDetailPage() {
     };
   }, [stageScraps, numericScrapId]);
 
-  if (errorMessage) {
-    return <div>{errorMessage}</div>;
-  }
-
-  if (!scrap) {
-    return <div>Loading...</div>;
-  }
-
   /* ===== Icons ===== */
-  const AgentIcon = AGENT_ICON_MAP[scrap.agent.toLowerCase()];
+  const AgentIcon = scrap ? AGENT_ICON_MAP[scrap.agent.toLowerCase()] : null;
 
   /* ===== Handlers ===== */
   const handleNavigate = (targetScrapId: number) => {
@@ -146,24 +183,26 @@ export default function ScrapDetailPage() {
   };
 
   /* ===== Date Format ===== */
-  const formattedDate = new Date(scrap.capturedAt).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const formattedDate = scrap
+    ? new Date(scrap.capturedAt).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : '';
 
   return (
     <div className={styles.wrapper}>
-      {/* 컨텍스트 헤더 */}
+      {/* 컨텍스트 헤더 - 항상 표시 */}
       <div className={styles.contextHeader}>
         <IconFolder className={styles.folderIcon} />
         <Link href={`/project/${projectId}`} className={styles.projectLink}>
           {project?.name ?? '프로젝트'}
         </Link>
         <span className={styles.separator}>/</span>
-        <span>{scrap.stageName}</span>
+        <span>{stageName}</span>
       </div>
 
       {/* 메인 콘텐츠 영역 */}
@@ -189,39 +228,47 @@ export default function ScrapDetailPage() {
           </svg>
         </button>
 
-        <article className={styles.article}>
+        {/* 스크랩 본문 영역 */}
+        {errorMessage ? (
+          <article className={styles.article}>
+            <div className={styles.errorMessage}>{errorMessage}</div>
+          </article>
+        ) : scrap ? (
+          <article className={styles.article}>
+            {/* 헤더: 타이틀 + 메타 */}
+            <header className={styles.header}>
+              <div className={styles.titleRow}>
+                <h1 className={styles.title}>{scrap.subtitle}</h1>
+                <a
+                  href={scrap.aiSourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.linkIcon}
+                  aria-label="원문 링크"
+                >
+                  <IconLink size={18} />
+                </a>
+              </div>
 
-        {/* 헤더: 타이틀 + 메타 */}
-        <header className={styles.header}>
-          <div className={styles.titleRow}>
-            <h1 className={styles.title}>{scrap.subtitle}</h1>
-            <a
-              href={scrap.aiSourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.linkIcon}
-              aria-label="원문 링크"
-            >
-              <IconLink size={18} />
-            </a>
-          </div>
+              <div className={styles.meta}>
+                <div className={styles.agentRow}>
+                  {AgentIcon && <AgentIcon className={styles.agentIcon} />}
+                  <span className={styles.agentName}>{scrap.agent}</span>
+                </div>
+                <span className={styles.metaDate}>{formattedDate}</span>
+              </div>
+            </header>
+            <div className={styles.contentScroll}>
+              <div className={styles.contentCard}>
+                {/* 메모 */}
+                {scrap.memo && <div className={styles.memo}>{scrap.memo}</div>}
 
-          <div className={styles.meta}>
-            <div className={styles.agentRow}>
-              {AgentIcon && <AgentIcon className={styles.agentIcon} />}
-              <span className={styles.agentName}>{scrap.agent}</span>
+                {/* 본문 */}
+                <ScrapBody content={scrap.content} contentType={scrap.contentType} />
+              </div>
             </div>
-            <span className={styles.metaDate}>{formattedDate}</span>
-          </div>
-        </header>
-        <div className={styles.contentCard}>
-          {/* 메모 */}
-          {scrap.memo && <div className={styles.memo}>{scrap.memo}</div>}
-
-          {/* 본문 */}
-          <ScrapBody content={scrap.content} contentType={scrap.contentType} />
-        </div>
-      </article>
+          </article>
+        ) : null}
 
         {/* 다음 화살표 */}
         <button

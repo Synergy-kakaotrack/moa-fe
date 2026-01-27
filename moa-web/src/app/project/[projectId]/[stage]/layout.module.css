@@ -3,6 +3,9 @@
   height: 100vh;
   overflow: hidden;
   overscroll-behavior: none;
+  padding: var(--spacing-2);
+  gap: var(--spacing-2);
+  box-sizing: border-box;
 }
 
 /* ===== Main ===== */
@@ -10,13 +13,14 @@
 .main {
   flex: 1;
   overflow: hidden;
+  border-radius: var(--radius-md);
 }
 
 /* ===== Sidebar ===== */
 
 .sidebar {
-  width: 270px;
-  border-left: 1px solid var(--color-border-subtle);
+  width: 260px;
+  border-radius: var(--radius-md);
   padding: var(--spacing-2);
   display: flex;
   flex-direction: column;
@@ -50,52 +54,58 @@
   background: rgba(181, 204, 238, 0.3);
   --card-hover-bg: rgba(181, 204, 238, 0.6);
   --card-active-bg: rgba(181, 204, 238, 0.7);
+  --stage-color: rgba(100, 140, 190, 1);
 }
 .plan .sidebarTitle {
-  color: rgba(100, 140, 190, 1);
+  color: var(--stage-color);
 }
 
 .research {
   background: rgba(181, 204, 238, 0.5);
   --card-hover-bg: rgba(181, 204, 238, 0.75);
   --card-active-bg: rgba(181, 204, 238, 0.85);
+  --stage-color: rgba(80, 120, 170, 1);
 }
 .research .sidebarTitle {
-  color: rgba(80, 120, 170, 1);
+  color: var(--stage-color);
 }
 
 .design {
   background: var(--color-border-subtle);
   --card-hover-bg: rgba(161, 184, 218, 0.7);
   --card-active-bg: rgba(213, 230, 255, 0.85);
+  --stage-color: rgba(60, 100, 150, 1);
 }
 .design .sidebarTitle {
-  color: rgba(60, 100, 150, 1);
+  color: var(--stage-color);
 }
 
 .implement {
   background: rgba(239, 240, 164, 0.5);
   --card-hover-bg: rgba(239, 240, 164, 0.8);
   --card-active-bg: rgba(239, 240, 164, 1);
+  --stage-color: rgba(140, 142, 80, 1);
 }
 .implement .sidebarTitle {
-  color: rgba(140, 142, 80, 1);
+  color: var(--stage-color);
 }
 
 .test {
   background: var(--color-accent-primary);
   --card-hover-bg: rgba(219, 220, 134, 1);
   --card-active-bg: rgb(222, 224, 139);
+  --stage-color: rgba(120, 122, 60, 1);
 }
 .test .sidebarTitle {
-  color: rgba(120, 122, 60, 1);
+  color: var(--stage-color);
 }
 
 .etc {
   background: var(--color-border-muted);
   --card-hover-bg: rgba(189, 189, 189, 0.7);
   --card-active-bg: rgba(169, 169, 169, 0.85);
+  --stage-color: rgba(100, 100, 100, 1);
 }
 .etc .sidebarTitle {
-  color: rgba(100, 100, 100, 1);
+  color: var(--stage-color);
 }

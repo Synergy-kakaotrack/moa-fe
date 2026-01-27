@@ -71,6 +71,7 @@ export default function Sidebar() {
       {/* 프로젝트 */}
       {!collapsed && (
         <div className={styles.projects}>
+          <p className={styles.projectsLabel}>프로젝트</p>
           <ProjectList />
         </div>
       )}

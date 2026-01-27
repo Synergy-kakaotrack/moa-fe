@@ -69,24 +69,25 @@ export default function ProjectPage() {
     };
   }, [projectId]);
 
-  // NOTE: 모든 스테이지의 스크랩 목록 불러오기
+  // NOTE: 모든 스테이지의 스크랩 목록 불러오기 (병렬 요청)
   useEffect(() => {
     let isMounted = true;
 
     const fetchAllScraps = async () => {
       try {
-        const allScraps: Scrap[] = [];
-
-        // NOTE: 각 스테이지별로 스크랩 가져오기
-        for (const stage of stages) {
-          const res = await scrapsApi.getScraps({
-            projectId,
-            stage: stage.name,
-          });
-          allScraps.push(...res.items);
-        }
+        // NOTE: 모든 스테이지 API를 병렬로 호출
+        const results = await Promise.all(
+          stages.map((stage) =>
+            scrapsApi
+              .getScraps({ projectId, stage: stage.name })
+              .catch(() => ({ items: [], nextCursor: null }))
+          )
+        );
 
         if (!isMounted) return;
+
+        // NOTE: 결과 합치기
+        const allScraps = results.flatMap((res) => res.items);
 
         // NOTE: capturedAt 기준 내림차순 정렬
         allScraps.sort(
@@ -161,9 +162,9 @@ export default function ProjectPage() {
     return <div>{errorMessage}</div>;
   }
 
-  // NOTE: 로딩 표시
+  // NOTE: 로딩 중에는 아무것도 표시하지 않음 (이전 화면 유지)
   if (!project) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
