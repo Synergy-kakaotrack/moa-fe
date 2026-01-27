@@ -1,11 +1,13 @@
 // next.config.js
 /** @type {import('next').NextConfig} */
+const API_BASE_URL = process.env.API_BASE_URL || "http://43.200.5.190";
+
 const nextConfig = {
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: "http://43.200.5.190/api/:path*",
+        destination: `${API_BASE_URL}/api/:path*`,
       },
     ];
   },
