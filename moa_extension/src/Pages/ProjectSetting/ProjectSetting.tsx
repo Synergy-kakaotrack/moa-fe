@@ -101,6 +101,7 @@ export default function ProjectSetting({
 
           <div>
             <select
+              className="project-select"
               value={selectedProjectId ?? ""}
               onChange={(e) => {
                 const id = Number(e.target.value);

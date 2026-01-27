@@ -2,15 +2,39 @@
   padding: 7px;
 }
 
+.project {
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
 .form-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+.project-select {
+  margin-left: 24px;
+  margin-right: 24px;
+
+  width: calc(100% - 48px);
+  height: 40px;
+}
+
 .label {
   font-size: 14px;
   font-weight: 600;
+  
+  color: var(--color-text-primary, #212121);
+  font-family: Pretendard;
+  font-size: 13.353px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  align-self: stretch;
+
+  margin-left: 24px;
 }
 
 input,

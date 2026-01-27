@@ -20,7 +20,6 @@ export default function Save({
     projectName,
     workStep,
   }: SaveProps){
-
   return (
     <div className="project-setting">
             <div className="project">

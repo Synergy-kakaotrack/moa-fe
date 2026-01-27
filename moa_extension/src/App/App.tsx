@@ -21,6 +21,7 @@ import { saveUIDraft, getUIDraft, clearUIDraft } from "../utils/uiDraftStorage";
 
 import { getProjects } from "../api/projectApi";
 import { createDraft, commitDraft } from "../api/draftApi";
+import { textToRawHtml } from "../utils/textToRawHtml";
 
 //Types
 interface RawScrapPayload {
@@ -293,9 +294,11 @@ export default function App() {
       alert("프로젝트를 선택해주세요");
       return;
     }
-    const rawHtml = scraps
-      .map(s => s.texts.join("<br/>"))
-      .join("<hr/>");
+    const rawText = scraps
+      .flatMap(scrap => scrap.texts)
+      .join("\n\n");
+      
+    const rawHtml = textToRawHtml(rawText)
 
     await commitDraft(draftId, {
       projectId: selectedProjectId,
