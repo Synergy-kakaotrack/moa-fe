@@ -81,7 +81,7 @@ export default function ProjectPage() {
         for (const stage of stages) {
           const res = await scrapsApi.getScraps({
             projectId,
-            stage: stage.key,
+            stage: stage.name,
           });
           allScraps.push(...res.items);
         }

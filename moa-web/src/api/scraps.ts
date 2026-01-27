@@ -52,11 +52,21 @@ export async function getScraps(
     cursor: req.cursor ?? undefined,
   });
 
-  const res = await request<{ items: ScrapDto[]; nextCursor: string | null }>(
-    `/api/scraps${query}`,
-    "GET"
-  );
-  return { items: res.items.map(mapScrapFromApi), nextCursor: res.nextCursor };
+  try {
+    const res = await request<{ items: ScrapDto[]; nextCursor: string | null }>(
+      `/api/scraps${query}`,
+      "GET"
+    );
+    return {
+      items: res.items.map(mapScrapFromApi),
+      nextCursor: res.nextCursor,
+    };
+  } catch (err) {
+    if (err instanceof Error && err.message.includes("API Error 404")) {
+      return { items: [], nextCursor: null };
+    }
+    throw err;
+  }
 }
 
 /**
