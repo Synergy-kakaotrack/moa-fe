@@ -18,6 +18,11 @@ export default function ScrapList({ scraps, setScraps, highlightScrapId }: Scrap
     <div 
       style={{
         padding: "12px",
+        borderRadius: "5px",
+        border: "1px solid rgba(0, 0, 0, 0.20)",
+        margin: "8px",
+        height: "66.5vh",
+        overflowY: "auto",
       }}
     >
       {/* 스크랩 리스트 */}

@@ -99,6 +99,41 @@ export default function App() {
     setProjects(res.items);
   }
 
+  //모두 지우기 - 상태리셋함수
+  const resetToInitialState = () => {
+    // storage
+    clearScraps();
+    clearUIDraft();
+
+    // refs
+    currentScrapIdRef.current = null;
+    transitionLockRef.current = false;
+
+    // scraps
+    setScraps([]);
+    setHighlightScrapId(null);
+
+    // step
+    setStep("EMPTY");
+
+    // draft / recommendation
+    setDraftId(null);
+    setSelectedProjectId(null);
+    setRecProjectId(null);
+    setRecStage(null);
+    setRecTitle(null);
+
+    // project input
+    setTitle("");
+    setMemo("");
+    setProjectName("Capstone Design");
+    setWorkStep("기획");
+
+    // loading
+    setIsScrapLoading(false);
+  };
+
+
   /* ======================
      초기 scrap 로드
   ====================== */
@@ -375,12 +410,7 @@ export default function App() {
 
   const handleClearScrap = () => {
     if (transitionLockRef.current) return;
-
-    clearScraps();
-    clearUIDraft();
-    currentScrapIdRef.current = null;
-    setScraps([]);
-    setStep("EMPTY");
+    resetToInitialState();
   };
 
   //render 
