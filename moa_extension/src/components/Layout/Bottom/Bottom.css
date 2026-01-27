@@ -5,18 +5,39 @@
 
   display: flex;
   gap: 8px;
-  padding: 5px;
+  padding-top: 16px;
+  padding-left: 17px;
+  padding: 17px;
 
   background-color: #fff;
   border-top: 1px solid #fff;
   z-index: 1000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .bottom-button {
-  flex: 1;
-  padding: 12px 0;
-  border-radius: 6px;
-  border: 0;
+  color: var(--color-text-primary, #212121);
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  width: 153px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  padding-top: 11px;
+  padding-bottom:11px;
 }
 
 .bottom-button.disabled,
@@ -28,35 +49,45 @@
 
 /* 버튼 역할만 유지 */
 .bottom-clear {
-  border: 1px solid #111;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.50);
   background-color: #fff;
 }
   
 .bottom-clear:hover {
-  background-color: #EFF0A4; /* 조금 더 진한 회색 */
+  background-color: #EFF0A4;
   color: #000;
   border: 0;
 }
 
 .bottom-submit {
-  color: rgb(0, 0, 0);
-  background-color: #EFF0A4;
+  border-radius: 6px;
+  background: #EFF0A4;
+  color: var(--color-text-primary);
+  border: none;
 }
 
 .bottom-submit.disabled {
-  background-color: #D1D1D1; /* 회색 */
   color: #ffffff;
   cursor: not-allowed;
+
+  border-radius: 6px;
+  background: var(--color-border-muted, #D1D1D1);
+  border: none;
   
 }
 
 .bottom-submit.loading {
-  background-color: #D1D291; /* 연한 초록 */
+  border-radius: 6px;
+  background: var(--color-accent-secondary, #D1D291);
   color: white;
   cursor: wait;
 }
 
-.buttom-clear.disabled {
-  opacity: 0.5;
+.bottom-clear.disabled {
   cursor: not-allowed;
+  border-radius: 6px;
+  background: var(--color-border-muted, #D1D1D1);
+  border: none;
+  color: #fff;
 }

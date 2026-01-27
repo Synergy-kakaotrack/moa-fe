@@ -1,45 +1,70 @@
 .guide-box {
-  margin: 16px;
-  padding: 18px 20px;
+  border-radius: 5px;
+  border: 1px solid var(--color-text-primary, #212121);
+  background: #FFF;
 
-  border: 2px solid #111;
-  border-radius: 14px;
+  height: 150px;
 
-  background-color: #fff;
+  margin-top: 21px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 /* 한 줄 */
+.guide-numberstexts {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 27px;
+  margin-bottom: 27px;
+  margin-left: 22px;
+  margin-right: 52px;
+
+  gap: 6px;
+}
+
 .guide-item {
+  gap: 5px;
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+
 }
 
 /* 줄 간격 */
 .guide-item + .guide-item {
-  margin-top: 12px;
+  margin-top: 6.5px;
 }
 
 /* 번호 원 */
 .guide-number {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-text-primary, #212121);
 
   display: flex;
-  align-items: center;
+  width: 15px;
+  height: 15px;
+  
   justify-content: center;
-
-  border-radius: 50%;
-  background-color: #111;
+  align-items: center;
   color: #fff;
+  font-size: 8px;
+  font-weight: 600;
+
+  flex-shrink: 0;
+  margin-right: 8px;
 }
 
 /* 설명 텍스트 */
 .guide-text {
-  line-height: 1.5;
-}
+  flex: 1;
+  color: var(--color-text-primary, #212121);
 
-.index-text {
-  text-align: center;
+  /* text/body/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 14px;
+
+  max-width: 260px;
+  word-break: keep-all;
 }

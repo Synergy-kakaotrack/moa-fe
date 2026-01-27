@@ -20,21 +20,95 @@
   margin-bottom: 6px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.scrap-sort-icon {
+  fill: var(--color-background-point, linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), #B5CCEE);
+
+  display: inline-flex;
+  width: 12px;
+  height: 13px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-right: 7px;
+  outline: none;
+  cursor: grab;
+}
+
+.scrap-sort-icon:focus {
+  outline: none;
+  cursor: grabbing;
+}
+
+.scrap-number-bar {
+  stroke-width: 1px;
+  stroke: var(--color-text-primary, #212121);
+
+  width: 3px;
+  height: 12px;
+  margin-left: 6px;
+}
+
+.scrap-delete {
+  width: 9px;
+  height: 10.432px;
+
+  fill: var(--color-background-point, linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), #B5CCEE);
+
+  border: none;
+  background: none;
+}
+
 .scrap-text {
-  font-size: 14px;
-  line-height: 1.5;
   white-space: pre-wrap; /* 줄바꿈 유지 */
   overflow: hidden;
+
+  color: var(--color-text-primary, #212121);
+
+  /* text/body/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px; /* 116.667% */
+  padding-left: 20px;
 }
 
 .scrap-footer {
-  margin-top: 6px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1px;
 }
 
 .scrap-toggle {
   background: none;
   border: none;
-  padding: 0;
-  font-size: 12px;
   cursor: pointer;
+
+  color: var(--color-action-primary, #3582F0);
+
+  /* text/action/xs */
+  font-family: Pretendard;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 12px;
+
+  justify-content: center;
+  white-space: nowrap;
+
+  display: inline-flex;
+  align-items: center;
+
+  gap: 2px;
+}
+.scrap-toggle svg {
+  display: block;
+  position: relative;
+  top: 1px;
 }

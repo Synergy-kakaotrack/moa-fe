@@ -1,11 +1,36 @@
-import MarkdownIt from "markdown-it";
-
-const md = new MarkdownIt({
-  html: false,       // HTML 직접 입력 방지 (보안)
-  breaks: true,      // 줄바꿈 → <br>
-  linkify: true,     // URL 자동 링크
-});
+// utils/text/textToRawHtml.tsx
 
 export function textToRawHtml(text: string): string {
-  return md.render(text);
+  if (!text) return "";
+
+  const blocks = text.split("\n\n");
+
+  return blocks
+    .map(block => {
+      const t = block.trim();
+      if (!t) return "";
+
+      if (isCodeLike(t)) {
+        return `<pre><code>${escapeHtml(t)}</code></pre>`;
+      }
+
+      return `<p>${escapeHtml(t)}</p>`;
+    })
+    .join("");
+}
+
+function isCodeLike(text: string): boolean {
+  return (
+    text.includes("=>") ||
+    text.includes("();") ||
+    text.includes("{") ||
+    text.includes("}")
+  );
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }

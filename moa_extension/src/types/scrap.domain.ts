@@ -14,7 +14,7 @@ export interface Scrap {
   createdAt: number;
   status: ScrapStatus;
 
-  rawHtml?: string;
+  rawHtmls?: string[];
   finalizedAt?: number;
 
   dragSessionId: number;

@@ -2,15 +2,76 @@
   padding: 7px;
 }
 
+.project {
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-left: 24px;
+}
+
+.step {
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-left: 24px;
+}
+
+.title {
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-left: 24px;
+}
+
+.memo {
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-left: 24px;
+}
+
+.preview {
+  gap: 10px;
+  margin-bottom: 18px;
+  margin-left: 24px;
+}
+
 .form-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+.project-select {
+  margin-right: 24px;
+
+  width: calc(100% - 24px);
+  height: 40px;
+}
+
 .label {
   font-size: 14px;
   font-weight: 600;
+  
+  color: var(--color-text-primary, #212121);
+  font-family: Pretendard;
+  font-size: 13.353px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
+  align-self: stretch;
+  margin-bottom: 6px;
+}
+
+.add-project {
+  color: var(--color-action-primary, #3582F0);
+
+  /* text/guide/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px; /* 116.667% */
+
+  border: none;
+  background: none;
 }
 
 input,
@@ -19,6 +80,8 @@ select {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ddd;
+
+  width: calc(100% - 24px);
 }
 
 .preview-box {
@@ -44,8 +107,16 @@ input.error {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
 
   border-radius: 25px;
   background: #EFF0A4;
+  margin-left: 4px;
+  align-items: center;
+}
+
+.ai-badge svg {
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
 }

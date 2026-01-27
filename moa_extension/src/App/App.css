@@ -32,7 +32,6 @@ html, body {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 96px;
   height: 100%;
 }
 .empty-wrapper {

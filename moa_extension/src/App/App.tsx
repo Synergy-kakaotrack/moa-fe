@@ -25,6 +25,7 @@ import { createDraft, commitDraft } from "../api/draftApi";
 //Types
 interface RawScrapPayload {
   text: string;
+  rawHtml?: string;
   url?: string;
   createdAt?: number;
   dragSessionId?: number;
@@ -99,6 +100,41 @@ export default function App() {
     setProjects(res.items);
   }
 
+  //모두 지우기 - 상태리셋함수
+  const resetToInitialState = () => {
+    // storage
+    clearScraps();
+    clearUIDraft();
+
+    // refs
+    currentScrapIdRef.current = null;
+    transitionLockRef.current = false;
+
+    // scraps
+    setScraps([]);
+    setHighlightScrapId(null);
+
+    // step
+    setStep("EMPTY");
+
+    // draft / recommendation
+    setDraftId(null);
+    setSelectedProjectId(null);
+    setRecProjectId(null);
+    setRecStage(null);
+    setRecTitle(null);
+
+    // project input
+    setTitle("");
+    setMemo("");
+    setProjectName("Capstone Design");
+    setWorkStep("기획");
+
+    // loading
+    setIsScrapLoading(false);
+  };
+
+
   /* ======================
      초기 scrap 로드
   ====================== */
@@ -159,7 +195,7 @@ export default function App() {
 
       if(step === "PROJECT_SETTING") return;
 
-      const { text, url, createdAt, dragSessionId } = message.payload;
+      const { text, rawHtml, url, createdAt, dragSessionId } = message.payload;
       const source = detectAISource(url);
 
       let added = false;
@@ -200,6 +236,7 @@ export default function App() {
           {
             id: Date.now(),
             texts: [text],
+            rawHtmls: rawHtml ? [rawHtml] : [],
             meta: { source, url },
             createdAt: createdAt ?? Date.now(),
             status: "DRAFT",
@@ -259,7 +296,7 @@ export default function App() {
       return;
     }
     const rawHtml = scraps
-      .map(s => s.texts.join("<br/>"))
+      .flatMap(scrap => scrap.rawHtmls ?? [])
       .join("<hr/>");
 
     await commitDraft(draftId, {
@@ -375,13 +412,23 @@ export default function App() {
 
   const handleClearScrap = () => {
     if (transitionLockRef.current) return;
-
-    clearScraps();
-    clearUIDraft();
-    currentScrapIdRef.current = null;
-    setScraps([]);
-    setStep("EMPTY");
+    resetToInitialState();
   };
+
+  const handleDeleteScrap = (scrapId: number) => {
+    setScraps((prev) => {
+      const nextScraps = prev.filter(
+        (scrap) => scrap.id !== scrapId
+      );
+
+      if (nextScraps.length === 0) {
+        setStep("EMPTY");
+      }
+
+      return nextScraps;
+    });
+  };
+
 
   //render 
   const displayProjectName =
@@ -398,6 +445,7 @@ export default function App() {
                   scraps={scraps} 
                   setScraps={setScraps}
                   highlightScrapId={highlightScrapId}
+                  onDelete={handleDeleteScrap}
                   />;
 
       case "PROJECT_SETTING":

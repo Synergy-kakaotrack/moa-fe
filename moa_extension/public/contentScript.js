@@ -1,58 +1,70 @@
-let dragSessionId = null;
-let savedTextsInThisDrag = new Set(); //같은 드래그 동작 중 중복 방지 
+// NOTE: ChatGPT 코드블록 UI 제거(언어 라벨 + 코드 복사 버튼)
+function removeChatGptCodeUi(root) {
+  if (!root) return;
 
-const safeSendMessage = (message) => {
-  try {
-    if (chrome?.runtime?.id && chrome.runtime.sendMessage) {
-      chrome.runtime.sendMessage(message);
+  // 1) "코드 복사" 버튼 (aria-label 기준)
+  root.querySelectorAll('button[aria-label="복사"]').forEach((btn) => {
+    btn.closest("div")?.remove();
+  });
+
+  // 2) 텍스트 기반 fallback
+  root.querySelectorAll("button").forEach((btn) => {
+    const t = (btn.textContent || "").replace(/\s+/g, " ").trim();
+    if (t.includes("코드 복사") || t.toLowerCase().includes("copy code")) {
+      btn.closest("div")?.remove();
     }
-  } catch {
-    console.warn("Extension context invalidated, skip sendMessage");
-  }
-};
+  });
 
-//드래그 시작 
-document.addEventListener("mousedown", () => {
-  dragSessionId = Date.now();
-  savedTextsInThisDrag.clear();
-});
-//스크랩 저장 
+  // 3) 언어 라벨 (select-none + text-xs + h-9)
+  root
+    .querySelectorAll("div.select-none.text-xs.h-9")
+    .forEach((el) => el.remove());
+
+  // 4) 짧은 언어 토큰 제거
+  root.querySelectorAll("div.select-none").forEach((el) => {
+    const t = (el.textContent || "").trim().toLowerCase();
+    if (!t) return;
+
+    const isLangToken =
+      t.length <= 12 &&
+      [
+        "js","javascript","ts","typescript","python","java","c","c++","c#",
+        "go","rust","kotlin","swift","php","ruby","bash","shell","sql",
+        "json","yaml","yml","html","css",
+      ].includes(t);
+
+    if (isLangToken) el.remove();
+  });
+}
+
+let lastSentText = "";
+
 document.addEventListener("mouseup", () => {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return;
 
   const text = selection.toString().trim();
-  if (!text || text.length < 3) return;
+  if (!text) return;
 
-  if (savedTextsInThisDrag.has(text)) return; //같은 드래그 내 중복 방지
+  const range = selection.getRangeAt(0);
+  const fragment = range.cloneContents();
 
-  savedTextsInThisDrag.add(text);
+  const wrapper = document.createElement("div");
+  wrapper.appendChild(fragment);
 
-  safeSendMessage({
-    type: "SCRAP_TEXT",
+  //코드복사, js 등 제거 
+  removeChatGptCodeUi(wrapper);
+
+  const rawHtml = wrapper.innerHTML;
+
+  chrome.runtime.sendMessage({
+    type: "SCRAP_UPDATED",
     payload: {
-      text,
+      text,        // ✅ 기존 그대로
+      rawHtml,     // ✅ 신규 추가
       url: location.href,
-      source: detectAISource(),
       createdAt: Date.now(),
-      dragSessionId,
     },
   });
-
-  selection.removeAllRanges();
 });
 
-function detectAISource() {
-  const host = location.hostname;
-  if (host.includes("chatgpt.com")) return "ChatGPT";
-  if (host.includes("claude.ai")) return "Claude";
-  if (host.includes("google.com")) return "Gemini";
-  return "Unknown";
-}
-
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "hidden") {
-    dragSessionId = null;
-    savedTextsInThisDrag.clear();
-  }
-});
