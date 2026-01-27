@@ -161,26 +161,26 @@ export default function ProjectSetting({
       )}
       {isCreatingProject && (
         <div className="create-project-box">
+          <label className="label">프로젝트</label>
           <div>
-            <label className="label">생성할 프로젝트명</label>
             <div>
               <input
                 type="text"
-                placeholder="프로젝트명을 입력하세요"
+                placeholder="생성할 프로젝트명을 입력하세요"
                 value={newProjectName}
                 onChange={(e) => setNewProjectName(e.target.value)}
+                className="project-name"
               />
             </div>
           </div>
 
           <div>
-            <label className="label">프로젝트 설명</label>
             <div>
-              <input
-                type="text"
-                placeholder="프로젝트 설명을 입력하세요"
+              <textarea
+                placeholder="생성할 프로젝트를 간단하게 설명해주세요"
                 value={newProjectDesc}
                 onChange={(e) => setNewProjectDesc(e.target.value)}
+                className="project-description"
               />
             </div>
           </div>
@@ -188,6 +188,7 @@ export default function ProjectSetting({
           <div className="create-project-actions">
             <button
               onClick={() => setIsCreatingProject(false)}
+              className="create-project-button"
             >
               취소
             </button>
@@ -282,7 +283,7 @@ export default function ProjectSetting({
                 }
               }}
               onBlur={() => setTitleTouched(true)}
-              className={isTitleError ? "error" : ""}
+              className={isTitleError ? "error" : "title-input"}
             />
             {isTitleError && (
               <p className="error-text">※ 제목은 필수입니다.</p>
@@ -304,6 +305,7 @@ export default function ProjectSetting({
               placeholder="이 스크랩에 대한 설명을 추가해 보세요"
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
+              className="memo-description"
             />
           </div>
         </div>

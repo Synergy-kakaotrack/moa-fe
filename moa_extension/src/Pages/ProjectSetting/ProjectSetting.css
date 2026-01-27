@@ -1,5 +1,5 @@
 .project-setting {
-  padding-top: 7px;
+  padding-top: 12px;
   padding-bottom: 7px;
 }
 
@@ -223,7 +223,6 @@ select {
   line-height: normal;
 
   align-self: stretch;
-  margin-bottom: 6px;
 }
 
 .add-project {
@@ -239,7 +238,7 @@ select {
   border: none;
   background: none;
 }
-input{
+.title-input{
   padding-left: 10px;
   border-radius: 4.985px;
   border: 0.997px solid #D1D1D1;
@@ -247,9 +246,10 @@ input{
   width: calc(100% - 37px);
   height: 39px;
   line-height: 1;
+  font-family: Pretendard;
 }
 
-textarea{
+.memo-description{
   padding: 10px;
   border-radius: 4.985px;
   border: 0.997px solid #D1D1D1;
@@ -279,6 +279,12 @@ input.error {
   margin-top: 4px;
   font-size: 12px;
   color: #FF7878;
+
+  font-family: Pretendard;
+}
+.length-text {
+  font-family: Pretendard;
+  margin-left: auto;
 }
 
 .ai-badge {
@@ -299,4 +305,122 @@ input.error {
   display: inline-flex;
   width: 10px;
   height: 10px;
+}
+
+.create-project-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  margin-left: 24px;
+  margin-bottom: 18px;
+}
+
+.project-name {
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #696969;
+
+  /* text/placeholder/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px; /* 116.667% */
+
+  width: calc(100% - 48px);
+  height: 39px;
+
+  border-radius: 4.985px;
+  border: 0.997px solid #D1D1D1;
+}
+
+.project-description {
+  padding: 10px;
+  color: #696969;
+
+  /* text/placeholder/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 14px; /* 116.667% */
+
+  resize: none;
+
+  width: calc(100% - 48px);
+  height: 63px;
+
+  border-radius: 4.985px;
+  border: 0.997px solid #D1D1D1;
+  padding-top: 11px;
+}
+
+.create-project-actions {
+  color: var(--color-text-primary, #212121);
+  text-align: center;
+
+  /* text/button/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.create-project-button {
+  border-radius: 6px;
+  border: 1px solid var(--color-border-muted, #D1D1D1);
+  width: calc(50% - 24px);
+  background: #fff;
+  color: var(--color-text-primary);
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  color: var(--color-text-primary, #212121);
+  text-align: center;
+
+  /* text/button/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.create-project-button:hover {
+  border-radius: 6px;
+  border:none;
+  background: #EFF0A4;
+}
+
+.primary {
+  width: calc(50% - 24px);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-muted, #D1D1D1);
+
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  color: var(--color-text-primary, #212121);
+  text-align: center;
+
+  /* text/button/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.primary:hover {
+  border-radius: 6px;
+  border:none;
+  background: #EFF0A4;
 }

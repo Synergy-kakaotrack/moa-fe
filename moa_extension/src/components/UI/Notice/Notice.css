@@ -26,6 +26,10 @@
   line-height: 16px; /* 114.286% */
 }
 
+.notice-title {
+  align-items: center;
+}
+
 /* 설명 문구 (레이아웃만 유지) */
 .notice-description {
   line-height: 1.4;
