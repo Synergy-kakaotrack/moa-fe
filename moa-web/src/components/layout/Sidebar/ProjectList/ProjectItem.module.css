@@ -1,0 +1,73 @@
+.project {
+  display: flex;
+  flex-direction: column;
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+
+  padding: var(--spacing-1) 12px;
+  border-radius: var(--radius-full);
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.projectHeader:hover {
+  background-color: var(--color-border-muted);
+}
+
+.projectHeader.active {
+  background-color: var(--color-bg-notice);
+  color: var(--color-action-primary);
+}
+
+.projectHeader.active:hover {
+  background-color: var(--color-border-subtle);
+}
+
+/* caret */
+.caret {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: inherit;
+  transition: transform var(--transition-normal);
+}
+
+.caretOpen {
+  transform: rotate(90deg);
+}
+
+/* folder */
+.folder {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+/* title */
+.projectTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* stages */
+.stageList {
+  margin-top: 4px;
+  padding-left: var(--spacing-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

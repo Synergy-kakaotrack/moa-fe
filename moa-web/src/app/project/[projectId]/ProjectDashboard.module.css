@@ -1,0 +1,177 @@
+/* =========================
+  Page
+========================= */
+.page {
+  height: 100%;
+  padding: var(--spacing-3);
+  box-sizing: border-box;
+}
+
+/* =========================
+  Header
+========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+}
+
+.projectTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+.projectDescription {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+
+.headerNav {
+  display: flex;
+  gap: var(--spacing-1);
+}
+
+.headerNav button {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-muted);
+  background: var(--color-bg-card);
+  cursor: pointer;
+}
+
+.headerDivider {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  margin: 0 2px;
+}
+
+/* =========================
+  Board Wrapper
+========================= */
+
+/* 사이드바 열림 기본 상태 */
+.boardWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 1320px; /* 열림 상태 */
+  margin: 0 auto;
+  height: calc(100vh - 140px);
+}
+
+/* 사이드바 접힘 상태 */
+.collapsed {
+  max-width: 1080px; /* 접힘 상태 */
+}
+
+/* =========================
+  Kanban Board
+========================= */
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-2);
+  height: 100%;
+}
+
+/* =========================
+  Column
+========================= */
+.column {
+  background: var(--color-bg-notice);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.columnHeader {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 12px;
+}
+
+/* =========================
+  Card List (scroll)
+========================= */
+.cardList {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+/* =========================
+  Card
+========================= */
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--card-padding);
+  box-shadow: var(--shadow-card);
+}
+
+.cardTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 6px;
+}
+
+.cardContent {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-lg);
+  margin-bottom: 10px;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* agent 출처 */
+.agent {
+  font-weight: var(--font-weight-medium);
+}
+
+/* =========================
+  Board Arrows (접힘 상태)
+========================= */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-button);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.prev {
+  left: -56px;
+}
+
+.next {
+  right: -56px;
+}
+
+/* =========================
+  Visibility helpers
+========================= */
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}

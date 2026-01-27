@@ -1,0 +1,117 @@
+/* =========================
+   MOA Design Tokens
+   ========================= */
+
+:root {
+  /* ========== Color ========== */
+
+  /* Background */
+  --color-bg-main: #fafafa;
+  --color-bg-card: #ffffff;
+  --color-bg-subtle: #fafafa;
+  --color-bg-notice: #ddebff;
+
+  /* Text */
+  --color-text-primary: #212121;
+  --color-text-secondary: #696969;
+
+  /* Border */
+  --color-border-muted: #d1d1d1;
+  --color-border-subtle: #b5ccee;
+
+  /* Accent */
+  --color-accent-primary: #eff0a4;   /* 선택/강조 */
+  --color-accent-secondary: #d1d291;
+
+  /* Action */
+  --color-action-primary: #3582f0;   /* 액션 버튼 */
+
+  /* State */
+  --color-state-error: #ff7878;
+
+  /* ========== Stage Colors (6단계) ========== */
+
+  /* PLAN: 기획 (Pink) */
+  --color-stage-plan-bg: #fff0f3;
+  --color-stage-plan-hover: #ffe4e9;
+  --color-stage-plan-border: #ffccd5;
+
+  /* RESEARCH: 조사&분석 (Orange) */
+  --color-stage-research-bg: #fff4e6;
+  --color-stage-research-hover: #ffe8cc;
+  --color-stage-research-border: #ffd9ad;
+
+  /* DESIGN: 설계 (Yellow) */
+  --color-stage-design-bg: #fffde7;
+  --color-stage-design-hover: #fff9c4;
+  --color-stage-design-border: #fff176;
+
+  /* IMPLEMENT: 구현 (Green) */
+  --color-stage-implement-bg: #f1f8e9;
+  --color-stage-implement-hover: #dcedc8;
+  --color-stage-implement-border: #c5e1a5;
+
+  /* TEST: 테스트 (Blue) */
+  --color-stage-test-bg: #e8f4fd;
+  --color-stage-test-hover: #d4eafc;
+  --color-stage-test-border: #bbdefb;
+
+  /* ETC: 기타 (Purple) */
+  --color-stage-etc-bg: #f3e8fd;
+  --color-stage-etc-hover: #e8d5f9;
+  --color-stage-etc-border: #d1c4e9;
+
+  /* ========== Spacing (단위: 8px) ========== */
+  --spacing-unit: 8px;
+  --spacing-1: 8px;
+  --spacing-2: 16px;
+  --spacing-3: 24px;
+  --spacing-4: 32px;
+
+  /* ========== Layout ========== */
+  --card-padding: 16px;
+  --card-padding-lg: 20px;
+  --card-gap: 24px;
+  --section-gap: 32px;
+
+  /* ========== Border Radius ========== */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  /* ========== Font Family ========== */
+  --font-family-ui: var(--font-pretendard);
+
+  /* ========== Font Weight ========== */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ========== Font Size ========== */
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;   /* 보조 텍스트 */
+  --font-size-md: 14px;   /* 본문 */
+  --font-size-lg: 16px;   /* 카드 타이틀 */
+  --font-size-xl: 20px;   /* 페이지 타이틀 */
+
+  /* ========== Line Height ========== */
+  --line-height-xs: 12px;
+  --line-height-sm: 14px;
+  --line-height-md: 16px;
+  --line-height-lg: 1.4;
+  --line-height-auto: normal;
+
+  /* ========== Letter Spacing ========== */
+  --letter-spacing-none: 0;
+
+  /* ========== Shadow ========== */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-button: 0 4px 14px rgba(0, 0, 0, 0.12);
+
+  /* ========== Transition ========== */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+}

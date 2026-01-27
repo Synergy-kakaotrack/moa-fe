@@ -1,0 +1,109 @@
+.stageButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+
+  padding: var(--spacing-1) 12px;
+  border-radius: var(--radius-full);
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.stageButton:hover {
+  background-color: var(--color-border-muted);
+}
+
+/* ========== Stage-specific Colors ========== */
+
+/* PLAN: 기획 */
+.plan:hover {
+  background-color: var(--color-stage-plan-hover);
+}
+.plan.active {
+  background-color: var(--color-stage-plan-bg);
+  border: 1px solid var(--color-stage-plan-border);
+}
+.plan.active:hover {
+  background-color: var(--color-stage-plan-hover);
+}
+
+/* RESEARCH: 조사&분석 */
+.research:hover {
+  background-color: var(--color-stage-research-hover);
+}
+.research.active {
+  background-color: var(--color-stage-research-bg);
+  border: 1px solid var(--color-stage-research-border);
+}
+.research.active:hover {
+  background-color: var(--color-stage-research-hover);
+}
+
+/* DESIGN: 설계 */
+.design:hover {
+  background-color: var(--color-stage-design-hover);
+}
+.design.active {
+  background-color: var(--color-stage-design-bg);
+  border: 1px solid var(--color-stage-design-border);
+}
+.design.active:hover {
+  background-color: var(--color-stage-design-hover);
+}
+
+/* IMPLEMENT: 구현 */
+.implement:hover {
+  background-color: var(--color-stage-implement-hover);
+}
+.implement.active {
+  background-color: var(--color-stage-implement-bg);
+  border: 1px solid var(--color-stage-implement-border);
+}
+.implement.active:hover {
+  background-color: var(--color-stage-implement-hover);
+}
+
+/* TEST: 테스트 */
+.test:hover {
+  background-color: var(--color-stage-test-hover);
+}
+.test.active {
+  background-color: var(--color-stage-test-bg);
+  border: 1px solid var(--color-stage-test-border);
+}
+.test.active:hover {
+  background-color: var(--color-stage-test-hover);
+}
+
+/* ETC: 기타 */
+.etc:hover {
+  background-color: var(--color-stage-etc-hover);
+}
+.etc.active {
+  background-color: var(--color-stage-etc-bg);
+  border: 1px solid var(--color-stage-etc-border);
+}
+.etc.active:hover {
+  background-color: var(--color-stage-etc-hover);
+}
+
+/* icon */
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+/* label */
+.label {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+}

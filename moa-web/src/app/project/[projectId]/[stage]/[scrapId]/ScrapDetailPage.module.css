@@ -1,0 +1,160 @@
+/* ===== Layout ===== */
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) 0;
+}
+
+.article {
+  flex: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+/* ===== Navigation Arrows ===== */
+
+.navArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.navArrow:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.navArrowPrev {
+  left: 0;
+}
+
+.navArrowNext {
+  right: 0;
+}
+
+.navArrowHidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ===== Context Header ===== */
+
+.contextHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-3);
+}
+
+.stageIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ===== Header ===== */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-3);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.linkIcon {
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.linkIcon:hover {
+  color: var(--color-action-primary);
+}
+
+/* ===== Meta (Source & Date) ===== */
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.agentIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.agentName {
+  font-weight: var(--font-weight-medium);
+}
+
+/* ===== Memo (Highlight) ===== */
+
+.memo {
+  position: relative;
+  padding: var(--spacing-2) var(--spacing-3);
+  margin-bottom: var(--spacing-4);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  line-height: 1.7;
+  color: var(--color-text-primary);
+}
+
+.memo::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  background: linear-gradient(
+    180deg,
+    #ffd6a5 0%,
+    #fdffb6 25%,
+    #caffbf 50%,
+    #9bf6ff 75%,
+    #a0c4ff 100%
+  );
+}
+
+/* ===== Body ===== */
+
+.body {
+  font-size: var(--font-size-md);
+  line-height: 1.8;
+  color: var(--color-text-primary);
+}

@@ -1,0 +1,105 @@
+/* link */
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* base card */
+.card {
+  padding: var(--card-padding);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* ===== variants ===== */
+
+/* Kanban 카드 */
+.kanban {
+  box-shadow: var(--shadow-card);
+}
+
+.kanban:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Sidebar 카드 */
+.sidebar {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-card);
+}
+
+.sidebar:hover {
+  background-color: var(--color-bg-subtle);
+}
+
+/* active (우측 사이드바 선택 상태) */
+.active {
+  background-color: var(--color-bg-notice);
+}
+
+/* ===== contents ===== */
+
+/* title */
+.title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-lg);
+
+  /* sidebar에서 한 줄 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+/* agent */
+.agent {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* date */
+.date {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===== memo 공통 ===== */
+.memo {
+  color: var(--color-text-secondary);
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+/* kanban memo */
+.kanbanMemo {
+  font-size: var(--font-size-sm);
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+}
+
+/* sidebar memo */
+.sidebarMemo {
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+}

@@ -1,0 +1,29 @@
+{
+  "name": "moa-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "clean": "rm -rf .next"
+  },
+  "dependencies": {
+    "@types/dompurify": "^3.0.5",
+    "clsx": "^2.1.1",
+    "dompurify": "^3.3.1",
+    "marked": "^17.0.1",
+    "next": "^15.5.9",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.19",
+    "@types/react": "18.2.55",
+    "@types/react-dom": "18.2.19",
+    "typescript": "5.3.3"
+  }
+}
