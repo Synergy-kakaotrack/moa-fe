@@ -96,7 +96,7 @@ export default function ProjectSetting({
     <div className="project-setting">
       {!isCreatingProject && (
         <div className="project">
-          <div>
+          <div className="project-div">
             <label className="label">프로젝트
               {selectedProjectId === recProjectId && (
                 <div className="ai-badge">
@@ -215,7 +215,7 @@ export default function ProjectSetting({
 
 
         <div className="step">
-          <div>
+          <div className="step-div">
             <label className="label">작업 단계
               {workStep === recStage && (
               <div className="ai-badge">
@@ -264,7 +264,7 @@ export default function ProjectSetting({
         </div>
 
         <div className="title">
-          <div>
+          <div className="title-div">
             <label className="label">제목 (필수)
               {title === recTitle && (
                 <div className="ai-badge">

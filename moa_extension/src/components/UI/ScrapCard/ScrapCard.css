@@ -5,6 +5,10 @@
   background: #fff;
   overflow: visible;
   margin-bottom: 7px;
+
+  width: 100%;
+  box-sizing: border-box;
+  touch-action: none;
 }
 
 .scrap-card.highlighted {
@@ -55,13 +59,28 @@
 }
 
 .scrap-delete {
-  width: 9px;
-  height: 10.432px;
+  width: 20px;
+  height: 20px;
 
   fill: var(--color-background-point, linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), #B5CCEE);
 
   border: none;
   background: none;
+
+  display: flex;              /* 핵심 */
+  align-items: center;        /* 세로 중앙 */
+  justify-content: center;    /* 가로 중앙 */
+
+  padding: 0;
+
+  line-height: 0;             /* 🔥 baseline 영향 제거 */
+  cursor: pointer;
+}
+
+.scrap-delete svg {
+  display: block;   /* 🔥 inline baseline 제거 */
+  width: 9px;
+  height: 11px;
 }
 
 .scrap-text {

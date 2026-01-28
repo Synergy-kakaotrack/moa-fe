@@ -9,6 +9,13 @@
   gap: 10px;
   margin-bottom: 18px;
   margin-left: 24px;
+  margin-top: 5px;
+}
+.project-div {
+  height: 25px;
+  justify-items: center;
+  align-items: center;
+  display: flex;
 }
 
 .step {
@@ -19,12 +26,26 @@
   margin-left: 24px;
 }
 
+.step-div {
+  height: 25px;
+  justify-items: center;
+  align-items: center;
+  display: flex;
+}
+
 .title {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-bottom: 18px;
   margin-left: 24px;
+}
+
+.title-div {
+  height: 25px;
+  justify-items: center;
+  align-items: center;
+  display: flex;
 }
 
 .memo {
@@ -76,15 +97,24 @@ select {
   border-radius: 4.985px;
   border: 0.997px solid #D1D1D1;
   background: #fff;
+
+  color: var(--color-text-primary, #212121);
+
+  /* text/list/md */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 114.286% */
 }
 
 .project-options {
   position: absolute;    /* ⭐ 핵심 */
   left: 0;
-  width: calc(100% - 4px);
+  width: calc(100% - 2px);
 
   list-style: none;
-  margin: 0;
+  margin-top: -1px;
   padding: 0;
 
   background: #fff;
@@ -97,7 +127,14 @@ select {
   max-height: 260px;
   overflow-y: auto;
 
+  color: var(--color-text-primary, #212121);
+
+  /* text/list/md */
   font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 114.286% */
 }
 
 .project-options li {
@@ -152,7 +189,7 @@ select {
   width: 100%;
 
   list-style: none;
-  margin: 0;
+  margin-top: -1.3px;
   padding: 0;
 
   background: #fff;
@@ -164,6 +201,17 @@ select {
 
   max-height: 260px;
   overflow-y: auto;
+
+  width: calc(100% - 2.5px);
+
+  color: var(--color-text-primary, #212121);
+
+  /* text/list/md */
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 114.286% */
 }
 .step-options li {
   padding: 8px;
@@ -221,8 +269,6 @@ select {
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-
-  align-self: stretch;
 }
 
 .add-project {
@@ -326,7 +372,6 @@ input.error {
 .project-name {
   padding-left: 10px;
   padding-right: 10px;
-  color: #696969;
 
   /* text/placeholder/sm */
   font-family: Pretendard;
@@ -344,7 +389,6 @@ input.error {
 
 .project-description {
   padding: 10px;
-  color: #696969;
 
   /* text/placeholder/sm */
   font-family: Pretendard;
@@ -383,7 +427,7 @@ input.error {
 .create-project-button {
   border-radius: 6px;
   border: 1px solid var(--color-border-muted, #D1D1D1);
-  width: calc(50% - 17px);
+  width: calc(50% - 20px);
   background: #fff;
   color: var(--color-text-primary);
 
@@ -407,7 +451,7 @@ input.error {
 }
 
 .primary {
-  width: calc(50% - 17px);
+  width: calc(50% - 20px);
   border-radius: 6px;
   background: #fff;
   color: var(--color-text-primary);
@@ -430,4 +474,9 @@ input.error {
   border-radius: 6px;
   border:none;
   background: #EFF0A4;
+}
+.select-wrap.open .project-select,
+.select-wrap.open .step-select {
+  border: 2px solid #212121;   /* 🔥 두껍게 유지 */
+  background: #fff;            /* 필요하면 강조색으로 바꿔도 됨 */
 }

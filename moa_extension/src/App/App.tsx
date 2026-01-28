@@ -260,7 +260,13 @@ export default function App() {
     if (!draft) return;
 
     // ⭐ 스크랩이 없으면 새 작업 → 복구 안 함
-    if (!draft.scraps || draft.scraps.length === 0) return;
+    if (
+      !draft.scraps ||
+      draft.scraps.length === 0 ||
+      draft.step === "EMPTY"
+    ) {
+      return;
+    }
 
     queueMicrotask(() => {
       setScraps(draft.scraps);
@@ -351,7 +357,7 @@ export default function App() {
     setWorkStep(res.recommendation.stage); //작업 단계 추천값
     setTitle(res.recommendation.subtitle ?? ""); //소제목 추천값
 
-    setMemo("");
+      setMemo("");
 
     setIsScrapLoading(false);
     transitionLockRef.current = false;

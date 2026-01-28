@@ -2,7 +2,7 @@
 import type { Scrap } from "./scrap.domain";
 
 export interface UIDraft {
-  step: "PROJECT_SETTING" | "SAVE";
+  step: "EMPTY" | "PROJECT_SETTING" | "SAVE";
   projectName: string;
   workStep: string;
   title: string;

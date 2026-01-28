@@ -27,7 +27,11 @@
 }
 
 .notice-title {
+  display: flex;
   align-items: center;
+  justify-items: center;
+
+  gap: 6px;
 }
 
 /* 설명 문구 (레이아웃만 유지) */
@@ -43,7 +47,12 @@
   font-weight: 400;
   line-height: 14px; /* 116.667% */
 }
-
+.notice-description a {
+  color: var(--color-text-primary, #212121);
+}
+.notice-description a:hover{
+  color: var(--color-action-primary, #3582F0);
+}
 /* 서비스 링크 (행동만 유지) */
 .notice-link {
   text-decoration: underline;
