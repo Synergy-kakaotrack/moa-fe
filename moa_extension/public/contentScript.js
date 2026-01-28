@@ -37,16 +37,22 @@ function removeChatGptCodeUi(root) {
   });
 }
 
+function isTypingInEditable() {
+  const el = document.activeElement;
+  if (!el) return false;
+
+  if (el.tagName === "INPUT") return true;
+  if (el.tagName === "TEXTAREA") return true;
+  if (el.isContentEditable) return true;
+
+  return false;
+}
+
 let lastSentText = "";
 let isDragging = false;
 
 document.addEventListener("mousedown", () => {
   isDragging = false;
-
-  const selection = window.getSelection();
-  if (selection && selection.rangeCount > 0) {
-    selection.removeAllRanges();
-  }
 });
 
 document.addEventListener("mousemove", () => {
@@ -54,6 +60,9 @@ document.addEventListener("mousemove", () => {
 });
 
 document.addEventListener("mouseup", () => {
+  // 🔐 입력 중이면 스크랩 로직 완전 차단
+  if (isTypingInEditable()) return;
+
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return;
 
@@ -69,7 +78,6 @@ document.addEventListener("mouseup", () => {
   const wrapper = document.createElement("div");
   wrapper.appendChild(fragment);
 
-  //코드복사, js 등 제거 
   removeChatGptCodeUi(wrapper);
 
   const rawHtml = wrapper.innerHTML;
@@ -83,6 +91,6 @@ document.addEventListener("mouseup", () => {
       createdAt: Date.now(),
     },
   });
+
   selection.removeAllRanges();
 });
-
