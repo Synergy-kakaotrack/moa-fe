@@ -1,3 +1,4 @@
+import type { FC } from 'react';
 import Link from 'next/link';
 import clsx from 'clsx';
 
@@ -10,12 +11,11 @@ interface Props {
   isActive?: boolean;
 }
 
-export default function ScrapCard({
+const ScrapCard: FC<Props> = ({
   scrap,
   variant = 'kanban',
   isActive = false,
-}: Props) {
-  return (
+}) => (
     <Link
       href={`/project/${scrap.projectId}/${scrap.stageKey}/${scrap.scrapId}`}
       className={styles.link}
@@ -43,10 +43,11 @@ export default function ScrapCard({
 
         <div className={styles.footer}>
           <time className={styles.date}>
-            {new Date(scrap.capturedAt).toLocaleDateString()}
+            {new Date(scrap.capturedAt).toLocaleDateString('ko-KR')}
           </time>
         </div>
       </article>
     </Link>
-  );
-}
+);
+
+export default ScrapCard;

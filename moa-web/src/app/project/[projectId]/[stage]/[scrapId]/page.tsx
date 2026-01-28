@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import clsx from 'clsx';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ import styles from './ScrapDetailPage.module.css';
 
 /* ================= Agent Icon Map ================= */
 
-const AGENT_ICON_MAP: Record<string, React.FC<{ className?: string }>> = {};
+const AGENT_ICON_MAP: Record<string, FC<{ className?: string }>> = {};
 
 // Dynamic import를 피하고 직접 매핑
 import IconClaude from '@/components/icons/aiAgent/IconClaude';

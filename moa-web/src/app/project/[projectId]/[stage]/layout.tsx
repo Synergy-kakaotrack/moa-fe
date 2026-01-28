@@ -1,5 +1,4 @@
 import React from 'react';
-import clsx from 'clsx';
 
 import { getScraps } from '@/api/scraps';
 import { projectsApi } from '@/api/projects';
@@ -8,18 +7,9 @@ import { StageKey } from '@/domain/stage';
 import type { Scrap } from '@/domain/scrap';
 import type { Project } from '@/domain/project';
 import { stages } from '@/constants/stages';
-import ScrapCardList from '@/components/ScrapCard/ScrapCardList';
+import StageScrapSidebar from '@/components/StageScrapSidebar';
 
 import styles from './layout.module.css';
-
-const stageClassMap: Record<StageKey, string> = {
-  PLAN: styles.plan,
-  RESEARCH: styles.research,
-  DESIGN: styles.design,
-  IMPLEMENT: styles.implement,
-  TEST: styles.test,
-  ETC: styles.etc,
-};
 
 interface StageLayoutProps {
   children: React.ReactNode;
@@ -33,7 +23,7 @@ export default async function StageLayout({
   children,
   params,
 }: StageLayoutProps) {
-  const { projectId, stage, scrapId } = await params;
+  const { projectId, stage } = await params;
   const numericProjectId = Number(projectId);
   const stageName = stages.find((s) => s.key === stage)?.name ?? stage;
 
@@ -72,21 +62,13 @@ export default async function StageLayout({
       </main>
 
       {/* 우측 사이드바 */}
-      <aside className={clsx(styles.sidebar, stageClassMap[stage])}>
-        {/* 컨텍스트 헤더 */}
-        <h3 className={styles.sidebarTitle}>
-          {projectName} / {stageName}
-        </h3>
-
-        {/* 스크랩 리스트 */}
-        {scraps.length === 0 ? (
-          <p className={styles.empty}>스크랩이 없습니다.</p>
-        ) : (
-          <div className={styles.scrapList}>
-            <ScrapCardList scraps={scraps} />
-          </div>
-        )}
-      </aside>
+      <StageScrapSidebar
+        scraps={scraps}
+        stageKey={stage}
+        projectId={numericProjectId}
+        projectName={projectName}
+        stageName={stageName}
+      />
     </div>
   );
 }
