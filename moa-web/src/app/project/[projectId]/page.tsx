@@ -203,7 +203,7 @@ export default function ProjectPage() {
           </nav>
 
           {/* AI Summary Card */}
-          <div className={styles.digestWrapper}>
+          <div className={clsx(styles.digestWrapper, stageClassMap[selectedStage])}>
             {currentDigest && (
               <StageDigestCard
                 digest={currentDigest}

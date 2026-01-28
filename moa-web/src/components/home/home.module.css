@@ -31,8 +31,8 @@
 }
 
 .searchIcon {
-  font-size: 18px;
-  opacity: 0.8;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
 }
 
 .searchInput {

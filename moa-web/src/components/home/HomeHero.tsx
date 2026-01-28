@@ -1,3 +1,4 @@
+import IconSearch from '@/components/icons/IconSearch';
 import styles from './home.module.css';
 
 type Props = {
@@ -12,9 +13,7 @@ export default function HomeHero({ userName }: Props) {
       </h1>
 
       <div className={styles.searchWrap}>
-        <span className={styles.searchIcon} aria-hidden="true">
-          🔍
-        </span>
+        <IconSearch className={styles.searchIcon} size={20} />
         <input className={styles.searchInput} placeholder="프로젝트를 검색하세요" />
       </div>
     </section>
