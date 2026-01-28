@@ -324,16 +324,7 @@ export default function App() {
       userRecStage: workStep===recStage,
       userRecSubtitle: title===recTitle,
     });
-    transitionLockRef.current = false;
-    setIsScrapLoading(false);
-
-    // 저장 성공 후 초기화
-    setDraftId(null);
-    setRecProjectId(null);
-    setRecStage(null);
-    setRecTitle(null);
-    setScraps([]);
-    setStep("EMPTY");
+    resetToInitialState();
   };
 
   const handleScrapDone = async () => {
@@ -366,15 +357,7 @@ export default function App() {
   };
 
   const handleFinalSave = async () => {
-    isFinalizingRef.current = true;
-
-    clearUIDraft();
-
-    currentScrapIdRef.current = null;
-    setScraps([]);
-    setMemo("");
-    setTitle("");
-    setStep("EMPTY");
+    resetToInitialState();
   };
 
   const handleScrapCompleteClick = () => {
