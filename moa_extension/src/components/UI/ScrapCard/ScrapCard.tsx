@@ -3,7 +3,6 @@ import type { Scrap } from "../../../types/scrap.domain";
 import "./ScrapCard.css"
 
 import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 interface ScrapCardProps {
   scrap: Scrap;
@@ -56,7 +55,9 @@ export default function ScrapCard({ scrap, index, onDelete, highlighted }: Scrap
   } = useSortable({ id: scrap.id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: transform
+      ? `translate3d(0px, ${transform.y}px, 0)`
+      : undefined,
     transition,
   };
 

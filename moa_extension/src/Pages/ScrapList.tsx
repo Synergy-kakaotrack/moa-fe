@@ -5,6 +5,9 @@ import type { Scrap } from "../types/scrap.domain";
 import {
   DndContext,
   closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 
@@ -22,6 +25,13 @@ interface ScrapListProps {
 }
 
 export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelete }: ScrapListProps) {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 6,
+      },
+    })
+  );
 
   // 드래그 끝났을 때 순서 변경
   const handleDragEnd = (event: DragEndEvent) => {
@@ -46,13 +56,18 @@ export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelet
         margin: "8px",
         height: "64vh",
         overflowY: "auto",
+        overflowX: "hidden",
+        overscrollBehaviorX: "none",
+        touchAction: "pan-y",
       }}
     >
       {scraps.length === 0 ? (
         <Empty />
       ) : (
         <DndContext
+          sensors={sensors}
           collisionDetection={closestCenter}
+          autoScroll={false}
           onDragEnd={handleDragEnd}
         >
           <SortableContext
