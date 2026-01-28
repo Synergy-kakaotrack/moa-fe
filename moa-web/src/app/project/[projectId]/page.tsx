@@ -11,10 +11,10 @@ import type { Project } from "@/domain/project";
 import type { Scrap } from "@/domain/scrap";
 import type { StageKey } from "@/domain/stage";
 import type { StageDigest } from "@/domain/digest";
+import { getStageDigest, refreshStageDigest } from "@/api/digests";
 
 import { useSidebarState } from "@/contexts/SidebarContext";
 import { stages } from "@/constants/stages";
-import { mockStageDigests } from "@/mocks/stageDigest";
 
 import StageDigestCard from "@/components/StageDigestCard";
 import StageScrapSidebar from "@/components/StageScrapSidebar";
@@ -46,6 +46,11 @@ export default function ProjectPage() {
 
   // NOTE: 선택된 stage
   const [selectedStage, setSelectedStage] = useState<StageKey>("PLAN");
+
+  // NOTE: 요약 데이터
+  const [stageDigests, setStageDigests] = useState<
+    Partial<Record<StageKey, StageDigest>>
+  >({});
 
   // NOTE: 요약 갱신 중 상태
   const [refreshingStages, setRefreshingStages] = useState<Set<StageKey>>(
@@ -113,29 +118,28 @@ export default function ProjectPage() {
     };
   }, [projectId]);
 
-  // NOTE: Mock에서 stage별 digest 가져오기
-  const stageDigests = useMemo(() => {
-    const digests: Record<StageKey, StageDigest> = {} as Record<
-      StageKey,
-      StageDigest
-    >;
+  // NOTE: 선택된 stage의 digest 가져오기
+  useEffect(() => {
+    let isMounted = true;
+    const stageName =
+      stages.find((s) => s.key === selectedStage)?.name ?? selectedStage;
 
-    stages.forEach((stage) => {
-      const mock = mockStageDigests[stage.key];
-      if (mock) {
-        digests[stage.key] = {
-          projectId: mock.project.projectId,
-          projectName: mock.project.projectName,
-          stageKey: stage.key,
-          stageName: stage.name,
-          digest: mock.digest,
-          meta: mock.meta,
-        };
-      }
-    });
+    getStageDigest(projectId, stageName)
+      .then((digest) => {
+        if (!isMounted) return;
+        setStageDigests((prev) => ({
+          ...prev,
+          [selectedStage]: digest,
+        }));
+      })
+      .catch(() => {
+        // NOTE: 요약 조회 실패는 전체 화면을 막지 않음
+      });
 
-    return digests;
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [projectId, selectedStage]);
 
   // NOTE: 현재 선택된 stage의 스크랩 필터링
   const currentStageScraps = useMemo(() => {
@@ -148,15 +152,32 @@ export default function ProjectPage() {
   // NOTE: 요약 갱신 핸들러 (Mock - 실제로는 API 호출)
   const handleRefresh = (stageKey: StageKey) => {
     setRefreshingStages((prev) => new Set(prev).add(stageKey));
+    const stageName =
+      stages.find((s) => s.key === stageKey)?.name ?? stageKey;
 
-    // Mock: 2초 후 갱신 완료
-    setTimeout(() => {
-      setRefreshingStages((prev) => {
-        const next = new Set(prev);
-        next.delete(stageKey);
-        return next;
+    const logTimer = setInterval(() => {
+      console.log(`[digest] refresh in progress: ${stageKey}`);
+    }, 1000);
+
+    refreshStageDigest(projectId, stageName)
+      .then((digest) => {
+        setStageDigests((prev) => ({
+          ...prev,
+          [stageKey]: digest,
+        }));
+      })
+      .catch(() => {
+        // NOTE: 409 등 갱신 실패 시 기존 요약 유지
+      })
+      .finally(() => {
+        clearInterval(logTimer);
+        console.log(`[digest] refresh completed: ${stageKey}`);
+        setRefreshingStages((prev) => {
+          const next = new Set(prev);
+          next.delete(stageKey);
+          return next;
+        });
       });
-    }, 2000);
   };
 
   // NOTE: 에러 표시
