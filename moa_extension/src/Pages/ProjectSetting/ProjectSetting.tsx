@@ -57,19 +57,25 @@ export default function ProjectSetting({
   const safeTrim = (v: unknown): string =>
     typeof v === "string" ? v.trim() : "";
   const isTitleError = titleTouched && safeTrim(title) === "";
+  
 
   //프로젝트 생성
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectDesc, setNewProjectDesc] = useState("");
 
-  //소제목 글자수 제한 
+  //글자수 제한 
   const MAX_TITLE_LENGTH = 25;
+  const MAX_NAME_LENGTH = 15;
 
   const [projectOpen, setProjectOpen] = useState(false);
   const [stepOpen, setStepOpen] = useState(false);
 
   const steps = ["기획", "조사&분석", "설계", "구현", "테스트", "기타"];
+
+  const canCreateProject =
+    newProjectName.trim() !== "" &&
+    newProjectDesc.trim() !== "";
 
   const handleCreateProject = async () => {
     try{
@@ -172,9 +178,19 @@ export default function ProjectSetting({
                 type="text"
                 placeholder="생성할 프로젝트명을 입력하세요"
                 value={newProjectName}
-                onChange={(e) => setNewProjectName(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // ✅ 15자 제한
+                  if (value.length <= MAX_NAME_LENGTH) {
+                    setNewProjectName(value);
+                  }
+                }}
                 className="project-name"
               />
+              <p className="length-text">
+                {newProjectName.length} / {MAX_NAME_LENGTH}
+              </p>
             </div>
           </div>
 
@@ -203,7 +219,9 @@ export default function ProjectSetting({
 
             <button
               className="primary"
+              disabled={!canCreateProject}
               onClick={() => {
+                if (!canCreateProject) return;
                 handleCreateProject();
               }}
             >

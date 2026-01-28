@@ -480,3 +480,8 @@ input.error {
   border: 2px solid #212121;   /* 🔥 두껍게 유지 */
   background: #fff;            /* 필요하면 강조색으로 바꿔도 됨 */
 }
+button.primary:disabled {
+  background-color: #d1d1d1;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
