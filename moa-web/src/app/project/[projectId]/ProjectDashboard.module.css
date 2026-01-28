@@ -60,7 +60,7 @@
 .stageTabs {
   display: flex;
   gap: 4px;
-  padding-left: 8px;
+  padding-left: calc(16px + var(--radius-lg));
   align-items: flex-end;
   height: 40px;
   box-sizing: border-box;
@@ -73,14 +73,14 @@
   font-weight: var(--font-weight-medium);
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  transition: all var(--transition-fast);
   border-radius: var(--radius-md) var(--radius-md) 0 0;
   position: relative;
-  margin-bottom: -1px;
-  height: 36px;
+  height: 32px;
   line-height: 1;
   box-sizing: border-box;
-  transform-origin: top center;
+  min-width: 72px;
+  text-align: center;
 }
 
 .stageTab:hover {
@@ -89,9 +89,9 @@
 
 .stageTab.active {
   color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
   background: var(--color-bg-card);
-  transform: translateY(-2px) scale(1.06);
-  z-index: 0;
+  height: 36px;
 }
 
 /* Stage Tab Colors (non-active) */
@@ -122,7 +122,10 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  margin-top: -1px;
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+  padding: 0 4px 0 16px;
 }
 
 /* =========================
