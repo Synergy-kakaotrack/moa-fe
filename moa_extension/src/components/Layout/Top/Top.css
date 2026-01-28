@@ -53,5 +53,12 @@
 }
 
 .dash-text {
-  display: block;
+  color: #FFF;
+
+  /* text/button/sm */
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }

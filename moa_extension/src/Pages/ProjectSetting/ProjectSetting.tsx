@@ -5,7 +5,7 @@ import type { Project } from "../../types/project";
 import { createProject } from "../../api/projectApi";
 
 import { useState } from "react";
-
+import SelectIcon from "../../components/icons/selectIcon";
 
 interface ProjectSettingProps {
   scraps: Scrap[];
@@ -66,6 +66,11 @@ export default function ProjectSetting({
   //소제목 글자수 제한 
   const MAX_TITLE_LENGTH = 25;
 
+  const [projectOpen, setProjectOpen] = useState(false);
+  const [stepOpen, setStepOpen] = useState(false);
+
+  const steps = ["기획", "조사&분석", "설계", "구현", "테스트", "기타"];
+
   const handleCreateProject = async () => {
     try{
       // 1. 입력값 그대로 백엔드로 전달
@@ -100,43 +105,58 @@ export default function ProjectSetting({
                   </svg>
                   <span>AI 추천</span>
                 </div>
-                
-                  
               )}
             </label>
           </div>
 
-          <div>
-            <select
+          <div className={`select-wrap ${projectOpen ? "open" : ""}`}>
+            <button
+              type="button"
               className="project-select"
-              value={selectedProjectId ?? ""}
-              onChange={(e) => {
-                const id = Number(e.target.value);
-                if(!id) return;
-
-                const project = projects.find(p => p.projectId === id);
-                if (!project) return;
-
-                setSelectedProjectId(id);
-                setProjectName(project.name);
+              onClick={() => {
+                setProjectOpen(v => !v);
+                setStepOpen(false); // ⭐ 다른 거 닫기
               }}
             >
-              <option value="" disabled>
-                프로젝트 선택
-              </option>
+              <span>
+                {selectedProjectId
+                  ? projects.find(p => p.projectId === selectedProjectId)?.name
+                  : "프로젝트 선택"}
+              </span>
 
-              {projects.map((project) => (
-                <option key={project.projectId} value={project.projectId}>
-                  {project.name}
-                </option>
-              ))}
-            </select>
+              <SelectIcon />
+            </button>
+
+            {projectOpen && (
+              <ul className="project-options">
+                {projects.map(project => (
+                  <li
+                    key={project.projectId}
+                    className={
+                      project.projectId === selectedProjectId ? "selected" : ""
+                    }
+                    onClick={() => {
+                      setSelectedProjectId(project.projectId);
+                      setProjectName(project.name);
+                      setProjectOpen(false);
+                    }}
+                  >
+                    {project.name}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
+
 
           <div>
             <button
               className="add-project"
-              onClick={() => setIsCreatingProject(true)}
+              onClick={() => {
+                setNewProjectName("");
+                setNewProjectDesc("");
+                setIsCreatingProject(true);
+              }}
             >
               + 프로젝트 추가
             </button>
@@ -145,33 +165,38 @@ export default function ProjectSetting({
       )}
       {isCreatingProject && (
         <div className="create-project-box">
+          <label className="label">프로젝트</label>
           <div>
-            <label className="label">생성할 프로젝트명</label>
             <div>
               <input
                 type="text"
-                placeholder="프로젝트명을 입력하세요"
+                placeholder="생성할 프로젝트명을 입력하세요"
                 value={newProjectName}
                 onChange={(e) => setNewProjectName(e.target.value)}
+                className="project-name"
               />
             </div>
           </div>
 
           <div>
-            <label className="label">프로젝트 설명</label>
             <div>
-              <input
-                type="text"
-                placeholder="프로젝트 설명을 입력하세요"
+              <textarea
+                placeholder="생성할 프로젝트를 간단하게 설명해주세요"
                 value={newProjectDesc}
                 onChange={(e) => setNewProjectDesc(e.target.value)}
+                className="project-description"
               />
             </div>
           </div>
 
           <div className="create-project-actions">
             <button
-              onClick={() => setIsCreatingProject(false)}
+              onClick={() => {
+                setNewProjectName("");
+                setNewProjectDesc("");
+                setIsCreatingProject(false);
+              }}
+              className="create-project-button"
             >
               취소
             </button>
@@ -203,18 +228,37 @@ export default function ProjectSetting({
             </label>
 
           </div>
-          <div>
-            <select
-              value={workStep}
-              onChange={(e) => setWorkStep(e.target.value)}
+          <div className={`select-wrap ${stepOpen ? "open" : ""}`}>
+            {/* 선택된 값 */}
+            <button
+              type="button"
+              className="step-select"
+              onClick={() => {
+                setStepOpen(v => !v);
+                setProjectOpen(false); // ⭐ 다른 거 닫기
+              }}
             >
-              <option value="기획">기획</option>
-              <option value="조사&분석">조사&분석</option>
-              <option value="설계">설계</option>
-              <option value="구현">구현</option>
-              <option value="테스트">테스트</option>
-              <option value="기타">기타</option>
-            </select>
+              <span>{workStep}</span>
+              <SelectIcon />
+            </button>
+
+            {/* 옵션 리스트 */}
+            {stepOpen && (
+              <ul className="step-options">
+                {steps.map(step => (
+                  <li
+                    key={step}
+                    className={step === workStep ? "selected" : ""}
+                    onClick={() => {
+                      setWorkStep(step);
+                      setStepOpen(false);
+                    }}
+                  >
+                    {step}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
         </div>
@@ -247,7 +291,7 @@ export default function ProjectSetting({
                 }
               }}
               onBlur={() => setTitleTouched(true)}
-              className={isTitleError ? "error" : ""}
+              className={isTitleError ? "error" : "title-input"}
             />
             {isTitleError && (
               <p className="error-text">※ 제목은 필수입니다.</p>
@@ -269,6 +313,7 @@ export default function ProjectSetting({
               placeholder="이 스크랩에 대한 설명을 추가해 보세요"
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
+              className="memo-description"
             />
           </div>
         </div>
