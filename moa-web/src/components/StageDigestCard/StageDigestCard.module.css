@@ -1,0 +1,273 @@
+/* =========================
+   Card Base
+========================= */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-card);
+  overflow: hidden;
+  height: 100%;
+  min-height: 0;
+  box-shadow: var(--shadow-card);
+  transition: opacity var(--transition-normal);
+}
+
+.cardLoading {
+  pointer-events: none;
+}
+
+/* =========================
+   Loading Overlay
+========================= */
+.loadingOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(128, 128, 128, 0.15);
+  z-index: 2;
+  border-radius: var(--radius-md);
+}
+
+/* =========================
+   Refresh Button
+========================= */
+.refreshButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+  transition: all var(--transition-fast);
+  transform-origin: bottom right;
+  z-index: 3;
+}
+
+.refreshButton.active {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-action-primary);
+  box-shadow: 0 2px 8px rgba(53, 130, 240, 0.2);
+}
+
+.refreshButton.active:hover {
+  background: var(--color-bg-card);
+  box-shadow: 0 4px 12px rgba(53, 130, 240, 0.3);
+  transform: scale(1.05);
+}
+
+.refreshButton.loading .refreshIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.refreshIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* 새 스크랩 알림 뱃지 */
+.badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-action-primary);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* =========================
+   Content
+========================= */
+.content {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.scrollInner {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  letter-spacing: -0.01em;
+}
+
+/* =========================
+   Markdown Styles
+========================= */
+.markdown {
+  font-size: var(--font-size-md);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+}
+
+.markdown h2 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin: 16px 0 8px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-muted);
+  color: var(--color-text-primary);
+}
+
+.markdown h2:first-child {
+  margin-top: 0;
+}
+
+.markdown h3 {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  margin: 12px 0 6px 0;
+  color: var(--color-text-primary);
+}
+
+.markdown p {
+  margin: 8px 0;
+  color: var(--color-text-secondary);
+}
+
+.markdown ul,
+.markdown ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.markdown li {
+  margin: 4px 0;
+  color: var(--color-text-secondary);
+}
+
+.markdown li strong {
+  color: var(--color-text-primary);
+}
+
+.markdown code {
+  font-family: 'Fira Code', monospace;
+  font-size: var(--font-size-sm);
+  background: var(--color-bg-subtle);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.markdown pre {
+  background: var(--color-bg-subtle);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.markdown pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown blockquote {
+  margin: 12px 0;
+  padding: 8px 16px;
+  border-left: 3px solid var(--color-action-primary);
+  background: rgba(53, 130, 240, 0.05);
+  color: var(--color-text-secondary);
+}
+
+/* 체크리스트 스타일 */
+.markdown input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* =========================
+   Empty State
+========================= */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 120px;
+  text-align: center;
+  padding: 24px;
+}
+
+.aiIcon {
+  color: var(--color-border-muted);
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.emptyText {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  margin: 0 0 4px 0;
+}
+
+.emptyHint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* =========================
+   Footer
+========================= */
+.footer {
+  padding: 8px 16px;
+  background: var(--color-bg-subtle);
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.updatedAt {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}

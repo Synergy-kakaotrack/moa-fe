@@ -52,7 +52,7 @@ export default function Sidebar() {
         <div className={styles.profile}>
           <div className={styles.avatar}>
             <Image
-              src="/profile/avatar.svg"
+              src="/profile/ryan.png"
               alt="User Avatar"
               width={42}
               height={42}
@@ -61,8 +61,8 @@ export default function Sidebar() {
 
           {!collapsed && (
             <div className={styles.profileText}>
-              <p>User Name</p>
-              <span>emailaddress@gmail.com</span>
+              <p>RYAN</p>
+              <span>ryan01@gmail.com</span>
             </div>
           )}
         </div>
@@ -71,6 +71,7 @@ export default function Sidebar() {
       {/* 프로젝트 */}
       {!collapsed && (
         <div className={styles.projects}>
+          <p className={styles.projectsLabel}>프로젝트</p>
           <ProjectList />
         </div>
       )}

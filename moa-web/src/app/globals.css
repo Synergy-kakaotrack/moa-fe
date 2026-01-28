@@ -10,8 +10,9 @@ body {
 body {
   color: var(--color-text-primary);
   background: var(--color-bg-main);
-  font-family: Pretendard, -apple-system, BlinkMacSystemFont, 
-               "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Noto Sans KR', Arial,
+    sans-serif;
   font-size: var(--font-size-md);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-lg);
@@ -23,6 +24,16 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 button,

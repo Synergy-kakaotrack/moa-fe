@@ -1,0 +1,114 @@
+/* ===== Sidebar ===== */
+
+.sidebar {
+  width: 260px;
+  height: 100%;
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  overflow: hidden;
+  overscroll-behavior: none;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.sidebarTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-action-primary);
+}
+
+.projectLink {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.projectLink:hover {
+  opacity: 0.7;
+  text-decoration: underline;
+}
+
+.separator {
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-normal);
+}
+
+.empty {
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+.scrapList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-height: 0;
+}
+
+/* ===== Stage Background Colors ===== */
+
+.plan {
+  background: rgba(181, 204, 238, 0.3);
+  --card-hover-bg: rgba(181, 204, 238, 0.6);
+  --card-active-bg: rgba(181, 204, 238, 0.7);
+  --stage-color: rgba(100, 140, 190, 1);
+}
+.plan .sidebarTitle {
+  color: var(--stage-color);
+}
+
+.research {
+  background: rgba(181, 204, 238, 0.5);
+  --card-hover-bg: rgba(181, 204, 238, 0.75);
+  --card-active-bg: rgba(181, 204, 238, 0.85);
+  --stage-color: rgba(80, 120, 170, 1);
+}
+.research .sidebarTitle {
+  color: var(--stage-color);
+}
+
+.design {
+  background: var(--color-border-subtle);
+  --card-hover-bg: rgba(161, 184, 218, 0.7);
+  --card-active-bg: rgba(213, 230, 255, 0.85);
+  --stage-color: rgba(60, 100, 150, 1);
+}
+.design .sidebarTitle {
+  color: var(--stage-color);
+}
+
+.implement {
+  background: rgba(239, 240, 164, 0.5);
+  --card-hover-bg: rgba(239, 240, 164, 0.8);
+  --card-active-bg: rgba(239, 240, 164, 1);
+  --stage-color: rgba(140, 142, 80, 1);
+}
+.implement .sidebarTitle {
+  color: var(--stage-color);
+}
+
+.test {
+  background: var(--color-accent-primary);
+  --card-hover-bg: rgba(219, 220, 134, 1);
+  --card-active-bg: rgb(222, 224, 139);
+  --stage-color: rgba(120, 122, 60, 1);
+}
+.test .sidebarTitle {
+  color: var(--stage-color);
+}
+
+.etc {
+  background: var(--color-border-muted);
+  --card-hover-bg: rgba(189, 189, 189, 0.7);
+  --card-active-bg: rgba(169, 169, 169, 0.85);
+  --stage-color: rgba(100, 100, 100, 1);
+}
+.etc .sidebarTitle {
+  color: var(--stage-color);
+}

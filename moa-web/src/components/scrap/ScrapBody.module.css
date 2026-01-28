@@ -1,26 +1,26 @@
 .body {
-  line-height: 1.7;
-  font-size: var(--font-size-md);
+  line-height: 1.8;
+  font-size: 16px;
   color: var(--color-text-primary);
 }
 
 /* Headings */
 .body h1 {
-  font-size: var(--font-size-xl);
+  font-size: 24px;
   font-weight: var(--font-weight-bold);
-  margin: 24px 0 12px;
+  margin: 28px 0 14px;
 }
 
 .body h2 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: var(--font-weight-semibold);
-  margin: 20px 0 10px;
+  margin: 24px 0 12px;
 }
 
 .body h3 {
-  font-size: var(--font-size-lg);
+  font-size: 18px;
   font-weight: var(--font-weight-semibold);
-  margin: 16px 0 8px;
+  margin: 20px 0 10px;
 }
 
 /* Paragraph */
@@ -54,7 +54,7 @@
   background: var(--color-bg-subtle);
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: var(--font-size-sm);
+  font-size: 14px;
   font-family: 'Menlo', 'Monaco', monospace;
 }
 

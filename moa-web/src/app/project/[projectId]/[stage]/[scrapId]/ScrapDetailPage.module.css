@@ -1,18 +1,30 @@
 /* ===== Layout ===== */
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.mainContent {
   position: relative;
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: var(--spacing-2);
-  padding: var(--spacing-3) 0;
+  padding: 0 var(--spacing-3) var(--spacing-3);
+  min-height: 0;
 }
 
 .article {
   flex: 1;
-  max-width: 760px;
+  max-width: 640px;
   margin: 0 auto;
-  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 /* ===== Navigation Arrows ===== */
@@ -40,11 +52,11 @@
 }
 
 .navArrowPrev {
-  left: 0;
+  left: calc(50% - 320px - 80px);
 }
 
 .navArrowNext {
-  right: 0;
+  right: calc(50% - 320px - 80px);
 }
 
 .navArrowHidden {
@@ -58,14 +70,31 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--font-size-sm);
+  padding: var(--spacing-2);
+  font-size: var(--font-size-md);
   color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-3);
+  flex-shrink: 0;
 }
 
-.stageIcon {
-  width: 16px;
-  height: 16px;
+.folderIcon {
+  width: 18px;
+  height: 18px;
+  color: #EFF0A4;
+}
+
+.projectLink {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.projectLink:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+.separator {
+  color: var(--color-text-secondary);
 }
 
 /* ===== Header ===== */
@@ -74,17 +103,20 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-3);
+  margin-top: var(--spacing-2);
+  margin-bottom: var(--spacing-2);
+  flex-shrink: 0;
 }
 
 .titleRow {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
 }
 
 .title {
-  font-size: var(--font-size-xl);
+  font-size: 22px;
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
   margin: 0;
@@ -104,9 +136,10 @@
 
 .meta {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: var(--font-size-sm);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-size: var(--font-size-md);
   color: var(--color-text-secondary);
   flex-shrink: 0;
 }
@@ -114,6 +147,12 @@
 .agentIcon {
   width: 16px;
   height: 16px;
+}
+
+.agentRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .agentName {
@@ -124,37 +163,87 @@
 
 .memo {
   position: relative;
+  isolation: isolate;
+  --memo-radius: var(--radius-sm);
   padding: var(--spacing-2) var(--spacing-3);
-  margin-bottom: var(--spacing-4);
-  background: var(--color-bg-card);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-md);
-  line-height: 1.7;
-  color: var(--color-text-primary);
+  border-radius: var(--memo-radius);
+  font-size: 15px;
+  line-height: 1.6;
+  background: linear-gradient(
+    80deg,
+    #B5CCEE 0%,
+    #B5CCEE 15%,
+    #f2f4a6 50%,
+    #EFF0A4 65%,
+    #F89D9C 100%
+  );
 }
 
 .memo::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  border-radius: var(--radius-md) 0 0 var(--radius-md);
-  background: linear-gradient(
-    180deg,
-    #ffd6a5 0%,
-    #fdffb6 25%,
-    #caffbf 50%,
-    #9bf6ff 75%,
-    #a0c4ff 100%
-  );
+  inset: 2px;
+  background: var(--color-bg-card);
+  border-radius: calc(var(--memo-radius) - 2px);
+  z-index: -1;
 }
 
 /* ===== Body ===== */
 
 .body {
-  font-size: var(--font-size-md);
+  font-size: 16px;
   line-height: 1.8;
   color: var(--color-text-primary);
+}
+
+
+.contentScroll {
+  position: relative;
+  flex: 1; /* 남은 영역 차지 */
+  min-height: 0; /* flex child 스크롤을 위해 필요 */
+  overflow-y: auto; /* 스크롤 활성화 */
+  overscroll-behavior: contain; /* 스크롤 튕김 방지 */
+  padding-right: var(--spacing-2); /* 스크롤바 외부 공간 */
+  box-sizing: border-box;
+  scrollbar-color: var(--color-border-muted) transparent;
+}
+
+.contentScroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+.contentScroll::-webkit-scrollbar-thumb {
+  background: var(--color-border-muted);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.contentScroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.contentCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+
+  background: var(--color-bg-card);
+  border-radius: 0;
+}
+
+.scrollBody {
+  flex: 1;
+}
+
+/* ===== Error Message ===== */
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
 }

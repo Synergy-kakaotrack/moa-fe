@@ -8,6 +8,22 @@
 export interface RecentProject {
   projectId: number;
   name: string;
-  lastStage: string;
+  description: string;
   lastCapturedAt: Date;
+}
+
+// src/domain/recentContext.ts
+
+// NOTE: 프론트 도메인 RecentContext 타입
+export interface RecentContext {
+  projectId: number | null;
+  stageId: number | null;
+  scrapId: number | null;
+
+  projectName: string | null;
+  stageName: string | null;
+  scrapSubtitle: string | null;
+
+  // NOTE: 확장 필드 저장(필요 시 UI에서 참조 가능)
+  extra: Record<string, unknown>;
 }

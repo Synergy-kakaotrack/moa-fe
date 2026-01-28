@@ -18,15 +18,44 @@
 }
 
 .main {
+  position: relative;
   display: flex;
   min-height: 100vh;
   width: 100%;
-  max-width: 800px;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--spacing-4);
+  padding: 15vh var(--spacing-4) var(--spacing-4);
+  overflow: hidden;
+}
+
+/* 배경 이미지 - MO (좌측 하단, 사이드바에 붙음) */
+.bgMO {
+  position: fixed;
+  left: 250px; /* expanded 상태: 사이드바(250px) - collapsed(56px) = 194px */
+  bottom: 0;
+  width: 28vw;
+  height: auto;
+  pointer-events: none;
+  z-index: -1;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 사이드바 collapsed 상태 */
+.bgMOCollapsed {
+  left: 56px;
+}
+
+/* 배경 이미지 - OA (우측 상단) */
+.bgOA {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 28vw;
+  height: auto;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .intro {

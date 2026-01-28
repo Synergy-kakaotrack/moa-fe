@@ -6,7 +6,7 @@
   /* ========== Color ========== */
 
   /* Background */
-  --color-bg-main: #fafafa;
+  --color-bg-main: #ffffff;
   --color-bg-card: #ffffff;
   --color-bg-subtle: #fafafa;
   --color-bg-notice: #ddebff;
@@ -28,38 +28,6 @@
 
   /* State */
   --color-state-error: #ff7878;
-
-  /* ========== Stage Colors (6단계) ========== */
-
-  /* PLAN: 기획 (Pink) */
-  --color-stage-plan-bg: #fff0f3;
-  --color-stage-plan-hover: #ffe4e9;
-  --color-stage-plan-border: #ffccd5;
-
-  /* RESEARCH: 조사&분석 (Orange) */
-  --color-stage-research-bg: #fff4e6;
-  --color-stage-research-hover: #ffe8cc;
-  --color-stage-research-border: #ffd9ad;
-
-  /* DESIGN: 설계 (Yellow) */
-  --color-stage-design-bg: #fffde7;
-  --color-stage-design-hover: #fff9c4;
-  --color-stage-design-border: #fff176;
-
-  /* IMPLEMENT: 구현 (Green) */
-  --color-stage-implement-bg: #f1f8e9;
-  --color-stage-implement-hover: #dcedc8;
-  --color-stage-implement-border: #c5e1a5;
-
-  /* TEST: 테스트 (Blue) */
-  --color-stage-test-bg: #e8f4fd;
-  --color-stage-test-hover: #d4eafc;
-  --color-stage-test-border: #bbdefb;
-
-  /* ETC: 기타 (Purple) */
-  --color-stage-etc-bg: #f3e8fd;
-  --color-stage-etc-hover: #e8d5f9;
-  --color-stage-etc-border: #d1c4e9;
 
   /* ========== Spacing (단위: 8px) ========== */
   --spacing-unit: 8px;
