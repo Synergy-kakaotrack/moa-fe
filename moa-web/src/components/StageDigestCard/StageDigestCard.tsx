@@ -29,7 +29,7 @@ export default function StageDigestCard({
     return DOMPurify.sanitize(html);
   }, [digest.digest]);
 
-  const canRefresh = meta.outdated || !meta.exists;
+  const canRefresh = meta.outdated || (!meta.exists && !!meta.latestScrapCapturedAt);
   const hasContent = meta.exists && digest.digest;
 
   return (
