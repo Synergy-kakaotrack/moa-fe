@@ -54,7 +54,7 @@ export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelet
         borderRadius: "5px",
         border: "1px solid rgba(0, 0, 0, 0.20)",
         margin: "8px",
-        height: "64vh",
+        height: "62vh",
         overflowY: "auto",
         overflowX: "hidden",
         overscrollBehaviorX: "none",
