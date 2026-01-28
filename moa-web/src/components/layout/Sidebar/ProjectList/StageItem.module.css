@@ -42,15 +42,15 @@
 
 /* icon */
 .icon {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   color: inherit;
 }
 
 /* label */
 .label {
-  font-size: var(--font-size-lg);
+  font-size: 14px;
   font-weight: var(--font-weight-medium);
   line-height: 1.2;
   white-space: nowrap;

@@ -39,7 +39,7 @@ export default function Sidebar() {
           aria-expanded={!collapsed}
         >
           <IconChevron
-            size={32}
+            size={24}
             className={`${styles.chevron} ${
               collapsed ? styles.chevronCollapsed : ''
             }`}
