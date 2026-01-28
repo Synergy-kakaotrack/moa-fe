@@ -38,13 +38,30 @@ function removeChatGptCodeUi(root) {
 }
 
 let lastSentText = "";
+let isDragging = false;
+
+document.addEventListener("mousedown", () => {
+  isDragging = false;
+
+  const selection = window.getSelection();
+  if (selection && selection.rangeCount > 0) {
+    selection.removeAllRanges();
+  }
+});
+
+document.addEventListener("mousemove", () => {
+  isDragging = true;
+});
 
 document.addEventListener("mouseup", () => {
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) return;
 
   const text = selection.toString().trim();
-  if (!text) return;
+  if (!text) {
+    selection.removeAllRanges();
+    return;
+  }
 
   const range = selection.getRangeAt(0);
   const fragment = range.cloneContents();
@@ -60,11 +77,12 @@ document.addEventListener("mouseup", () => {
   chrome.runtime.sendMessage({
     type: "SCRAP_UPDATED",
     payload: {
-      text,        // ✅ 기존 그대로
-      rawHtml,     // ✅ 신규 추가
+      text,
+      rawHtml,
       url: location.href,
       createdAt: Date.now(),
     },
   });
+  selection.removeAllRanges();
 });
 
