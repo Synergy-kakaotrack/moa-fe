@@ -32,7 +32,7 @@
 }
 
 .separator {
-  color: var(--color-text-secondary);
+  color: var(--stage-color);
   font-weight: var(--font-weight-normal);
 }
 

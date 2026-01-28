@@ -34,8 +34,8 @@
 
 /* caret */
 .caret {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   flex-shrink: 0;
   color: inherit;
   transition: transform var(--transition-normal);
@@ -47,15 +47,15 @@
 
 /* folder */
 .folder {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   color: inherit;
 }
 
 /* title */
 .projectTitle {
-  font-size: var(--font-size-lg);
+  font-size: 14px;
   font-weight: var(--font-weight-medium);
   line-height: 1.2;
   white-space: nowrap;

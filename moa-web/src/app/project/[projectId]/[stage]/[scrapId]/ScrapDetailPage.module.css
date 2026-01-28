@@ -13,7 +13,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 0 var(--spacing-3) var(--spacing-3);
+  padding: 0 0 var(--spacing-3) var(--spacing-3);
   min-height: 0;
 }
 
@@ -203,7 +203,6 @@
   min-height: 0; /* flex child 스크롤을 위해 필요 */
   overflow-y: auto; /* 스크롤 활성화 */
   overscroll-behavior: contain; /* 스크롤 튕김 방지 */
-  padding-right: var(--spacing-2); /* 스크롤바 외부 공간 */
   box-sizing: border-box;
   scrollbar-color: var(--color-border-muted) transparent;
 }

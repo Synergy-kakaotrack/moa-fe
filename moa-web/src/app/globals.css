@@ -10,7 +10,7 @@ body {
 body {
   color: var(--color-text-primary);
   background: var(--color-bg-main);
-  font-family: var(--font-pretendard), -apple-system, BlinkMacSystemFont,
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     'Apple SD Gothic Neo', 'Noto Sans KR', Arial,
     sans-serif;
   font-size: var(--font-size-md);
