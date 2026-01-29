@@ -3,20 +3,6 @@ let scraps = [];
 console.log("🟢 background service worker loaded");
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  // 0. SHOW_TOAST → 현재 활성 탭의 content script로 전달
-  if (message.type === "SHOW_TOAST") {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0]?.id) {
-        chrome.tabs.sendMessage(tabs[0].id, {
-          type: "SHOW_TOAST",
-          text: message.text,
-          linkUrl: message.linkUrl,
-        });
-      }
-    });
-    return;
-  }
-
   // 1. contentScript → background
   if (message.type === "SCRAP_TEXT") {
     const scrap = message.payload;
@@ -54,7 +40,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 
-//확장프로그램 아이콘 클릭 하면 사이드패널 나오게 
+//확장프로그램 아이콘 클릭 하면 사이드패널 나오게
 chrome.runtime.onInstalled.addListener(() => {
   chrome.sidePanel.setPanelBehavior({
     openPanelOnActionClick: true

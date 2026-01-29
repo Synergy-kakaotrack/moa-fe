@@ -7,6 +7,11 @@
   --color-text-normal: #333333;
   --color-text-link: #000000;
 
+  /* Accent */
+  --color-accent-primary: #eff0a4;   
+  --color-accent-secondary: #d1d291;
+  --color-accent-text: #5b5b00;
+
   /* Font size */
   --font-size-title: 16px;
   --font-size-body: 14px;
