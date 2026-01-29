@@ -1,0 +1,247 @@
+/* =========================
+   Backdrop
+========================= */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================
+   Modal
+========================= */
+.modal {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card-hover), 0 12px 40px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   Header
+========================= */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-bottom: 1px solid var(--color-border-muted);
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.closeButton:hover {
+  background: var(--color-accent-primary);
+  color: var(--color-text-primary);
+}
+
+/* =========================
+   Body
+========================= */
+.body {
+  padding: var(--spacing-3);
+  overflow-y: auto;
+}
+
+.description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: var(--spacing-1) var(--spacing-2);
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  font-family: inherit;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  resize: vertical;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 0 3px var(--color-accent-primary);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+.textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--color-bg-subtle);
+}
+
+/* =========================
+   Examples
+========================= */
+.examples {
+  margin-top: var(--spacing-2);
+}
+
+.examplesLabel {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-1);
+}
+
+.exampleButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.exampleButton {
+  padding: 5px 10px;
+  border: 1px solid var(--color-border-muted);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-card);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.exampleButton:hover:not(:disabled) {
+  border-color: var(--color-accent-secondary);
+  color: var(--color-text-primary);
+  background: var(--color-accent-primary);
+}
+
+.exampleButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   Footer
+========================= */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-top: 1px solid var(--color-border-muted);
+  background: var(--color-bg-subtle);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.footerRight {
+  display: flex;
+  gap: 8px;
+}
+
+/* =========================
+   Buttons
+========================= */
+.button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.resetButton {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-muted);
+}
+
+.resetButton:hover:not(:disabled) {
+  background: var(--color-bg-notice);
+  border-color: var(--color-border-subtle);
+  color: var(--color-text-primary);
+}
+
+.cancelButton {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: var(--color-border-muted);
+  color: var(--color-text-primary);
+}
+
+.submitButton {
+  background: var(--color-accent-primary);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-card);
+}
+
+.submitButton:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: var(--shadow-button);
+}
