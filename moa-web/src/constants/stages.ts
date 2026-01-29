@@ -9,3 +9,5 @@ export const stages: Stage[] = [
   { key: 'TEST', name: '테스트', order: 5 },
   { key: 'ETC', name: '기타', order: 6 },
 ];
+
+export type { Stage };
