@@ -360,6 +360,15 @@ input.error {
   height: 10px;
 }
 
+.ai-badge-text {
+  color: #000;
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12px;
+}
+
 .create-project-box {
   display: flex;
   flex-direction: column;

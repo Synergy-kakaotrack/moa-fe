@@ -22,6 +22,7 @@ import { saveUIDraft, getUIDraft, clearUIDraft } from "../utils/uiDraftStorage";
 import { getProjects } from "../api/projectApi";
 import { createDraft, commitDraft } from "../api/draftApi";
 
+import LoadingOverlay from "../components/common/LoadingOverlay";
 //Types
 interface RawScrapPayload {
   text: string;
@@ -526,6 +527,7 @@ export default function App() {
             : false
         }
       />
+      {isScrapLoading && <LoadingOverlay />}
     </div>
   );
 }

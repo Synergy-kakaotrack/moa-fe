@@ -1,0 +1,24 @@
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 🔥 이 한 줄이 클릭 전부 차단 */
+  pointer-events: all;
+}
+
+.loading-box {
+  background: none;
+  padding: 20px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #eff0a4;
+  font-family: Pretendard;
+}
