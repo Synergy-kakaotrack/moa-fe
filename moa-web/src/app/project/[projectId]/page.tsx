@@ -49,6 +49,7 @@ export default function ProjectPage() {
 
   // NOTE: 모든 스테이지의 스크랩 목록
   const [scraps, setScraps] = useState<Scrap[]>([]);
+  const [scrapsLoaded, setScrapsLoaded] = useState(false);
 
   // NOTE: 에러 메시지 표출용
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -120,9 +121,11 @@ export default function ProjectPage() {
         );
 
         setScraps(allScraps);
+        setScrapsLoaded(true);
       } catch {
         if (!isMounted) return;
         setErrorMessage("스크랩 목록을 불러오지 못했습니다.");
+        setScrapsLoaded(true);
       }
     };
 
@@ -189,6 +192,26 @@ export default function ProjectPage() {
 
   // NOTE: 현재 선택된 stage의 digest
   const currentStageDigest = selectedTab !== 'PROJECT' ? stageDigests[selectedTab] : null;
+  const shouldShowEmptyProjectDigest = scrapsLoaded && scraps.length === 0;
+  const displayProjectDigest =
+    projectDigest ??
+    (shouldShowEmptyProjectDigest && project
+      ? {
+          projectId: project.projectId,
+          projectName: project.name,
+          kind: 'DEFAULT',
+          digest: null,
+          meta: {
+            exists: false,
+            outdated: false,
+            sourceLastCapturedAt: null,
+            latestScrapCapturedAt: null,
+            updatedAt: null,
+            version: 0,
+            refresh: null,
+          },
+        }
+      : null);
 
   // NOTE: Stage 요약 갱신 핸들러
   const handleStageRefresh = (stageKey: StageKey) => {
@@ -305,9 +328,9 @@ export default function ProjectPage() {
           )}>
             {selectedTab === 'PROJECT' ? (
               // 프로젝트 전체 요약
-              projectDigest && (
+              displayProjectDigest && (
                 <ProjectDigestCard
-                  digest={projectDigest}
+                  digest={displayProjectDigest}
                   onRefresh={handleProjectRefresh}
                   isRefreshing={refreshingStages.has('PROJECT')}
                   savedPrompt={savedPrompt}

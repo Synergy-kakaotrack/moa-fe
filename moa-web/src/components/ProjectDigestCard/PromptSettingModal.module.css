@@ -83,7 +83,7 @@
 }
 
 .closeButton:hover {
-  background: var(--color-border-subtle);
+  background: var(--color-accent-primary);
   color: var(--color-text-primary);
 }
 
