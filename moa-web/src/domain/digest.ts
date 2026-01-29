@@ -10,6 +10,20 @@ export interface DigestMeta {
   version: number;
 }
 
+export interface RefreshMeta {
+  status: 'SUCCESS' | 'SKIPPED' | 'FAILED';
+  errorCode: string | null;
+  message: string | null;
+  retryAfterSeconds: number | null;
+  attemptedAt: string;
+}
+
+export interface ProjectDigestMeta extends DigestMeta {
+  refresh: RefreshMeta | null;
+}
+
+export type ProjectDigestKind = 'DEFAULT' | 'CUSTOM';
+
 export interface StageDigest {
   projectId: number;
   projectName: string;
@@ -17,4 +31,12 @@ export interface StageDigest {
   stageName: string;
   digest: string | null;
   meta: DigestMeta;
+}
+
+export interface ProjectDigest {
+  projectId: number;
+  projectName: string;
+  kind: ProjectDigestKind;
+  digest: string | null;
+  meta: ProjectDigestMeta;
 }

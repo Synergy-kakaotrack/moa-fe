@@ -53,6 +53,17 @@
 
 /* ===== Stage Background Colors ===== */
 
+/* 프로젝트 전체 보기 (보라색 테마) */
+.project {
+  background: rgba(147, 112, 219, 0.2);
+  --card-hover-bg: rgba(147, 112, 219, 0.4);
+  --card-active-bg: rgba(147, 112, 219, 0.5);
+  --stage-color: rgba(107, 72, 179, 1);
+}
+.project .sidebarTitle {
+  color: var(--stage-color);
+}
+
 .plan {
   background: rgba(181, 204, 238, 0.3);
   --card-hover-bg: rgba(181, 204, 238, 0.6);

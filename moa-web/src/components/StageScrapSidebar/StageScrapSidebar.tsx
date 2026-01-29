@@ -16,6 +16,10 @@ interface Props {
   projectId: number;
   projectName: string;
   stageName: string;
+  /** 프로젝트 전체 보기 모드 (보라색 테마 적용) */
+  isProjectView?: boolean;
+  /** 프로젝트 전체 보기일 때 스크랩 카드에 stage 배지 표시 */
+  showStageBadge?: boolean;
 }
 
 const stageClassMap: Record<StageKey, string> = {
@@ -33,12 +37,17 @@ export default function StageScrapSidebar({
   projectId,
   projectName,
   stageName,
+  isProjectView = false,
+  showStageBadge = false,
 }: Props) {
   const params = useParams();
   const currentScrapId = params.scrapId ? Number(params.scrapId) : null;
 
+  // 프로젝트 전체 보기일 때는 보라색 테마, 아니면 stage별 테마
+  const sidebarClass = isProjectView ? styles.project : stageClassMap[stageKey];
+
   return (
-    <aside className={clsx(styles.sidebar, stageClassMap[stageKey])}>
+    <aside className={clsx(styles.sidebar, sidebarClass)}>
       {/* 컨텍스트 헤더 */}
       <h3 className={styles.sidebarTitle}>
         <Link href={`/project/${projectId}`} className={styles.projectLink}>
@@ -59,6 +68,7 @@ export default function StageScrapSidebar({
               scrap={scrap}
               variant="sidebar"
               isActive={scrap.scrapId === currentScrapId}
+              showStageBadge={showStageBadge}
             />
           ))}
         </div>

@@ -10,15 +10,27 @@ import { scrapsApi } from "@/api/scraps";
 import type { Project } from "@/domain/project";
 import type { Scrap } from "@/domain/scrap";
 import type { StageKey } from "@/domain/stage";
-import type { StageDigest } from "@/domain/digest";
+import type { StageDigest, ProjectDigest } from "@/domain/digest";
 import { getStageDigest, refreshStageDigest } from "@/api/digests";
+
+// NOTE: Mock API 사용 (실제 API 연결 시 아래 주석 해제하고 mock 제거)
+// import { getProjectDigest, refreshProjectDigest } from "@/api/digests";
+import {
+  mockGetProjectDigest,
+  mockRefreshProjectDigest,
+  getSavedPrompt,
+} from "@/mocks/projectDigest";
 
 import { useSidebarState } from "@/contexts/SidebarContext";
 import { stages } from "@/constants/stages";
 
 import StageDigestCard from "@/components/StageDigestCard";
+import ProjectDigestCard from "@/components/ProjectDigestCard";
 import StageScrapSidebar from "@/components/StageScrapSidebar";
 import styles from "./ProjectDashboard.module.css";
+
+// NOTE: 탭 타입 정의 - 'PROJECT'는 프로젝트 전체 요약, 나머지는 StageKey
+type TabKey = 'PROJECT' | StageKey;
 
 const stageClassMap: Record<StageKey, string> = {
   PLAN: styles.plan,
@@ -44,16 +56,22 @@ export default function ProjectPage() {
   // NOTE: 에러 메시지 표출용
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  // NOTE: 선택된 stage
-  const [selectedStage, setSelectedStage] = useState<StageKey>("PLAN");
+  // NOTE: 선택된 탭 ('PROJECT' 또는 StageKey)
+  const [selectedTab, setSelectedTab] = useState<TabKey>("PROJECT");
 
-  // NOTE: 요약 데이터
+  // NOTE: Stage 요약 데이터
   const [stageDigests, setStageDigests] = useState<
     Partial<Record<StageKey, StageDigest>>
   >({});
 
+  // NOTE: 프로젝트 전체 요약 데이터
+  const [projectDigest, setProjectDigest] = useState<ProjectDigest | null>(null);
+
+  // NOTE: 프로젝트 요약 커스텀 프롬프트
+  const [savedPrompt, setSavedPrompt] = useState<string | null>(null);
+
   // NOTE: 요약 갱신 중 상태
-  const [refreshingStages, setRefreshingStages] = useState<Set<StageKey>>(
+  const [refreshingStages, setRefreshingStages] = useState<Set<TabKey>>(
     new Set()
   );
 
@@ -118,18 +136,42 @@ export default function ProjectPage() {
     };
   }, [projectId]);
 
-  // NOTE: 선택된 stage의 digest 가져오기
+  // NOTE: 프로젝트 요약 가져오기 (탭이 PROJECT일 때)
   useEffect(() => {
+    if (selectedTab !== 'PROJECT') return;
+
+    let isMounted = true;
+
+    // NOTE: Mock API 사용 (실제 API 연결 시 getProjectDigest로 교체)
+    mockGetProjectDigest(projectId)
+      .then((digest) => {
+        if (!isMounted) return;
+        setProjectDigest(digest);
+        setSavedPrompt(getSavedPrompt());
+      })
+      .catch(() => {
+        // NOTE: 요약 조회 실패는 전체 화면을 막지 않음
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [projectId, selectedTab]);
+
+  // NOTE: 선택된 stage의 digest 가져오기 (탭이 stage일 때)
+  useEffect(() => {
+    if (selectedTab === 'PROJECT') return;
+
     let isMounted = true;
     const stageName =
-      stages.find((s) => s.key === selectedStage)?.name ?? selectedStage;
+      stages.find((s) => s.key === selectedTab)?.name ?? selectedTab;
 
     getStageDigest(projectId, stageName)
       .then((digest) => {
         if (!isMounted) return;
         setStageDigests((prev) => ({
           ...prev,
-          [selectedStage]: digest,
+          [selectedTab]: digest,
         }));
       })
       .catch(() => {
@@ -139,18 +181,22 @@ export default function ProjectPage() {
     return () => {
       isMounted = false;
     };
-  }, [projectId, selectedStage]);
+  }, [projectId, selectedTab]);
 
   // NOTE: 현재 선택된 stage의 스크랩 필터링
   const currentStageScraps = useMemo(() => {
-    return scraps.filter((scrap) => scrap.stageKey === selectedStage);
-  }, [scraps, selectedStage]);
+    if (selectedTab === 'PROJECT') {
+      // 프로젝트 요약일 때는 모든 스크랩 표시
+      return scraps;
+    }
+    return scraps.filter((scrap) => scrap.stageKey === selectedTab);
+  }, [scraps, selectedTab]);
 
   // NOTE: 현재 선택된 stage의 digest
-  const currentDigest = stageDigests[selectedStage];
+  const currentStageDigest = selectedTab !== 'PROJECT' ? stageDigests[selectedTab] : null;
 
-  // NOTE: 요약 갱신 핸들러 (Mock - 실제로는 API 호출)
-  const handleRefresh = (stageKey: StageKey) => {
+  // NOTE: Stage 요약 갱신 핸들러
+  const handleStageRefresh = (stageKey: StageKey) => {
     setRefreshingStages((prev) => new Set(prev).add(stageKey));
     const stageName =
       stages.find((s) => s.key === stageKey)?.name ?? stageKey;
@@ -175,6 +221,28 @@ export default function ProjectPage() {
         setRefreshingStages((prev) => {
           const next = new Set(prev);
           next.delete(stageKey);
+          return next;
+        });
+      });
+  };
+
+  // NOTE: 프로젝트 요약 갱신 핸들러
+  const handleProjectRefresh = (prompt?: string | null) => {
+    setRefreshingStages((prev) => new Set(prev).add('PROJECT'));
+
+    // NOTE: Mock API 사용 (실제 API 연결 시 refreshProjectDigest로 교체)
+    mockRefreshProjectDigest(projectId, { prompt })
+      .then((digest) => {
+        setProjectDigest(digest);
+        setSavedPrompt(prompt ?? null);
+      })
+      .catch(() => {
+        // NOTE: 409 등 갱신 실패 시 기존 요약 유지
+      })
+      .finally(() => {
+        setRefreshingStages((prev) => {
+          const next = new Set(prev);
+          next.delete('PROJECT');
           return next;
         });
       });
@@ -206,31 +274,60 @@ export default function ProjectPage() {
       <div className={styles.contentWrapper}>
         {/* ================= Main: Stage Tabs + AI Summary ================= */}
         <section className={styles.mainSection}>
-          {/* Stage Tabs */}
+          {/* Stage Tabs - 프로젝트 요약 탭 + Stage 탭들 */}
           <nav className={styles.stageTabs}>
+            {/* 프로젝트 요약 탭 (맨 앞) */}
+            <button
+              className={clsx(
+                styles.stageTab,
+                styles.projectTab,
+                selectedTab === 'PROJECT' && styles.active
+              )}
+              onClick={() => setSelectedTab('PROJECT')}
+            >
+              전체
+            </button>
+
+            {/* Stage 탭들 */}
             {stages.map((stage) => (
               <button
                 key={stage.key}
                 className={clsx(
                   styles.stageTab,
                   stageClassMap[stage.key],
-                  selectedStage === stage.key && styles.active
+                  selectedTab === stage.key && styles.active
                 )}
-                onClick={() => setSelectedStage(stage.key)}
+                onClick={() => setSelectedTab(stage.key)}
               >
                 {stage.name}
               </button>
             ))}
           </nav>
 
-          {/* AI Summary Card */}
-          <div className={clsx(styles.digestWrapper, stageClassMap[selectedStage])}>
-            {currentDigest && (
-              <StageDigestCard
-                digest={currentDigest}
-                onRefresh={() => handleRefresh(selectedStage)}
-                isRefreshing={refreshingStages.has(selectedStage)}
-              />
+          {/* AI Summary Card - 선택된 탭에 따라 다른 카드 표시 */}
+          <div className={clsx(
+            styles.digestWrapper,
+            selectedTab === 'PROJECT' ? styles.projectDigest : stageClassMap[selectedTab]
+          )}>
+            {selectedTab === 'PROJECT' ? (
+              // 프로젝트 전체 요약
+              projectDigest && (
+                <ProjectDigestCard
+                  digest={projectDigest}
+                  onRefresh={handleProjectRefresh}
+                  isRefreshing={refreshingStages.has('PROJECT')}
+                  savedPrompt={savedPrompt}
+                />
+              )
+            ) : (
+              // Stage별 요약
+              currentStageDigest && (
+                <StageDigestCard
+                  digest={currentStageDigest}
+                  onRefresh={() => handleStageRefresh(selectedTab)}
+                  isRefreshing={refreshingStages.has(selectedTab)}
+                />
+              )
             )}
           </div>
         </section>
@@ -238,10 +335,12 @@ export default function ProjectPage() {
         {/* ================= Right Sidebar: Scrap List ================= */}
         <StageScrapSidebar
           scraps={currentStageScraps}
-          stageKey={selectedStage}
+          stageKey={selectedTab === 'PROJECT' ? 'PLAN' : selectedTab}
           projectId={projectId}
           projectName={project.name}
-          stageName={stages.find((s) => s.key === selectedStage)?.name ?? ''}
+          stageName={selectedTab === 'PROJECT' ? '전체' : (stages.find((s) => s.key === selectedTab)?.name ?? '')}
+          isProjectView={selectedTab === 'PROJECT'}
+          showStageBadge={selectedTab === 'PROJECT'}
         />
       </div>
     </main>

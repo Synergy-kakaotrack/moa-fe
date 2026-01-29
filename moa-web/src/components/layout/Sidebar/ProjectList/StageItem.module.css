@@ -26,8 +26,8 @@
 .implement.active,
 .test.active,
 .etc.active {
-  background-color: var(--color-bg-notice);
-  color: var(--color-action-primary);
+  background-color: var(--color-accent-primary);
+  color: var(--color-accent-text);
 }
 
 .plan.active:hover,
@@ -36,8 +36,8 @@
 .implement.active:hover,
 .test.active:hover,
 .etc.active:hover {
-  background-color: var(--color-border-subtle);
-  color: var(--color-action-primary);
+  background-color: var(--color-accent-secondary);
+  color: var(--color-accent-text);
 }
 
 /* icon */
