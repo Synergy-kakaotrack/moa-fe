@@ -14,6 +14,7 @@ import Save from "../Pages/Save";
 
 import NoticeScrapCount from "../components/UI/Notice/NoticeScrapCount";
 import GuideText from "../components/UI/Notice/GuideText";
+import SavedNotice from "../components/UI/Notice/SavedNotice";
 
 import { clearScraps } from "../utils/scrapStorage";
 import { detectAISource } from "../utils/detectAISource";
@@ -91,6 +92,7 @@ export default function App() {
   const [isScrapLoading, setIsScrapLoading] = useState(false);
 
   const [highlightScrapId, setHighlightScrapId] = useState<number|null>(null);
+  const [savedScrapUrl, setSavedScrapUrl] = useState<string | null>(null);
 
   // 핵심: 현재 드래그 세션 id
   const currentScrapIdRef = useRef<number | null>(null);
@@ -349,6 +351,9 @@ export default function App() {
       linkUrl,
     });
 
+    // 확장 프로그램 내 저장 완료 알림 표시
+    setSavedScrapUrl(linkUrl);
+
     resetToInitialState();
   };
 
@@ -526,10 +531,14 @@ export default function App() {
       <Top />
 
       <div className="app-main">
-        <Notice>
-          <NoticeScrapCount count={scrapCount} />
-          {showGuideText && <GuideText />}
-        </Notice>
+        {savedScrapUrl && step === "EMPTY" ? (
+          <SavedNotice linkUrl={savedScrapUrl} />
+        ) : (
+          <Notice>
+            <NoticeScrapCount count={scrapCount} />
+            {showGuideText && <GuideText />}
+          </Notice>
+        )}
 
         <main>{renderContent()}</main>
       </div>
