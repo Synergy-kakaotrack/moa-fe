@@ -3,7 +3,7 @@
   "name": "MOA",
   "version": "0.1.0",
 
-  "permissions": ["sidePanel", "storage"],
+  "permissions": ["sidePanel", "storage", "tabs"],
 
   "host_permissions":[
     "https://chatgpt.com/*",

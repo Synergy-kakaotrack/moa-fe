@@ -22,7 +22,6 @@ import { saveUIDraft, getUIDraft, clearUIDraft } from "../utils/uiDraftStorage";
 import { getProjects } from "../api/projectApi";
 import { createDraft, commitDraft } from "../api/draftApi";
 
-import LoadingOverlay from "../components/common/LoadingOverlay";
 //Types
 interface RawScrapPayload {
   text: string;
@@ -52,6 +51,17 @@ function isScrapUpdatedMessage(
 
   return (message as { type: unknown }).type === "SCRAP_UPDATED";
 }
+
+// Stage 이름 → key 매핑
+const stageNameToKey: Record<string, string> = {
+  "기획": "PLAN",
+  "조사&분석": "RESEARCH",
+  "설계": "DESIGN",
+  "구현": "IMPLEMENT",
+  "테스트": "TEST",
+  "기타": "ETC",
+};
+
 //App
 export default function App() {
   const isFinalizingRef = useRef(false);
@@ -260,7 +270,7 @@ export default function App() {
     const draft = getUIDraft();
     if (!draft) return;
 
-    // ⭐ 스크랩이 없으면 새 작업 → 복구 안 함
+    // 스크랩이 없으면 새 작업 → 복구 안 함
     if (
       !draft.scraps ||
       draft.scraps.length === 0 ||
@@ -311,7 +321,7 @@ export default function App() {
       .flatMap(scrap => scrap.rawHtmls ?? [])
       .join("<hr/>");
 
-    await commitDraft(draftId, {
+    const response = await commitDraft(draftId, {
       projectId: selectedProjectId,
       stage: workStep,
       subtitle: title,
@@ -325,6 +335,20 @@ export default function App() {
       userRecStage: workStep===recStage,
       userRecSubtitle: title===recTitle,
     });
+
+    // 토스트 알림 표시
+    const dashboardUrl = (import.meta.env.VITE_DASHBOARD_URL || "https://moa-fe-lovat.vercel.app").replace(/\/$/, "");
+    const stageKey = stageNameToKey[workStep] || workStep;
+    const linkUrl = response?.scrapId
+      ? `${dashboardUrl}/project/${selectedProjectId}/${stageKey}/${response.scrapId}`
+      : dashboardUrl;
+
+    chrome.runtime.sendMessage({
+      type: "SHOW_TOAST",
+      text: "스크랩이 저장되었습니다",
+      linkUrl,
+    });
+
     resetToInitialState();
   };
 
@@ -440,11 +464,12 @@ export default function App() {
         return <Empty />;
 
       case "SCRAP_LIST":
-        return <ScrapList 
-                  scraps={scraps} 
+        return <ScrapList
+                  scraps={scraps}
                   setScraps={setScraps}
                   highlightScrapId={highlightScrapId}
                   onDelete={handleDeleteScrap}
+                  disabled={isScrapLoading}
                   />;
 
       case "PROJECT_SETTING":
@@ -527,7 +552,6 @@ export default function App() {
             : false
         }
       />
-      {isScrapLoading && <LoadingOverlay />}
     </div>
   );
 }

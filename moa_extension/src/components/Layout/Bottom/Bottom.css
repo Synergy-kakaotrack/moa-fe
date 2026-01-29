@@ -39,6 +39,7 @@
 
   padding-top: 11px;
   padding-bottom:11px;
+  cursor: pointer;
 }
 
 .bottom-button.disabled,
@@ -56,9 +57,9 @@
 }
   
 .bottom-clear:hover {
-  background-color: #EFF0A4;
+  background-color: #E8E8E8;
   color: #000;
-  border: 0;
+  border: 1px solid rgba(0, 0, 0, 0.50);
 }
 
 .bottom-submit {

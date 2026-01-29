@@ -9,6 +9,7 @@ interface ScrapCardProps {
   index: number;
   onDelete: (id: number) => void;
   highlighted: boolean;
+  disabled?: boolean;
 }
 
 const COLLAPSED_HEIGHT = 102;
@@ -40,7 +41,7 @@ function ChevronIcon({ open }: { open: boolean }) {
 }
 
 
-export default function ScrapCard({ scrap, index, onDelete, highlighted }: ScrapCardProps) {
+export default function ScrapCard({ scrap, index, onDelete, highlighted, disabled = false }: ScrapCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
 
@@ -52,7 +53,7 @@ export default function ScrapCard({ scrap, index, onDelete, highlighted }: Scrap
     listeners,
     transform,
     transition,
-  } = useSortable({ id: scrap.id });
+  } = useSortable({ id: scrap.id, disabled });
 
   const style = {
     transform: transform
@@ -82,10 +83,10 @@ export default function ScrapCard({ scrap, index, onDelete, highlighted }: Scrap
   }, [scrap.texts]);
 
   return (
-    <div 
+    <div
       ref={setNodeRef}
       style={style}
-      className={`scrap-card ${highlighted ? "highlighted" : ""}`}>
+      className={`scrap-card ${highlighted ? "highlighted" : ""} ${disabled ? "disabled" : ""}`}>
       {/* 헤더 */}
       <div className="scrap-header">
         <div className="header-left">
@@ -101,7 +102,7 @@ export default function ScrapCard({ scrap, index, onDelete, highlighted }: Scrap
             <path d="M0.5 0V12" stroke="#212121"/>
           </svg>
         </div>
-        <button className="scrap-delete" onClick={() => onDelete(scrap.id)}>
+        <button className="scrap-delete" onClick={() => onDelete(scrap.id)} disabled={disabled}>
           <svg xmlns="http://www.w3.org/2000/svg" width="9" height="11" viewBox="0 0 9 11" fill="none">
             <path d="M4.5 6.32652L1.14639 10.2137C1.02091 10.3591 0.861217 10.4318 0.6673 10.4318C0.473384 10.4318 0.313688 10.3591 0.188213 10.2137C0.0627374 10.0682 0 9.88312 0 9.65836C0 9.43359 0.0627374 9.24849 0.188213 9.10305L3.54183 5.21591L0.188213 1.32877C0.0627374 1.18333 0 0.998228 0 0.773462C0 0.548695 0.0627374 0.363593 0.188213 0.218156C0.313688 0.0727183 0.473384 0 0.6673 0C0.861217 0 1.02091 0.0727183 1.14639 0.218156L4.5 4.1053L7.85361 0.218156C7.97909 0.0727183 8.13878 0 8.3327 0C8.52662 0 8.68631 0.0727183 8.81179 0.218156C8.93726 0.363593 9 0.548695 9 0.773462C9 0.998228 8.93726 1.18333 8.81179 1.32877L5.45817 5.21591L8.81179 9.10305C8.93726 9.24849 9 9.43359 9 9.65836C9 9.88312 8.93726 10.0682 8.81179 10.2137C8.68631 10.3591 8.52662 10.4318 8.3327 10.4318C8.13878 10.4318 7.97909 10.3591 7.85361 10.2137L4.5 6.32652Z" fill="#B5CCEE"/>
             <path d="M4.5 6.32652L1.14639 10.2137C1.02091 10.3591 0.861217 10.4318 0.6673 10.4318C0.473384 10.4318 0.313688 10.3591 0.188213 10.2137C0.0627374 10.0682 0 9.88312 0 9.65836C0 9.43359 0.0627374 9.24849 0.188213 9.10305L3.54183 5.21591L0.188213 1.32877C0.0627374 1.18333 0 0.998228 0 0.773462C0 0.548695 0.0627374 0.363593 0.188213 0.218156C0.313688 0.0727183 0.473384 0 0.6673 0C0.861217 0 1.02091 0.0727183 1.14639 0.218156L4.5 4.1053L7.85361 0.218156C7.97909 0.0727183 8.13878 0 8.3327 0C8.52662 0 8.68631 0.0727183 8.81179 0.218156C8.93726 0.363593 9 0.548695 9 0.773462C9 0.998228 8.93726 1.18333 8.81179 1.32877L5.45817 5.21591L8.81179 9.10305C8.93726 9.24849 9 9.43359 9 9.65836C9 9.88312 8.93726 10.0682 8.81179 10.2137C8.68631 10.3591 8.52662 10.4318 8.3327 10.4318C8.13878 10.4318 7.97909 10.3591 7.85361 10.2137L4.5 6.32652Z" fill="black" fill-opacity="0.2"/>
@@ -129,6 +130,7 @@ export default function ScrapCard({ scrap, index, onDelete, highlighted }: Scrap
           <button
             className="scrap-toggle"
             onClick={() => setIsOpen(v => !v)}
+            disabled={disabled}
           >
             <span>{isOpen ? "접기" : "더보기"}</span>
             <ChevronIcon open={isOpen} />

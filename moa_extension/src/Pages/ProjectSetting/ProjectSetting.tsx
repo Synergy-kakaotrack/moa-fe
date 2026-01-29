@@ -4,7 +4,7 @@ import type { Scrap } from "../../types/scrap.domain";
 import type { Project } from "../../types/project";
 import { createProject } from "../../api/projectApi";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import SelectIcon from "../../components/icons/selectIcon";
 
 interface ProjectSettingProps {
@@ -71,6 +71,26 @@ export default function ProjectSetting({
   const [projectOpen, setProjectOpen] = useState(false);
   const [stepOpen, setStepOpen] = useState(false);
 
+  const projectRef = useRef<HTMLDivElement>(null);
+  const stepRef = useRef<HTMLDivElement>(null);
+
+  // 외부 클릭 시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (projectOpen && projectRef.current && !projectRef.current.contains(target)) {
+        setProjectOpen(false);
+      }
+      if (stepOpen && stepRef.current && !stepRef.current.contains(target)) {
+        setStepOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [projectOpen, stepOpen]);
+
   const steps = ["기획", "조사&분석", "설계", "구현", "테스트", "기타"];
 
   const canCreateProject =
@@ -118,7 +138,7 @@ export default function ProjectSetting({
             </label>
           </div>
 
-          <div className={`select-wrap ${projectOpen ? "open" : ""}`}>
+          <div ref={projectRef} className={`select-wrap ${projectOpen ? "open" : ""}`}>
             <button
               type="button"
               className="project-select"
@@ -249,7 +269,7 @@ export default function ProjectSetting({
             </label>
 
           </div>
-          <div className={`select-wrap ${stepOpen ? "open" : ""}`}>
+          <div ref={stepRef} className={`select-wrap ${stepOpen ? "open" : ""}`}>
             {/* 선택된 값 */}
             <button
               type="button"

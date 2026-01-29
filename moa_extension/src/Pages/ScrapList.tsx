@@ -22,9 +22,10 @@ interface ScrapListProps {
   setScraps: React.Dispatch<React.SetStateAction<Scrap[]>>;
   highlightScrapId: number | null;
   onDelete: (scrapId: number) => void;
+  disabled?: boolean;
 }
 
-export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelete }: ScrapListProps) {
+export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelete, disabled = false }: ScrapListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -81,6 +82,7 @@ export default function ScrapList({ scraps, setScraps, highlightScrapId, onDelet
                 index={index + 1}
                 onDelete={onDelete}
                 highlighted={scrap.id === highlightScrapId}
+                disabled={disabled}
               />
             ))}
           </SortableContext>

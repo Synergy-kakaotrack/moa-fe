@@ -109,19 +109,19 @@ select {
 }
 
 .project-options {
-  position: absolute;    /* ⭐ 핵심 */
+  position: absolute;
   left: 0;
-  width: calc(100% - 2px);
+  width: calc(100% - 4px);
 
   list-style: none;
-  margin-top: -1px;
+  margin-top: 4px;
   padding: 0;
 
   background: #fff;
   border: 2px solid #212121;
   border-radius: 8px;
 
-  z-index: 1000;         /* 다른 폼 위로 */
+  z-index: 1000;
   overflow: hidden;
 
   max-height: 260px;
@@ -186,23 +186,21 @@ select {
 .step-options {
   position: absolute;
   left: 0;
-  width: 100%;
+  width: calc(100% - 4px);
 
   list-style: none;
-  margin-top: -1.3px;
+  margin-top: 4px;
   padding: 0;
 
   background: #fff;
   border: 2px solid #212121;
-  border-radius: 10px;
+  border-radius: 8px;
 
   z-index: 1000;
   overflow: hidden;
 
   max-height: 260px;
   overflow-y: auto;
-
-  width: calc(100% - 2.5px);
 
   color: var(--color-text-primary, #212121);
 
@@ -351,7 +349,6 @@ input.error {
   border-radius: 25px;
   background: #EFF0A4;
   margin-left: 4px;
-  align-items: center;
 }
 
 .ai-badge svg {
@@ -486,8 +483,7 @@ input.error {
 }
 .select-wrap.open .project-select,
 .select-wrap.open .step-select {
-  border: 2px solid #212121;   /* 🔥 두껍게 유지 */
-  background: #fff;            /* 필요하면 강조색으로 바꿔도 됨 */
+  border-color: #212121;
 }
 button.primary:disabled {
   background-color: #d1d1d1;
