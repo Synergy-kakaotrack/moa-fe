@@ -22,6 +22,7 @@
   /* Accent */
   --color-accent-primary: #eff0a4;   /* 선택/강조 */
   --color-accent-secondary: #d1d291;
+  --color-accent-text: #5b5b00;
 
   /* Action */
   --color-action-primary: #3582f0;   /* 액션 버튼 */

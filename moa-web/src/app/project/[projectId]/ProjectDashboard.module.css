@@ -95,6 +95,9 @@
 }
 
 /* Stage Tab Colors (non-active) */
+.stageTab.projectTab {
+  background: rgba(147, 112, 219, 0.4);
+}
 .stageTab.plan {
   background: rgba(181, 204, 238, 0.5);
 }
@@ -178,6 +181,9 @@
 /* =========================
   Stage Colors (for other usages)
 ========================= */
+.projectDigest {
+  background: rgba(147, 112, 219, 0.15);
+}
 .plan {
   background: rgba(181, 204, 238, 0.3);
 }

@@ -36,7 +36,7 @@
 }
 
 .searchInput {
-  width: 100%;
+  width: 93%;
   height: 100%;
   border: none;
   outline: none;
@@ -80,7 +80,8 @@
 }
 
 .card:hover {
-  border-color: var(--color-border-subtle);
+  border-color: var(--color-accent-secondary);
+  background-color: var(--color-accent-primary);
 }
 
 .cardTitleRow {
