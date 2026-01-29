@@ -194,10 +194,6 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
-<<<<<<< HEAD
-=======
-  line-clamp: 2;
->>>>>>> main
   -webkit-box-orient: vertical;
 }
 
