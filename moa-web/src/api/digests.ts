@@ -53,7 +53,7 @@ export async function refreshProjectDigest(
 ): Promise<ProjectDigest> {
   const body = params?.prompt ? { prompt: params.prompt } : undefined;
   const res = await request<ProjectDigestResponse>(
-    `/api/projects/${projectId}/digest/refresh`,
+    `/api/projects/${projectId}/digest:refresh`,
     "POST",
     body ? { body } : undefined
   );

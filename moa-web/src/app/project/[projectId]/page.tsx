@@ -11,15 +11,12 @@ import type { Project } from "@/domain/project";
 import type { Scrap } from "@/domain/scrap";
 import type { StageKey } from "@/domain/stage";
 import type { StageDigest, ProjectDigest } from "@/domain/digest";
-import { getStageDigest, refreshStageDigest } from "@/api/digests";
-
-// NOTE: Mock API 사용 (실제 API 연결 시 아래 주석 해제하고 mock 제거)
-// import { getProjectDigest, refreshProjectDigest } from "@/api/digests";
 import {
-  mockGetProjectDigest,
-  mockRefreshProjectDigest,
-  getSavedPrompt,
-} from "@/mocks/projectDigest";
+  getStageDigest,
+  refreshStageDigest,
+  getProjectDigest,
+  refreshProjectDigest,
+} from "@/api/digests";
 
 import { useSidebarState } from "@/contexts/SidebarContext";
 import { stages } from "@/constants/stages";
@@ -142,12 +139,10 @@ export default function ProjectPage() {
 
     let isMounted = true;
 
-    // NOTE: Mock API 사용 (실제 API 연결 시 getProjectDigest로 교체)
-    mockGetProjectDigest(projectId)
+    getProjectDigest(projectId)
       .then((digest) => {
         if (!isMounted) return;
         setProjectDigest(digest);
-        setSavedPrompt(getSavedPrompt());
       })
       .catch(() => {
         // NOTE: 요약 조회 실패는 전체 화면을 막지 않음
@@ -230,8 +225,7 @@ export default function ProjectPage() {
   const handleProjectRefresh = (prompt?: string | null) => {
     setRefreshingStages((prev) => new Set(prev).add('PROJECT'));
 
-    // NOTE: Mock API 사용 (실제 API 연결 시 refreshProjectDigest로 교체)
-    mockRefreshProjectDigest(projectId, { prompt })
+    refreshProjectDigest(projectId, { prompt })
       .then((digest) => {
         setProjectDigest(digest);
         setSavedPrompt(prompt ?? null);
