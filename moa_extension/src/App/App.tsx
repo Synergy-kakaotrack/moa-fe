@@ -188,6 +188,11 @@ export default function App() {
     const listener = (message: unknown) => {
       if (!isScrapUpdatedMessage(message)) return;
 
+      if (step === "PROJECT_SETTING" || step === "SAVE") {
+        console.log("스크랩 차단됨 - 현재 step:", step);
+        return;
+      }
+
       const { text, rawHtml, url, createdAt, dragSessionId } = message.payload;
       const source = detectAISource(url);
 
@@ -444,7 +449,8 @@ export default function App() {
       );
 
       if (nextScraps.length === 0) {
-        setStep("EMPTY");
+        resetToInitialState(); // 로컬 + UI + 상태 전부 초기화
+        return [];
       }
 
       return nextScraps;
