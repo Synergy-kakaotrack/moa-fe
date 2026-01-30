@@ -16,7 +16,7 @@ import NoticeScrapCount from "../components/UI/Notice/NoticeScrapCount";
 import GuideText from "../components/UI/Notice/GuideText";
 import SavedNotice from "../components/UI/Notice/SavedNotice";
 
-import { clearScraps } from "../utils/scrapStorage";
+import { saveScrapList, clearScrapList } from "../utils/scrapStorage";
 import { detectAISource } from "../utils/detectAISource";
 import { saveUIDraft, getUIDraft, clearUIDraft } from "../utils/uiDraftStorage";
 
@@ -26,6 +26,7 @@ import { createDraft, commitDraft } from "../api/draftApi";
 //Types
 interface RawScrapPayload {
   text: string;
+  source?:string;
   rawHtml?: string;
   url?: string;
   createdAt?: number;
@@ -76,7 +77,18 @@ export default function App() {
   const scrapCount = scraps.length;
 
   // step
-  const [step, setStep] = useState<Step>("EMPTY");
+  const getInitialStep = (): Step => {
+    const draft = getUIDraft();
+
+    if (draft?.step === "PROJECT_SETTING") {
+      clearUIDraft();
+      return "SCRAP_LIST";
+    }
+
+    return "EMPTY";
+  };
+
+  const [step, setStep] = useState<Step>(() => getInitialStep());
 
   // project info
   const [title, setTitle] = useState("");
@@ -90,6 +102,7 @@ export default function App() {
 
   const transitionLockRef = useRef(false);
   const [isScrapLoading, setIsScrapLoading] = useState(false);
+  const [isScrapLoaded, setIsScrapLoaded] = useState(false);
 
   const [highlightScrapId, setHighlightScrapId] = useState<number|null>(null);
   const [savedScrapUrl, setSavedScrapUrl] = useState<string | null>(null);
@@ -109,7 +122,7 @@ export default function App() {
   //모두 지우기 - 상태리셋함수
   const resetToInitialState = () => {
     // storage
-    clearScraps();
+    clearScrapList();
     clearUIDraft();
 
     // refs
@@ -159,32 +172,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ type: "GET_SCRAPS" }, (response) => {
-      if (!Array.isArray(response)) return;
+    chrome.storage.local.get(["scraps"], (result) => {
+      const stored: Scrap[] = Array.isArray(result.scraps)
+        ? result.scraps
+        : [];
 
-      const normalized: Scrap[] = response.map((item, index) => ({
-        id: index + 1,
-        texts: [item.text],
-        meta: {
-          source: item.source ?? "Unknown",
-          url: item.url,
-        },
-        createdAt: item.createdAt ?? Date.now(),
-        status: "DRAFT",
-        dragSessionId: item.dragSessionId ?? index+1,
-      }));
-
-      setScraps(prev => {
-        if (prev.length > 0) return prev;
-        return normalized;
-      });
-      setStep(prev =>
-        prev === "PROJECT_SETTING" || prev === "SAVE"
-          ? prev
-          : normalized.length > 0
-            ? "SCRAP_LIST"
-            : "EMPTY"
-      );
+      setScraps(stored);
+      setStep(stored.length > 0 ? "SCRAP_LIST" : "EMPTY");
+      setIsScrapLoaded(true);
     });
   }, []);
 
@@ -192,8 +187,6 @@ export default function App() {
   useEffect(() => {
     const listener = (message: unknown) => {
       if (!isScrapUpdatedMessage(message)) return;
-
-      if(step === "PROJECT_SETTING") return;
 
       const { text, rawHtml, url, createdAt, dragSessionId } = message.payload;
       const source = detectAISource(url);
@@ -283,7 +276,6 @@ export default function App() {
 
     queueMicrotask(() => {
       setScraps(draft.scraps);
-      setStep(draft.step);
       setTitle(draft.title ?? "");
       setMemo(draft.memo ?? "");
       setProjectName(draft.projectName ?? "");
@@ -293,7 +285,7 @@ export default function App() {
 
   useEffect(() => {
     if (isFinalizingRef.current) return;
-    if (step !== "PROJECT_SETTING" && step !== "SAVE") return;
+    if (step !== "SAVE") return;
 
     saveUIDraft({
       step,
@@ -358,6 +350,8 @@ export default function App() {
   };
 
   const handleScrapDone = async () => {
+    if (scraps.length === 0) return;
+    saveScrapList(scraps);
     //세션의 모든 드래그를 하나의 String으로 합침
     const contentPlain = scraps.flatMap(scrap => scrap.texts).join("\n\n");
     //첫번째 스크랩(AI source, url 가져오기 위함)
@@ -526,6 +520,9 @@ export default function App() {
 
   const showGuideText = step === "EMPTY" || step === "SCRAP_LIST";
 
+  if (!isScrapLoaded) {
+    return null; // 또는 로딩 스켈레톤
+  }
   return (
     <div className="app-container">
       <Top />
