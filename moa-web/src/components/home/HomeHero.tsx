@@ -10,7 +10,7 @@ export default function HomeHero({ userName }: Props) {
   return (
     <section className={styles.hero}>
       <h1 className={styles.title}>
-        Ryan님, 오늘은 어떤 멋진 프로젝트를 만드실건가요?
+        RYAN님, 오늘은 어떤 멋진 프로젝트를 만드실건가요?
       </h1>
 
       <div className={styles.searchWrap}>
